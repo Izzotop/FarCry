@@ -1,0 +1,23 @@
+[submodule "external/zlib-ng"]
+    path = Code/Libs/zlib-ng
+    url = https://github.com/zlib-ng/zlib-ng.git
+
+[submodule "external/freetype"]
+    path = Code/Libs/freetype
+    url = https://github.com/freetype/freetype
+
+[submodule "external/vorbis"]
+    path = Code/Libs/vorbis
+    url = https://github.com/xiph/vorbis.git
+
+[submodule "external/ogg"]
+    path = Code/Libs/ogg
+    url = https://github.com/xiph/ogg.git
+
+[submodule "external/libexpat"]
+    path = Code/Libs/libexpat
+    url = https://github.com/libexpat/libexpat
+
+[submodule "Code/Libs/Legacy"]
+    path = Code/Libs/Legacy
+    url = https://github.com/Izzotop/FarCry_Libs
