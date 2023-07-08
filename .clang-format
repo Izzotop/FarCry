@@ -1,0 +1,13 @@
+Language: Cpp
+PointerAlignment: Left
+DerivePointerAlignment: false
+IndentWrappedFunctionNames: false
+IndentWidth: 4
+ColumnLimit: 180
+SortIncludes: false
+AccessModifierOffset: -4
+AllowShortFunctionsOnASingleLine: Empty
+#AlignConsecutiveDeclarations: true
+
+IndentWidth: 4
+AccessModifierOffset: -4
