@@ -7,7 +7,7 @@
 
 #define NOT_USE_CRY_MEMORY_MANAGER
 #include <platform.h>
-#include <stdio.h>
+#include <cstdio>
 #include <tchar.h>
 // Windows Header Files:
 #ifdef WIN64
@@ -20,7 +20,7 @@ typedef CPortableString CString;
 
 // Standart C headers.
 #include <direct.h>
-#include <assert.h>
+#include <cassert>
 
 // STL headers.
 #include <vector>
@@ -34,19 +34,17 @@ typedef CPortableString CString;
 #define hash_map map
 #include "StlUtils.h"
 //! Specialization of string to const char cast.
-namespace stl{
-template <>
-inline const char* constchar_cast( const CPortableString &str )
-{
-	return str.GetString();
+namespace stl {
+template <> inline const char* constchar_cast(const CPortableString& str) {
+    return str.GetString();
 }
-}
+} // namespace stl
 
 #else
 #include <hash_map>
 #endif
-//#include <StlDbgAlloc.h>
-// to make smoother transition back from cry to std namespace...
+// #include <StlDbgAlloc.h>
+//  to make smoother transition back from cry to std namespace...
 #define cry std
 #define CRY_AS_STD
 
@@ -70,9 +68,9 @@ inline const char* constchar_cast( const CPortableString &str )
 //////////////////////////////////////////////////////////////////////////
 // globals.
 //////////////////////////////////////////////////////////////////////////
-extern void MessageBoxError( const char *format,... );
+extern void MessageBoxError(const char* format, ...);
 // extern void Log( const char *format,... );
 
 #ifndef SIZEOF_ARRAY
-#define SIZEOF_ARRAY(arr) (sizeof(arr)/sizeof((arr)[0]))
+#define SIZEOF_ARRAY(arr) (sizeof(arr) / sizeof((arr)[0]))
 #endif

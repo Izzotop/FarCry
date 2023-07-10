@@ -7,7 +7,7 @@
 //  Version:     v1.00
 //  Created:     18/12/2001 by Timur.
 //  Compilers:   Visual C++ 6.0
-//  Description: 
+//  Description:
 // -------------------------------------------------------------------------
 //  History:
 //
@@ -17,4 +17,4 @@
 #include "EditTool.h"
 
 //////////////////////////////////////////////////////////////////////////
-IMPLEMENT_DYNAMIC(CEditTool,CObject);
+IMPLEMENT_DYNAMIC(CEditTool, CObject);

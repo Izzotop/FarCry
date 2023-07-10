@@ -18,7 +18,7 @@
 #define _STLP_NO_THREADS
 //////////////////////////////////////////////////////////////////////////
 
-#pragma warning(disable:4786) // identifier was truncated to '255' characters in the debug information
+#pragma warning(disable : 4786) // identifier was truncated to '255' characters in the debug information
 
 #include <platform.h>
 
@@ -32,7 +32,7 @@
 #include <xtl.h>
 #endif
 
-#include <stdlib.h>
+#include <cstdlib>
 
 #define USE_NEWPOOL
 #include <CryMemoryManager.h>
@@ -40,33 +40,51 @@
 // TODO: reference additional headers your program requires here
 // Safe memory freeing
 #ifndef SAFE_DELETE
-#define SAFE_DELETE(p)			{ if(p) { delete (p);		(p)=NULL; } }
+#define SAFE_DELETE(p)                                                                                                                                                             \
+    {                                                                                                                                                                              \
+        if (p) {                                                                                                                                                                   \
+            delete (p);                                                                                                                                                            \
+            (p) = nullptr;                                                                                                                                                            \
+        }                                                                                                                                                                          \
+    }
 #endif
 
 #ifndef SAFE_DELETE_ARRAY
-#define SAFE_DELETE_ARRAY(p)	{ if(p) { delete[] (p);		(p)=NULL; } }
+#define SAFE_DELETE_ARRAY(p)                                                                                                                                                       \
+    {                                                                                                                                                                              \
+        if (p) {                                                                                                                                                                   \
+            delete[] (p);                                                                                                                                                          \
+            (p) = nullptr;                                                                                                                                                            \
+        }                                                                                                                                                                          \
+    }
 #endif
 
 #ifndef SAFE_RELEASE
-#define SAFE_RELEASE(p)			{ if(p) { (p)->Release();	(p)=NULL; } }
+#define SAFE_RELEASE(p)                                                                                                                                                            \
+    {                                                                                                                                                                              \
+        if (p) {                                                                                                                                                                   \
+            (p)->Release();                                                                                                                                                        \
+            (p) = nullptr;                                                                                                                                                            \
+        }                                                                                                                                                                          \
+    }
 #endif
 
-//STL headers
+// STL headers
 #include <locale>
 #include <vector>
 #include <list>
-#include <map>	
-//#include <xdebug>
+#include <map>
+// #include <xdebug>
 
 #ifdef _DEBUG
 
 #include <crtdbg.h>
-#define DEBUG_NEW_NORMAL_CLIENTBLOCK(file, line) new(_NORMAL_BLOCK, file, line)
-#define new DEBUG_NEW_NORMAL_CLIENTBLOCK( __FILE__, __LINE__)
+#define DEBUG_NEW_NORMAL_CLIENTBLOCK(file, line) new (_NORMAL_BLOCK, file, line)
+#define new DEBUG_NEW_NORMAL_CLIENTBLOCK(__FILE__, __LINE__)
 
-#define   calloc(s,t)       _calloc_dbg(s, t, _NORMAL_BLOCK, __FILE__, __LINE__)
-#define   malloc(s)         _malloc_dbg(s, _NORMAL_BLOCK, __FILE__, __LINE__)
-#define   realloc(p, s)     _realloc_dbg(p, s, _NORMAL_BLOCK, __FILE__, __LINE__)
+#define calloc(s, t) _calloc_dbg(s, t, _NORMAL_BLOCK, __FILE__, __LINE__)
+#define malloc(s) _malloc_dbg(s, _NORMAL_BLOCK, __FILE__, __LINE__)
+#define realloc(p, s) _realloc_dbg(p, s, _NORMAL_BLOCK, __FILE__, __LINE__)
 
 #endif
 
@@ -81,22 +99,19 @@
 
 #include <IFont.h>
 #if !defined(LINUX)
-#include <assert.h>
+#include <cassert>
 #endif
-
 
 //! Include main interfaces.
 #include <IEntitySystem.h>
 #include <IProcess.h>
-//#include <ITimer.h>
+// #include <ITimer.h>
 #include <ISystem.h>
 #include <ILog.h>
-//#include <CryPhysics.h>
+// #include <CryPhysics.h>
 #include <IConsole.h>
 #include <IRenderer.h>
 #include <ICryPak.h>
-
-
 
 //{{AFX_INSERT_LOCATION}}
 // Microsoft Visual C++ will insert additional declarations immediately before the previous line.

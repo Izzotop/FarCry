@@ -1,4 +1,4 @@
-//MemDC.h
+// MemDC.h
 
 #if _MSC_VER > 1000
 #pragma once
@@ -82,71 +82,76 @@ That way you can 'return' at any time safe in the knowledge that the original fo
 */
 class CMemDC : public CDC {
 public:
-  CMemDC(CPaintDC& dc, CBitmap* pBmp=NULL) : isMemDC(!dc.IsPrinting()) {
-    //if(dc.GetWindow()) (dc.GetWindow())->GetClientRect(&Rect);
-    //else 
-		Rect = dc.m_ps.rcPaint;
-    Set(&dc, Paint, pBmp);
-  }
-  CMemDC(CDC* pDC, CBitmap* pBmp=NULL) {
-    isMemDC=!pDC->IsPrinting();
-    if(isMemDC) {
-      pDC->GetClipBox(&Rect); //For Views
-      pDC->LPtoDP(&Rect);
+    CMemDC(CPaintDC& dc, CBitmap* pBmp = nullptr) : isMemDC(!dc.IsPrinting()) {
+        // if(dc.GetWindow()) (dc.GetWindow())->GetClientRect(&Rect);
+        // else
+        Rect = dc.m_ps.rcPaint;
+        Set(&dc, Paint, pBmp);
     }
-    Set(pDC, Draw, pBmp);
-  }
-  CMemDC(LPDRAWITEMSTRUCT lpDrawItemStruct, CBitmap* pBmp=NULL) : isMemDC(true) {
-    Rect=lpDrawItemStruct->rcItem;
-    Set(CDC::FromHandle(lpDrawItemStruct->hDC), DrawItem, pBmp);
-  }
-  ~CMemDC() {     // Destructor copies the contents of the mem DC to the original DC
-    if(isMemDC) {
-      pDC->BitBlt(Rect.left, Rect.top, Rect.Width(), Rect.Height(), this, Rect.left, Rect.top, SRCCOPY);
-      SelectObject(OldBitmap);
+    CMemDC(CDC* pDC, CBitmap* pBmp = nullptr) {
+        isMemDC = !pDC->IsPrinting();
+        if (isMemDC) {
+            pDC->GetClipBox(&Rect); // For Views
+            pDC->LPtoDP(&Rect);
+        }
+        Set(pDC, Draw, pBmp);
     }
-  }
+    CMemDC(LPDRAWITEMSTRUCT lpDrawItemStruct, CBitmap* pBmp = nullptr) : isMemDC(true) {
+        Rect = lpDrawItemStruct->rcItem;
+        Set(CDC::FromHandle(lpDrawItemStruct->hDC), DrawItem, pBmp);
+    }
+    ~CMemDC() { // Destructor copies the contents of the mem DC to the original DC
+        if (isMemDC) {
+            pDC->BitBlt(Rect.left, Rect.top, Rect.Width(), Rect.Height(), this, Rect.left, Rect.top, SRCCOPY);
+            SelectObject(OldBitmap);
+        }
+    }
 
-  CMemDC* operator->() {return this;} // Allow usage as a pointer
-  operator CMemDC*()   {return this;} // Allow usage as a pointer
+    CMemDC* operator->() {
+        return this;
+    } // Allow usage as a pointer
+    operator CMemDC*() {
+        return this;
+    } // Allow usage as a pointer
 
 private:
-  enum dcType {Paint,Draw,DrawItem};
+    enum dcType { Paint, Draw, DrawItem };
 
-  void Set(CDC* _pDC, dcType Type, CBitmap* pBmp=NULL) {
-    ASSERT_VALID(_pDC);
-    pDC=_pDC;
-    OldBitmap=NULL;
-    if(isMemDC) {
-      CreateCompatibleDC(pDC);
-      if(pBmp!=NULL) OldBitmap=SelectObject(pBmp); //User passed bitmap, use it
-      else { //Create our own bitmap
-				CRect rc;
-				pDC->GetWindow()->GetClientRect(rc);
-        Bitmap.CreateCompatibleBitmap(pDC, rc.Width(), rc.Height());
-        OldBitmap=SelectObject(&Bitmap);
-      }
-      if(Type==Draw) {
-        SetMapMode(pDC->GetMapMode());
-        pDC->DPtoLP(&Rect);
-        SetWindowOrg(Rect.left, Rect.top);
-      }
-    }else{ // Make a copy of the relevent parts of the current DC for printing
-      m_bPrinting=pDC->m_bPrinting;
-      m_hDC=pDC->m_hDC;
-      m_hAttribDC=pDC->m_hAttribDC;
+    void Set(CDC* _pDC, dcType Type, CBitmap* pBmp = nullptr) {
+        ASSERT_VALID(_pDC);
+        pDC = _pDC;
+        OldBitmap = nullptr;
+        if (isMemDC) {
+            CreateCompatibleDC(pDC);
+            if (pBmp != nullptr)
+                OldBitmap = SelectObject(pBmp); // User passed bitmap, use it
+            else {                              // Create our own bitmap
+                CRect rc;
+                pDC->GetWindow()->GetClientRect(rc);
+                Bitmap.CreateCompatibleBitmap(pDC, rc.Width(), rc.Height());
+                OldBitmap = SelectObject(&Bitmap);
+            }
+            if (Type == Draw) {
+                SetMapMode(pDC->GetMapMode());
+                pDC->DPtoLP(&Rect);
+                SetWindowOrg(Rect.left, Rect.top);
+            }
+        } else { // Make a copy of the relevent parts of the current DC for printing
+            m_bPrinting = pDC->m_bPrinting;
+            m_hDC = pDC->m_hDC;
+            m_hAttribDC = pDC->m_hAttribDC;
+        }
     }
-  }
 
-  CBitmap  Bitmap;     // Offscreen bitmap
-  CBitmap* OldBitmap;  // bitmap originally found in CMemDC
-  CDC*     pDC;        // Saves CDC passed in constructor
-  CRect    Rect;       // Rectangle of drawing area.
-  bool     isMemDC;    // TRUE if CDC really is a Memory DC.
+    CBitmap Bitmap;     // Offscreen bitmap
+    CBitmap* OldBitmap; // bitmap originally found in CMemDC
+    CDC* pDC;           // Saves CDC passed in constructor
+    CRect Rect;         // Rectangle of drawing area.
+    bool isMemDC;       // TRUE if CDC really is a Memory DC.
 };
 
 #if _MSC_VER >= 1000
 #pragma pack(pop)
 #endif // _MSC_VER >= 1000
 
-#endif //ndef MemDCh
+#endif // ndef MemDCh

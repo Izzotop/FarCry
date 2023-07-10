@@ -12,31 +12,27 @@
 // hides the mouse cursor,
 // returns relative mouse movement
 
-class CRelativeMouseInput  
-{
+class CRelativeMouseInput {
 public:
-	//! constructor
-	CRelativeMouseInput( void );
-	//! destructor
-	virtual ~CRelativeMouseInput( void );
+    CRelativeMouseInput();
+    virtual ~CRelativeMouseInput();
 
-	//! call in OnLButtonDown/OnMButtonDown/OnRButtonDown
-	void OnButtonDown( HWND inHwnd );
-	//! call in OnLButtonUp/OnMButtonUp/OnRButtonUp
-	void OnButtonUp( void );
+    //! call in OnLButtonDown/OnMButtonDown/OnRButtonDown
+    void OnButtonDown(HWND inHwnd);
+    //! call in OnLButtonUp/OnMButtonUp/OnRButtonUp
+    void OnButtonUp();
 
-	//! call in OnMouseMove
-	//! return true=mouse is captured an there was movement, false otherwise
-	bool OnMouseMove( HWND inHwnd, bool inbButtonDown, int &outRelx, int &outRely );
-	//!
-	bool IsCaptured( void );
+    //! call in OnMouseMove
+    //! return true=mouse is captured an there was movement, false otherwise
+    bool OnMouseMove(HWND inHwnd, bool inbButtonDown, int& outRelx, int& outRely);
+    //!
+    bool IsCaptured();
 
 private:
-
-	bool			m_Captured;			//!<
-	int				m_oldx;					//!<
-	int				m_oldy;					//!<
-	POINT			m_savedpos;			//!<
+    bool m_Captured;  //!<
+    int m_oldx;       //!<
+    int m_oldy;       //!<
+    POINT m_savedpos; //!<
 };
 
 #endif // !defined(AFX_RELATIVEMOUSEINPUT_H__FB763154_32E5_4857_B51E_C7EB1F946812__INCLUDED_)

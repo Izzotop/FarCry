@@ -33,9 +33,9 @@
 #define TagDefault LUA_TTABLE
 
 
-#define hashnum(t,n)		(node(t, lmod((lu_hash)(ls_hash)(n), t->size)))
-#define hashstr(t,str)		(node(t, lmod((str)->tsv.hash, t->size)))
-#define hashpointer(t,p)	(node(t, lmod(IntPoint(p), t->size)))
+#define hashnum(t,n)    (node(t, lmod((lu_hash)(ls_hash)(n), t->size)))
+#define hashstr(t,str)    (node(t, lmod((str)->tsv.hash, t->size)))
+#define hashpointer(t,p)  (node(t, lmod(IntPoint(p), t->size)))
 
 
 /*
@@ -84,10 +84,10 @@ int luaH_nexti (Hash *t, int i) {
 
 
 #define check_grow(L, p, n) \
-	if ((p) >= MAX_INT/(n)) luaD_error(L, l_s("table overflow"));
+  if ((p) >= MAX_INT/(n)) luaD_error(L, l_s("table overflow"));
 
 /*
-** returns smaller power of 2 larger than `n' (minimum is MINPOWER2) 
+** returns smaller power of 2 larger than `n' (minimum is MINPOWER2)
 */
 static int power2 (lua_State *L, int n) {
   int p = MINPOWER2;
@@ -171,7 +171,7 @@ static void rehash (lua_State *L, Hash *t) {
             t->node[i].next = NULL;
         }
     }
-    return; 
+    return;
     */
     setnodevector(L, t, oldsize);  /* just rehash; keep the same size */
     //WOUTER: avoid needless fragmentation by swapping the 2 buffers;
@@ -193,11 +193,11 @@ static void rehash (lua_State *L, Hash *t) {
 
 
 /*
-** inserts a new key into a hash table; first, check whether key's main 
-** position is free. If not, check whether colliding node is in its main 
-** position or not: if it is not, move colliding node to an empty place and 
-** put new key in its main position; otherwise (colliding node is in its main 
-** position), new key goes to an empty position. 
+** inserts a new key into a hash table; first, check whether key's main
+** position is free. If not, check whether colliding node is in its main
+** position or not: if it is not, move colliding node to an empty place and
+** put new key in its main position; otherwise (colliding node is in its main
+** position), new key goes to an empty position.
 */
 static TObject *newkey (lua_State *L, Hash *t, const TObject *key) {
   Node *mp = luaH_mainposition(t, key);
@@ -268,7 +268,7 @@ const TObject *luaH_getnum (Hash *t, int key) {
 
 /*
 #include <stdio.h>
-#include <windows.h>
+#include <Windows.h>
 */
 
 const TObject *luaH_getstr (Hash *t, TString *key) {

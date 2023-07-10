@@ -14,69 +14,53 @@
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-#include "ApplicationHelper.h"					// CApplicationHelper
+#include "ApplicationHelper.h" // CApplicationHelper
 
+CApplicationHelper::CApplicationHelper() {}
 
-CApplicationHelper::CApplicationHelper()
-{
-}
+CApplicationHelper::~CApplicationHelper() {}
 
-CApplicationHelper::~CApplicationHelper()
-{
-}
+void CApplicationHelper::ParseArguments(const char* inszCommandLine, ICmdlineArgumentSink* pEarlyCommands, ICmdlineArgumentSink* pConsoleCommands) {
+    assert(inszCommandLine);
 
+    //  int iArgNo=0;
+    char* src = (char*)inszCommandLine;
+    char Arg[1024];
 
+    while (*src) {
+        char* dst = Arg;
 
-void CApplicationHelper::ParseArguments( const char *inszCommandLine, ICmdlineArgumentSink *pEarlyCommands, ICmdlineArgumentSink *pConsoleCommands )
-{
-	assert(inszCommandLine);
+        while (*src <= ' ' && *src != 0)
+            src++; // jump over whitespace
 
-//	int iArgNo=0;
-	char *src=(char *)inszCommandLine;
-	char Arg[1024];
+        if (*src == '\"') {
+            src++;
 
-	while(*src)
-	{
-		char *dst=Arg;
+            while (*src != '\"' && *src != 0)
+                *dst++ = *src++;
 
-		while(*src<=' ' && *src!=0)
-			src++;		// jump over whitespace
+            if (*src == '\"')
+                src++;
+        } else {
+            while (*src != ' ' && *src != 0)
+                *dst++ = *src++;
+        }
 
-		if(*src=='\"')
-		{
-			src++;
+        *dst = 0;
 
-			while(*src!='\"' && *src!=0)
-				*dst++=*src++;
+        if (*Arg != 0) {
+            //      if(iArgNo!=0)    // ignore .exe name
+            {
+                if (Arg[0] == '-') {
+                    if (pEarlyCommands)
+                        pEarlyCommands->ReturnArgument(&Arg[1]);
+                } else {
+                    if (pConsoleCommands)
+                        pConsoleCommands->ReturnArgument(Arg);
+                }
+            }
 
-			if(*src=='\"')
-				src++;
-		}
-		else
-		{
-			while(*src!=' ' && *src!=0)
-				*dst++=*src++;
-		}
-
-		*dst=0;
-
-		if(*Arg!=0)
-		{
-//			if(iArgNo!=0)		// ignore .exe name
-			{
-				if(Arg[0]=='-')
-				{
-					if(pEarlyCommands)
-						pEarlyCommands->ReturnArgument(&Arg[1]);
-				}
-				else
-				{
-					if(pConsoleCommands)
-						pConsoleCommands->ReturnArgument(Arg);
-				}
-			}
-
-//			iArgNo++;
-		}
-	}
+            //      iArgNo++;
+        }
+    }
 }

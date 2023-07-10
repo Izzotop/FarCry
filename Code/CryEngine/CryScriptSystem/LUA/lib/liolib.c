@@ -53,12 +53,12 @@ int pclose(); */
 #endif
 
 
-#define INFILE	0
+#define INFILE  0
 #define OUTFILE 1
-#define NOFILE	2
+#define NOFILE  2
 
-#define FILEHANDLE		l_s("FileHandle")
-#define CLOSEDFILEHANDLE	l_s("ClosedFileHandle")
+#define FILEHANDLE    l_s("FileHandle")
+#define CLOSEDFILEHANDLE  l_s("ClosedFileHandle")
 
 
 static const l_char *const filenames[] = {l_s("_INPUT"), l_s("_OUTPUT")};
@@ -86,9 +86,9 @@ static int pushresult (lua_State *L, int i) {
 */
 
 #if defined(LINUX)
-	#define checkfile(L,f)	(strcasecmp(lua_type(L,(f)), FILEHANDLE) == 0)
+  #define checkfile(L,f)  (strcasecmp(lua_type(L,(f)), FILEHANDLE) == 0)
 #else
-	#define checkfile(L,f)	(strcmp(lua_type(L,(f)), FILEHANDLE) == 0)
+  #define checkfile(L,f)  (strcmp(lua_type(L,(f)), FILEHANDLE) == 0)
 #endif
 
 static FILE *getopthandle (lua_State *L, int inout) {
@@ -158,7 +158,7 @@ static int io_close (lua_State *L) {
     lua_settop(L, 1);  /* make sure file is on top */
     lua_settag(L, lua_name2tag(L, CLOSEDFILEHANDLE));
     status = (CLOSEFILE(L, f) == 0);
-#endif  
+#endif
   return pushresult(L, status);
 }
 
@@ -229,7 +229,7 @@ static int io_appendto (lua_State *L) {
 
 
 #ifndef LUA_MAXUNTIL
-#define LUA_MAXUNTIL	100
+#define LUA_MAXUNTIL  100
 #endif
 
 
@@ -547,9 +547,9 @@ static int io_date (lua_State *L) {
 static int io_time (lua_State *L) {
 #ifdef PS2
       OutputDebugString("Not Implemented");
-#else 
-  if (lua_isnull(L, 1))  //* called without args? 
-    lua_pushnumber(L, time(NULL));  //* return current time 
+#else
+  if (lua_isnull(L, 1))  //* called without args?
+    lua_pushnumber(L, time(NULL));  //* return current time
   if (lua_isnull(L, 1))  /* called without args? */
     lua_pushnumber(L, time(NULL));  /* return current time */
   else {
@@ -597,9 +597,9 @@ static int io_setloc (lua_State *L) {
 
 
 static int io_exit (lua_State *L) {
-	//FORCE_EXIT();		
+  //FORCE_EXIT();
 #if defined(WIN32) && !defined(WIN64)
-	DEBUG_BREAK;
+  DEBUG_BREAK;
 #endif
   //it(luaL_opt_int(L, 1, EXIT_SUCCESS));
   return 0;  /* to avoid warnings */
@@ -626,8 +626,8 @@ static int io_debug (lua_State *L) {
 }
 
 
-#define LEVELS1	12	/* size of the first part of the stack */
-#define LEVELS2	10	/* size of the second part of the stack */
+#define LEVELS1  12  /* size of the first part of the stack */
+#define LEVELS2  10  /* size of the second part of the stack */
 
 int errorfb (lua_State *L) {
 #ifdef PS2

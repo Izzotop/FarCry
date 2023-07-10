@@ -14,37 +14,34 @@
 /////////////////////////////////////////////////////////////////////////////
 // CTerrainCurve dialog
 
-class CTerrainCurve : public CDialog
-{
-// Construction
+class CTerrainCurve : public CDialog {
+    // Construction
 public:
-	CTerrainCurve(CWnd* pParent = NULL);   // standard constructor
+    CTerrainCurve(CWnd* pParent = nullptr); // standard constructor
 
-// Dialog Data
-	//{{AFX_DATA(CTerrainCurve)
-	enum { IDD = IDD_TERRAIN_CURVE };
-		// NOTE: the ClassWizard will add data members here
-	//}}AFX_DATA
+    // Dialog Data
+    //{{AFX_DATA(CTerrainCurve)
+    enum { IDD = IDD_TERRAIN_CURVE };
+    // NOTE: the ClassWizard will add data members here
+    //}}AFX_DATA
 
-
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CTerrainCurve)
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	//}}AFX_VIRTUAL
-
-// Implementation
+    // Overrides
+    // ClassWizard generated virtual function overrides
+    //{{AFX_VIRTUAL(CTerrainCurve)
 protected:
+    virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
+    //}}AFX_VIRTUAL
 
-	// Generated message map functions
-	//{{AFX_MSG(CTerrainCurve)
-	virtual BOOL OnInitDialog();
-	afx_msg void OnDestroy();
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
+    // Implementation
+protected:
+    // Generated message map functions
+    //{{AFX_MSG(CTerrainCurve)
+    virtual BOOL OnInitDialog();
+    afx_msg void OnDestroy();
+    //}}AFX_MSG
+    DECLARE_MESSAGE_MAP()
 
-	CCurveWnd m_wndCurve;
+    CCurveWnd m_wndCurve;
 };
 
 //{{AFX_INSERT_LOCATION}}

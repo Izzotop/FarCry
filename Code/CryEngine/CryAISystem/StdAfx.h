@@ -23,38 +23,33 @@
 #ifndef _XBOX
 #ifdef WIN32
 // Insert your headers here
-#define WIN32_LEAN_AND_MEAN		// Exclude rarely-used stuff from Windows headers
-#include <windows.h>
+#define WIN32_LEAN_AND_MEAN // Exclude rarely-used stuff from Windows headers
+#include <Windows.h>
 #endif
 #else
 #include <xtl.h>
 #endif
 
-#include <stdlib.h>
+#include <cstdlib>
 #define USE_NEWPOOL
 #include <CryMemoryManager.h>
-
-
 
 #include "Cry_Math.h"
 #include "Cry_XOptimise.h" // required by AMD64 compiler
 #include "Cry_Camera.h"
 // TODO: reference additional headers your program requires here
 
-class CAISystem; 
+class CAISystem;
 
-
-
-CAISystem *GetAISystem();
+CAISystem* GetAISystem();
 
 //////////////////////////////////////////////////////////////////////////
 // Report AI warnings to validator.
 //////////////////////////////////////////////////////////////////////////
 //! Reports an AI Warning to validator with WARNING severity.
-void AIWarning( const char *format,... );
+void AIWarning(const char* format, ...);
 //! Reports an AI Warning to validator with ERROR severity.
-void AIError( const char *format,... );
-
+void AIError(const char* format, ...);
 
 //{{AFX_INSERT_LOCATION}}
 // Microsoft Visual C++ will insert additional declarations immediately before the previous line.

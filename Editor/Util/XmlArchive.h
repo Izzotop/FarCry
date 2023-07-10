@@ -24,49 +24,48 @@
 
 class CPakFile;
 /*!
- *	CXmlArcive used to stores XML in MFC archive.
+ *    CXmlArcive used to stores XML in MFC archive.
  */
-class CXmlArchive
-{
+class CXmlArchive {
 public:
-	XmlNodeRef	root;
-	CNamedData* pNamedData;
-	bool				bLoading;
-	bool				bOwnNamedData;
+    XmlNodeRef root;
+    CNamedData* pNamedData;
+    bool bLoading;
+    bool bOwnNamedData;
 
-	CXmlArchive() {
-		bLoading = false;
-		bOwnNamedData= true;
-		pNamedData = new CNamedData;
-	};
-	explicit CXmlArchive( const CString &xmlRoot ) {
-		bLoading = false;
-		bOwnNamedData= true;
-		pNamedData = new CNamedData;
-		root = new CXmlNode(xmlRoot);
-	};
-	~CXmlArchive() {
-		if (bOwnNamedData)
-			delete pNamedData;
-	};
-	CXmlArchive( const CXmlArchive &ar ) { *this = ar; }
-	CXmlArchive& operator=( const CXmlArchive &ar )
-	{
-		root = ar.root;
-		pNamedData = ar.pNamedData;
-		bLoading = ar.bLoading;
-		bOwnNamedData = false;
-    return *this;
-	}
-	
-	bool Load( const CString &file );
-	void Save( const CString &file );
+    CXmlArchive() {
+        bLoading = false;
+        bOwnNamedData = true;
+        pNamedData = new CNamedData;
+    };
+    explicit CXmlArchive(const CString& xmlRoot) {
+        bLoading = false;
+        bOwnNamedData = true;
+        pNamedData = new CNamedData;
+        root = new CXmlNode(xmlRoot);
+    };
+    ~CXmlArchive() {
+        if (bOwnNamedData)
+            delete pNamedData;
+    };
+    CXmlArchive(const CXmlArchive& ar) {
+        *this = ar;
+    }
+    CXmlArchive& operator=(const CXmlArchive& ar) {
+        root = ar.root;
+        pNamedData = ar.pNamedData;
+        bLoading = ar.bLoading;
+        bOwnNamedData = false;
+        return *this;
+    }
 
-	//! Save XML Archive to pak file.
-	//! @return true if saved.
-	bool SaveToPak( const CString &levelPath,CPakFile &pakFile );
-	bool LoadFromPak( const CString &levelPath,CPakFile &pakFile );
+    bool Load(const CString& file);
+    void Save(const CString& file);
+
+    //! Save XML Archive to pak file.
+    //! @return true if saved.
+    bool SaveToPak(const CString& levelPath, CPakFile& pakFile);
+    bool LoadFromPak(const CString& levelPath, CPakFile& pakFile);
 };
-
 
 #endif // __XmlArchive_h__

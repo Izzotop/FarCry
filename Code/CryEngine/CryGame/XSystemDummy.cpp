@@ -15,72 +15,62 @@
 #include "XSystemDummy.h"
 
 ///////////////////////////////////////////////
-CXSystemDummy::CXSystemDummy(CXGame *pGame,ILog *pLog):CXSystemBase(pGame,pLog)
-{
-	m_pEntitySystem->EnableClient(true);
+CXSystemDummy::CXSystemDummy(CXGame* pGame, ILog* pLog) : CXSystemBase(pGame, pLog) {
+    m_pEntitySystem->EnableClient(true);
 }
 
 ///////////////////////////////////////////////
-CXSystemDummy::~CXSystemDummy()
-{
-	DeleteAllEntities();
+CXSystemDummy::~CXSystemDummy() {
+    DeleteAllEntities();
 }
 
 ///////////////////////////////////////////////
-void CXSystemDummy::Release()
-{
-	delete this;
+void CXSystemDummy::Release() {
+    delete this;
 }
 
 ///////////////////////////////////////////////
-bool CXSystemDummy::LoadLevel(const char *szLevelDir,const char *szMissionName, bool bEditor)
-{
-	IInput *pInput=m_pGame->m_pSystem->GetIInput();
+bool CXSystemDummy::LoadLevel(const char* szLevelDir, const char* szMissionName, bool bEditor) {
+    IInput* pInput = m_pGame->m_pSystem->GetIInput();
 
-	if(pInput)						// might be 0, e.g. dedicated server
-	{
-		pInput->Update(true);
-		pInput->Update(true);
-	}
+    if (pInput) // might be 0, e.g. dedicated server
+    {
+        pInput->Update(true);
+        pInput->Update(true);
+    }
 
-	IActionMapManager *pActionManager=m_pGame->m_pIActionMapManager;
-	
-	if(pActionManager)		// might be 0, e.g. dedicated server
-		pActionManager->Reset();
+    IActionMapManager* pActionManager = m_pGame->m_pIActionMapManager;
 
-	m_pGame->m_bMapLoadedFromCheckpoint=false;
+    if (pActionManager) // might be 0, e.g. dedicated server
+        pActionManager->Reset();
 
-	return true;
+    m_pGame->m_bMapLoadedFromCheckpoint = false;
+
+    return true;
 }
 
 ///////////////////////////////////////////////
-IEntity*	CXSystemDummy::SpawnEntity(CEntityDesc &ed)
-{
-	return m_pEntitySystem->GetEntity((EntityId)ed.id);
+IEntity* CXSystemDummy::SpawnEntity(CEntityDesc& ed) {
+    return m_pEntitySystem->GetEntity((EntityId)ed.id);
 }
 
 ///////////////////////////////////////////////
-void CXSystemDummy::RemoveEntity(EntityId wID, bool bRemoveNow)
-{
-}
+void CXSystemDummy::RemoveEntity(EntityId wID, bool bRemoveNow) {}
 
 ///////////////////////////////////////////////
-void CXSystemDummy::DeleteAllEntities()
-{
-}
+void CXSystemDummy::DeleteAllEntities() {}
 
 ///////////////////////////////////////////////
-void CXSystemDummy::Disconnected(const char *szCause)
-{
-	if(!szCause) szCause = "NULL ERROR";
-	TRACE("Client Disconnected");
-	TRACE(szCause);
+void CXSystemDummy::Disconnected(const char* szCause) {
+    if (!szCause)
+        szCause = "nullptr ERROR";
+    TRACE("Client Disconnected");
+    TRACE(szCause);
 
-	// <<FIXME>> Change to the main menu... DO IT
+    // <<FIXME>> Change to the main menu... DO IT
 }
 
-void	CXSystemDummy::SetMyPlayer(EntityId wID)
-{
-	// Set my player for client.
-//	m_pEntitySystem->SetMyPlayer(wID);
+void CXSystemDummy::SetMyPlayer(EntityId wID) {
+    // Set my player for client.
+    //  m_pEntitySystem->SetMyPlayer(wID);
 }

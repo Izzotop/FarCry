@@ -94,16 +94,16 @@ static int luaB_print (lua_State *L) {
     s = lua_tostring(L, -1);  /* get result */
     if (s == NULL)
       lua_error(L, l_s("`tostring' must return a string to `print'"));
-#ifdef PS2      
+#ifdef PS2
     if (i>1) OutputDebugString(l_s("\t"));
     OutputDebugString(s);
-#else    
+#else
     if (i>1) fputs(l_s("\t"), stdout);
     fputs(s, stdout);
 #endif
     lua_pop(L, 1);  /* pop result */
   }
-#ifndef PS2 
+#ifndef PS2
   fputs(l_s("\n"), stdout);
 #endif
   return 0;
@@ -363,19 +363,19 @@ static int luaB_loadfile (lua_State *L) {
 //ALBERTO this function is super dangerous be careful
 static int luaB_getregistry(lua_State *L)
 {
-	lua_getregistry(L);
-	lua_getweakregistry(L);
-	lua_getxregistry(L);
-	return 3; 
+  lua_getregistry(L);
+  lua_getweakregistry(L);
+  lua_getxregistry(L);
+  return 3;
 }
 
 
-#define LUA_PATH	l_s("LUA_PATH")
+#define LUA_PATH  l_s("LUA_PATH")
 
-#define LUA_PATH_SEP	l_s(";")
+#define LUA_PATH_SEP  l_s(";")
 
 #ifndef LUA_PATH_DEFAULT
-#define LUA_PATH_DEFAULT	l_s("./")
+#define LUA_PATH_DEFAULT  l_s("./")
 #endif
 
 static int luaB_require (lua_State *L) {
@@ -758,8 +758,8 @@ static const luaL_reg base_funcs[] = {
   {l_s("tremove"), luaB_tremove},
   {l_s("unpack"), luaB_unpack},
   {l_s("weakmode"), luaB_weakmode},
-	{l_s("__getregistry"), luaB_getregistry}
-	
+  {l_s("__getregistry"), luaB_getregistry}
+
 };
 
 

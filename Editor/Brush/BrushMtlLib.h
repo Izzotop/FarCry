@@ -7,7 +7,7 @@
 //  Version:     v1.00
 //  Created:     2/12/2002 by Timur.
 //  Compilers:   Visual Studio.NET
-//  Description: 
+//  Description:
 // -------------------------------------------------------------------------
 //  History:
 //
@@ -18,13 +18,12 @@
 #pragma once
 
 /** Library of materials used for brush creation.
-*/
-class CBrushMtlLib
-{
+ */
+class CBrushMtlLib {
 public:
 private:
-	// Array of all available materials.
-	std::vector<CBrushMtlPtr> m_materials;
+    // Array of all available materials.
+    std::vector<CBrushMtlPtr> m_materials;
 };
 
 #endif // __brushmtllib_h__

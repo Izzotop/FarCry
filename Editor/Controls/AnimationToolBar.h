@@ -12,40 +12,38 @@
 
 #include "AnimSequences.h"
 
-class CAnimationToolBar : public CToolBar
-{
-// Construction
+class CAnimationToolBar : public CToolBar {
+    // Construction
 public:
-	CAnimationToolBar();
+    CAnimationToolBar();
 
-// Attributes
+    // Attributes
 public:
-
-// Operations
+    // Operations
 public:
-	CString GetAnimName();
+    CString GetAnimName();
 
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CAnimationToolBar)
-	//}}AFX_VIRTUAL
+    // Overrides
+    // ClassWizard generated virtual function overrides
+    //{{AFX_VIRTUAL(CAnimationToolBar)
+    //}}AFX_VIRTUAL
 
-// Implementation
+    // Implementation
 public:
-	virtual ~CAnimationToolBar();
+    virtual ~CAnimationToolBar();
 
-	CSliderCtrl m_cKeyframes;        // IDR_KEYFRAMES
-	CAnimSequences m_cAnimSequences; // IDR_ANIM_SEQUENCES
+    CSliderCtrl m_cKeyframes;        // IDR_KEYFRAMES
+    CAnimSequences m_cAnimSequences; // IDR_ANIM_SEQUENCES
 
-	// Generated message map functions
+    // Generated message map functions
 protected:
-	//{{AFX_MSG(CAnimationToolBar)
-	afx_msg void OnSize(UINT nType, int cx, int cy);
-	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
-	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
-	//}}AFX_MSG
+    //{{AFX_MSG(CAnimationToolBar)
+    afx_msg void OnSize(UINT nType, int cx, int cy);
+    afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
+    afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
+    //}}AFX_MSG
 
-	DECLARE_MESSAGE_MAP()
+    DECLARE_MESSAGE_MAP()
 };
 
 /////////////////////////////////////////////////////////////////////////////

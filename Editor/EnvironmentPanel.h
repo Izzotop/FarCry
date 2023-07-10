@@ -13,47 +13,48 @@
 /////////////////////////////////////////////////////////////////////////////
 // CEnvironmentPanel dialog
 
-class CEnvironmentPanel : public CDialog
-{
-// Construction
+class CEnvironmentPanel : public CDialog {
+    // Construction
 public:
-	CEnvironmentPanel(CWnd* pParent = NULL);   // standard constructor
-	~CEnvironmentPanel();
+    CEnvironmentPanel(CWnd* pParent = nullptr); // standard constructor
+    ~CEnvironmentPanel();
 
-// Dialog Data
-	//{{AFX_DATA(CEnvironmentPanel)
-	enum { IDD = IDD_PANEL_ENVIRONMENT };
-		// NOTE: the ClassWizard will add data members here
-	//}}AFX_DATA
+    // Dialog Data
+    //{{AFX_DATA(CEnvironmentPanel)
+    enum { IDD = IDD_PANEL_ENVIRONMENT };
+    // NOTE: the ClassWizard will add data members here
+    //}}AFX_DATA
 
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CEnvironmentPanel)
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	//}}AFX_VIRTUAL
-
-// Implementation
+    // Overrides
+    // ClassWizard generated virtual function overrides
+    //{{AFX_VIRTUAL(CEnvironmentPanel)
 protected:
-	virtual void OnOK() {};
-	virtual void OnCancel() {};
+    virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
+                                                     //}}AFX_VIRTUAL
 
-	void OnPropertyChanged( XmlNodeRef node );
+    // Implementation
+protected:
+    virtual void OnOK(){};
+    virtual void OnCancel(){};
 
-	// Generated message map functions
-	//{{AFX_MSG(CEnvironmentPanel)
-	afx_msg void OnDestroy();
-	virtual BOOL OnInitDialog();
-	afx_msg void OnSize(UINT nType, int cx, int cy);
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
+    void OnPropertyChanged(XmlNodeRef node);
 
-	CPropertyCtrl m_wndProps;
-	XmlNodeRef m_node;
+    // Generated message map functions
+    //{{AFX_MSG(CEnvironmentPanel)
+    afx_msg void OnDestroy();
+    virtual BOOL OnInitDialog();
+    afx_msg void OnSize(UINT nType, int cx, int cy);
+    //}}AFX_MSG
+    DECLARE_MESSAGE_MAP()
+
+    CPropertyCtrl m_wndProps;
+    XmlNodeRef m_node;
+
 public:
-	afx_msg void OnBnClickedApply();
+    afx_msg void OnBnClickedApply();
+
 private:
-	CCustomButton m_applyBtn;
+    CCustomButton m_applyBtn;
 };
 
 //{{AFX_INSERT_LOCATION}}

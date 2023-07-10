@@ -1,12 +1,12 @@
 
 //////////////////////////////////////////////////////////////////////
 //
-//	Crytek CryENGINE source code
-//	
-//	File: IndoorVolumes.h
+//    Crytek CryENGINE source code
 //
-//	History:
-//	-August 28,2001:Created by Marco Corbetta
+//    File: IndoorVolumes.h
+//
+//    History:
+//    -August 28,2001:Created by Marco Corbetta
 //
 //////////////////////////////////////////////////////////////////////
 
@@ -14,42 +14,39 @@
 #define INDOORVOLUMES_H
 
 #if _MSC_VER > 1000
-# pragma once
+#pragma once
 #endif
 
 //////////////////////////////////////////////////////////////////////
-#define FLAG_VOLUME_AREA								1
-#define FLAG_VOLUME_PORTAL							2
-#define FLAG_VOLUME_HULL								4
-#define FLAG_VOLUME_FOG									8
-#define FLAG_VOLUME_OBJECT							16
-#define FLAG_VOLUME_DRAWN								32
-#define FLAG_VOLUME_RECURSED						64
-#define FLAG_GEOMETRY_SHARED						128
-#define FLAG_OBJECT_VISIBLE_BY_PORTALS	256
-#define FLAG_OBJECT_PRX									512		//this object is affected by per-pixel lighting by other lights
-#define FLAG_OBJECT_PORTAL_ENTITY				1024
-#define FLAG_OBJECT_DOUBLE_PORTAL				2048	
+#define FLAG_VOLUME_AREA 1
+#define FLAG_VOLUME_PORTAL 2
+#define FLAG_VOLUME_HULL 4
+#define FLAG_VOLUME_FOG 8
+#define FLAG_VOLUME_OBJECT 16
+#define FLAG_VOLUME_DRAWN 32
+#define FLAG_VOLUME_RECURSED 64
+#define FLAG_GEOMETRY_SHARED 128
+#define FLAG_OBJECT_VISIBLE_BY_PORTALS 256
+#define FLAG_OBJECT_PRX 512 // this object is affected by per-pixel lighting by other lights
+#define FLAG_OBJECT_PORTAL_ENTITY 1024
+#define FLAG_OBJECT_DOUBLE_PORTAL 2048
 
 //////////////////////////////////////////////////////////////////////
-//#define FLAG2_DRAWN		(1L<<17)
-
+// #define FLAG2_DRAWN        (1L<<17)
 
 // this holds datas for volumes and areas
 //////////////////////////////////////////////////////////////////////////
-typedef struct s_Container 
-{
-	s_Container()
-	{
-		pObj=NULL;
-		pEnt=NULL;
-		pSV=NULL;
-	}
+typedef struct s_Container {
+    s_Container() {
+        pObj = nullptr;
+        pEnt = nullptr;
+        pSV = nullptr;
+    }
 
-	IStatObj					*pObj;
-	IPhysicalEntity		*pEnt;
-	class CShadowVolObject	*pSV;
-}tContainer;
+    IStatObj* pObj;
+    IPhysicalEntity* pEnt;
+    class CShadowVolObject* pSV;
+} tContainer;
 
 //////////////////////////////////////////////////////////////////////
 typedef std::vector<tContainer> ContainerList;
@@ -64,88 +61,87 @@ typedef std::vector<IPhysicalEntity*> iphysobjlist;
 typedef std::vector<IPhysicalEntity*>::iterator iphysobjit;
 
 //////////////////////////////////////////////////////////////////////
-class CVolume : public Cry3DEngineBase
-{
-public:	
-	//constructors/destructors
-	//this constructor is only for building
-	CVolume()
-	{		
-		m_dwFlags=0;				
-		m_nObjCount=0;
-		m_vOrigin(0,0,0);
-		m_vMins=SetMaxBB();
-		m_vMaxs=SetMinBB();		
-  }
-/*	
-	CVolume() 
-	{		
-		m_dwFlags=0;	
-		m_nObjCount=0;
-		m_vOrigin(0,0,0);		
-		m_vMins=SetMaxBB();
-		m_vMaxs=SetMinBB();
-	};
-	*/
-	virtual ~CVolume();
+class CVolume : public Cry3DEngineBase {
+public:
+    // constructors/destructors
+    // this constructor is only for building
+    CVolume() {
+        m_dwFlags = 0;
+        m_nObjCount = 0;
+        m_vOrigin(0, 0, 0);
+        m_vMins = SetMaxBB();
+        m_vMaxs = SetMinBB();
+    }
+    /*
+        CVolume()
+        {
+            m_dwFlags=0;
+            m_nObjCount=0;
+            m_vOrigin(0,0,0);
+            m_vMins=SetMaxBB();
+            m_vMaxs=SetMinBB();
+        };
+        */
+    virtual ~CVolume();
 
-	int	GetFlags() { return(m_dwFlags); }
-	//////////////////////////////////////////////////////////////////////
-	//check if a point is inside the volume
-	virtual bool	CheckInside(const Vec3d &pos,bool bWorldSpace) { return(false); }
+    int GetFlags() {
+        return (m_dwFlags);
+    }
+    //////////////////////////////////////////////////////////////////////
+    // check if a point is inside the volume
+    virtual bool CheckInside(const Vec3d& pos, bool bWorldSpace) {
+        return false;
+    }
 
-	void		RemoveGeometry(IStatObj *pSource,ContainerListIt i);
-	
-	//void			SetGeometry(IStatObj *pSource);
-	//void	AddGeometry(IStatObj *pSource,IPhysicalEntity *pEnt=NULL);
-	void	AddGeometry(tContainer tCont);
+    void RemoveGeometry(IStatObj* pSource, ContainerListIt i);
 
-	Vec3d	GetBBoxMin(bool bWorldSpace=false)
-	{ 	
-		if (bWorldSpace)
-		{
-			Vec3d vWorldPos=m_vOrigin+m_vMins;
-			return(vWorldPos);
-		}
+    // void            SetGeometry(IStatObj *pSource);
+    // void    AddGeometry(IStatObj *pSource,IPhysicalEntity *pEnt=nullptr);
+    void AddGeometry(tContainer tCont);
 
-		return(m_vMins); 
-	}
+    Vec3d GetBBoxMin(bool bWorldSpace = false) {
+        if (bWorldSpace) {
+            Vec3d vWorldPos = m_vOrigin + m_vMins;
+            return (vWorldPos);
+        }
 
-	Vec3d	GetBBoxMax(bool bWorldSpace=false) 
-	{ 
-		if (bWorldSpace)
-		{
-			Vec3d vWorldPos=m_vOrigin+m_vMaxs;
-			return(vWorldPos);
-		}
-		return(m_vMaxs); 
-	}
+        return (m_vMins);
+    }
 
-	//set new volume's position 
-	//////////////////////////////////////////////////////////////////////
-	void	SetPos(const Vec3d &vPos); 
-	Vec3d	GetPos() { return (m_vOrigin); }
-		
-	//bounding box
-	Vec3d m_vMins;
-	Vec3d	m_vMaxs;
+    Vec3d GetBBoxMax(bool bWorldSpace = false) {
+        if (bWorldSpace) {
+            Vec3d vWorldPos = m_vOrigin + m_vMaxs;
+            return (vWorldPos);
+        }
+        return (m_vMaxs);
+    }
 
-	//volume flags
-	int m_dwFlags;	
+    // set new volume's position
+    //////////////////////////////////////////////////////////////////////
+    void SetPos(const Vec3d& vPos);
+    Vec3d GetPos() {
+        return (m_vOrigin);
+    }
 
-	//! the source geometry
-	//IStatObj	*m_pSource;		
-	int						m_nObjCount;
+    // bounding box
+    Vec3d m_vMins;
+    Vec3d m_vMaxs;
 
-	ContainerList	m_lstObjects;
-	//istatobjlist	m_lstStatObjs;
-	//iphysobjlist	m_lstPhysObjs;
+    // volume flags
+    int m_dwFlags;
 
-protected:		
+    //! the source geometry
+    // IStatObj    *m_pSource;
+    int m_nObjCount;
 
-	//! volume origin
-	Vec3d m_vOrigin;	
-	//Vec3d	m_vWorldPos;	
+    ContainerList m_lstObjects;
+    // istatobjlist    m_lstStatObjs;
+    // iphysobjlist    m_lstPhysObjs;
+
+protected:
+    //! volume origin
+    Vec3d m_vOrigin;
+    // Vec3d    m_vWorldPos;
 };
 
 #endif

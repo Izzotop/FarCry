@@ -15,7 +15,7 @@ typedef CPortableString CString;
 #include <atlstr.h>
 #endif
 
-#include <assert.h>
+#include <cassert>
 
 #include <string>
 #include <set>
@@ -23,9 +23,9 @@ typedef CPortableString CString;
 #include <vector>
 #include <algorithm>
 
-#include <stdio.h>
+#include <cstdio>
 #include <tchar.h>
-#define _ATL_CSTRING_EXPLICIT_CONSTRUCTORS	// some CString constructors will be explicit
+#define _ATL_CSTRING_EXPLICIT_CONSTRUCTORS // some CString constructors will be explicit
 
 #include <Cry_Math.h>
 #include <IRenderer.h>
@@ -40,7 +40,7 @@ typedef CPortableString CString;
 #include <CrySizer.h>
 // TODO: reference additional headers your program requires here
 #ifndef SIZEOF_ARRAY
-#define SIZEOF_ARRAY(arr) (sizeof(arr)/sizeof((arr)[0]))
+#define SIZEOF_ARRAY(arr) (sizeof(arr) / sizeof((arr)[0]))
 
 #include "ResourceCompilerPC.h"
 #include "float.h"

@@ -20,64 +20,67 @@
 class CMaterial;
 
 /** CEdMesh is an editor version of IStatObj,
-		It wraps access to 3D engines IStatObj and provide access to custom mesh materials.
+                It wraps access to 3D engines IStatObj and provide access to custom mesh materials.
 */
-class CRYEDIT_API CEdMesh : public CRefCountBase
-{
-	
+class CRYEDIT_API CEdMesh : public CRefCountBase {
+
 public:
-	~CEdMesh();
+    ~CEdMesh();
 
-	// Return filename of mesh.
-	const CString& GetFilename() const { return m_filename; };
+    // Return filename of mesh.
+    const CString& GetFilename() const {
+        return m_filename;
+    };
 
-	//! Bounding box of mesh. - m_pGeom must not be 0
-	void GetBounds( BBox &box );
+    //! Bounding box of mesh. - m_pGeom must not be 0
+    void GetBounds(BBox& box);
 
-	//! Reload geometry of mesh.
-	void ReloadGeometry();
+    //! Reload geometry of mesh.
+    void ReloadGeometry();
 
-	//! Access stored IStatObj.
-	IStatObj* GetGeometry() const { return m_pGeom; }
-	
-	//! Returns true if filename and geomname refer to the same object as this one.
-	bool IsSameObject( const char *filename );
+    //! Access stored IStatObj.
+    IStatObj* GetGeometry() const {
+        return m_pGeom;
+    }
 
-	//! Render mesh.
-	void Render( SRendParams &rp,int nLodLevel=0 );
+    //! Returns true if filename and geomname refer to the same object as this one.
+    bool IsSameObject(const char* filename);
 
-	//! Make new CEdMesh, if same IStatObj loaded, and CEdMesh for this IStatObj is allocated.
-	//! This instance of CEdMesh will be returned.
-	static CEdMesh* LoadMesh( const char *filename,bool bStripify );
-	//! Reload all geometries.
-	static void ReloadAllGeometries();
-	static void ReleaseAll();
+    //! Render mesh.
+    void Render(SRendParams& rp, int nLodLevel = 0);
 
-	//! Assigns defaul material to the mesh.
-	void SetMaterial( CMaterial *mtl );
-	CMaterial* GetMaterial() const;
+    //! Make new CEdMesh, if same IStatObj loaded, and CEdMesh for this IStatObj is allocated.
+    //! This instance of CEdMesh will be returned.
+    static CEdMesh* LoadMesh(const char* filename, bool bStripify);
+    //! Reload all geometries.
+    static void ReloadAllGeometries();
+    static void ReleaseAll();
 
-	//! Check if default object was loaded.
-	bool IsDefaultObject();
+    //! Assigns defaul material to the mesh.
+    void SetMaterial(CMaterial* mtl);
+    CMaterial* GetMaterial() const;
+
+    //! Check if default object was loaded.
+    bool IsDefaultObject();
 
 private:
-	//////////////////////////////////////////////////////////////////////////
-	CEdMesh( IStatObj *pGeom );
+    //////////////////////////////////////////////////////////////////////////
+    CEdMesh(IStatObj* pGeom);
 
-	//! Register mesh materials with material manager.
-	void RegisterMaterials();
-	void UnregisterMaterials();
+    //! Register mesh materials with material manager.
+    void RegisterMaterials();
+    void UnregisterMaterials();
 
-	//////////////////////////////////////////////////////////////////////////
-	//! CGF filename.
-	CString m_filename;
-	IStatObj *m_pGeom;
+    //////////////////////////////////////////////////////////////////////////
+    //! CGF filename.
+    CString m_filename;
+    IStatObj* m_pGeom;
 
-	//! Material applied to this geometry.
+    //! Material applied to this geometry.
     TSmartPtr<CMaterial> m_pMaterial;
 
-	typedef std::map<CString,CEdMesh*,stl::less_stricmp<CString> > MeshMap;
-	static MeshMap m_meshMap;
+    typedef std::map<CString, CEdMesh*, stl::less_stricmp<CString>> MeshMap;
+    static MeshMap m_meshMap;
 };
 
 #endif // __edmesh_h__

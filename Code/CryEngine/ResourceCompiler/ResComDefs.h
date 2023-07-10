@@ -7,7 +7,7 @@
 //  Version:     v1.00
 //  Created:     5/11/2002 by Timur.
 //  Compilers:   Visual Studio.NET
-//  Description: 
+//  Description:
 // -------------------------------------------------------------------------
 //  History:
 //

@@ -35,17 +35,17 @@
 #include <string.h>
 #include <memory.h>
 #if !defined(LINUX)
-#include <assert.h>
+#include <cassert>
 #endif
 
 #include <malloc.h>
-#include <stdlib.h>
+#include <cstdlib>
 #include <fcntl.h>
 
-#if defined( LINUX )
-#	include <sys/io.h>
+#if defined(LINUX)
+#include <sys/io.h>
 #else
-#	include <io.h>
+#include <io.h>
 #endif
 
 /////////////////////////////////////////////////////////////////////////////
@@ -71,27 +71,27 @@
 
 #ifdef WIN64
 #ifndef max
-#define max(a,b)            (((a) > (b)) ? (a) : (b))
+#define max(a, b) (((a) > (b)) ? (a) : (b))
 #endif
 
 #if !defined(min) && !defined(LINUX)
-#define min(a,b)            (((a) < (b)) ? (a) : (b))
+#define min(a, b) (((a) < (b)) ? (a) : (b))
 #endif
 #else
-using std::min;
 using std::max;
+using std::min;
 #endif
 #include "platform.h"
 // If not XBOX/GameCube/...
 #ifdef WIN32
-//#include <process.h>
+// #include <process.h>
 #endif
 
 /////////////////////////////////////////////////////////////////////////////
 // CRY Stuff ////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////
-//#define USE_NEWPOOL
-//#include <CryMemoryManager.h>
+// #define USE_NEWPOOL
+// #include <CryMemoryManager.h>
 #include "Cry_Math.h"
 #include <smartptr.h>
 #include <Cry_Camera.h>
@@ -100,7 +100,7 @@ using std::max;
 #include <CrySizer.h>
 
 /////////////////////////////////////////////////////////////////////////////
-//forward declarations for common Interfaces.
+// forward declarations for common Interfaces.
 /////////////////////////////////////////////////////////////////////////////
 struct ITexPic;
 struct IRenderer;
@@ -121,6 +121,5 @@ struct I3DEngine;
 struct IMovieSystem;
 struct ISoundSystem;
 class IPhysicalWorld;
-
 
 #endif // __stdafx_h__

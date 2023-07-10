@@ -21,40 +21,44 @@
 #endif
 
 /*!
- *	CShaderEnum class enumerates shaders installed on system.
- *	It scans all effector files, and gather from them all defined effectors.
+ *    CShaderEnum class enumerates shaders installed on system.
+ *    It scans all effector files, and gather from them all defined effectors.
  */
-class CShaderEnum
-{
+class CShaderEnum {
 public:
-	struct ShaderDesc {
-		CString name;
-		CString file;
-	};
+    struct ShaderDesc {
+        CString name;
+        CString file;
+    };
 
-	CShaderEnum();
-	virtual ~CShaderEnum();
+    CShaderEnum();
+    virtual ~CShaderEnum();
 
-	//! Enumerate shaders installed on system.
-	//! @return Number of enumerated shaders.
-	int EnumShaders();
+    //! Enumerate shaders installed on system.
+    //! @return Number of enumerated shaders.
+    int EnumShaders();
 
-	//! Get number of shaders in system.
-	//! @return Number of installed shaders.
-	int	GetShaderCount() const { return m_shaders.size(); }
-	
-	//! Get name of shader by index.
-	//! index must be between 0 and number returned by EnumShaders.
-	//! @return Name of shader.
-	const CString& GetShader( int i ) { return m_shaders[i].name; }
-	const CString& GetShaderFile( int i ) { return m_shaders[i].file; }
+    //! Get number of shaders in system.
+    //! @return Number of installed shaders.
+    int GetShaderCount() const {
+        return m_shaders.size();
+    }
+
+    //! Get name of shader by index.
+    //! index must be between 0 and number returned by EnumShaders.
+    //! @return Name of shader.
+    const CString& GetShader(int i) {
+        return m_shaders[i].name;
+    }
+    const CString& GetShaderFile(int i) {
+        return m_shaders[i].file;
+    }
 
 private:
-	bool m_bEnumerated;
+    bool m_bEnumerated;
 
-	//! Array of shader names.
-	std::vector<ShaderDesc> m_shaders;
+    //! Array of shader names.
+    std::vector<ShaderDesc> m_shaders;
 };
-
 
 #endif // __ShaderEnum_h__

@@ -7,7 +7,7 @@
 //  Version:     v1.00
 //  Created:     21/3/2002 by Timur.
 //  Compilers:   Visual C++ 7.0
-//  Description: 
+//  Description:
 // -------------------------------------------------------------------------
 //  History:
 //
@@ -25,48 +25,47 @@
 /*!
  * CAIBehaviorLibrary is collection of global AI behaviors.
  */
-class CAIBehaviorLibrary
-{
+class CAIBehaviorLibrary {
 public:
-	CAIBehaviorLibrary();
-	~CAIBehaviorLibrary() {};
+    CAIBehaviorLibrary();
+    ~CAIBehaviorLibrary(){};
 
-	//! Add new behavior to the library.
-	void AddBehavior( CAIBehavior* behavior );
-	//! Remove behavior from the library.
-	void RemoveBehavior( CAIBehavior* behavior );
+    //! Add new behavior to the library.
+    void AddBehavior(CAIBehavior* behavior);
+    //! Remove behavior from the library.
+    void RemoveBehavior(CAIBehavior* behavior);
 
-	CAIBehavior* FindBehavior( const CString &name ) const;
+    CAIBehavior* FindBehavior(const CString& name) const;
 
-	//! Clear all behaviors from library.
-	void ClearBehaviors();
+    //! Clear all behaviors from library.
+    void ClearBehaviors();
 
-	//! Get all stored behaviors as a vector.
-	void GetBehaviors( std::vector<CAIBehaviorPtr> &behaviors );
-	
-	//! Load all behaviors from givven path and add them to library.
-	void LoadBehaviors( const CString &path );
+    //! Get all stored behaviors as a vector.
+    void GetBehaviors(std::vector<CAIBehaviorPtr>& behaviors);
 
-	//! Reload behavior scripts.
-	void ReloadScripts();
+    //! Load all behaviors from givven path and add them to library.
+    void LoadBehaviors(const CString& path);
 
-	//! Get all available characters in system.
-	void GetCharacters( std::vector<CAICharacterPtr> &characters );
+    //! Reload behavior scripts.
+    void ReloadScripts();
 
-	//! Add new behavior to the library.
-	void AddCharacter( CAICharacter* chr );
-	//! Remove behavior from the library.
-	void RemoveCharacter( CAICharacter* chr );
+    //! Get all available characters in system.
+    void GetCharacters(std::vector<CAICharacterPtr>& characters);
 
-	// Finds specified character.
-	CAICharacter* FindCharacter( const CString &name ) const;
+    //! Add new behavior to the library.
+    void AddCharacter(CAICharacter* chr);
+    //! Remove behavior from the library.
+    void RemoveCharacter(CAICharacter* chr);
+
+    // Finds specified character.
+    CAICharacter* FindCharacter(const CString& name) const;
 
 private:
-	void LoadCharacters();
+    void LoadCharacters();
 
-	StdMap<CString,TSmartPtr<CAIBehavior> > m_behaviors;
-	StdMap<CString,TSmartPtr<CAICharacter> > m_characters;
-	CString m_scriptsPath;
+    StdMap<CString, TSmartPtr<CAIBehavior>> m_behaviors;
+    StdMap<CString, TSmartPtr<CAICharacter>> m_characters;
+    CString m_scriptsPath;
 };
 
 #endif // __aibehaviorlibrary_h__

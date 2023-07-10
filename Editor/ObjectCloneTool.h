@@ -25,44 +25,46 @@
 class CBaseObject;
 
 /*!
- *	CObjectCloneTool, When created duplicate current selection, and manages cloned selection.
- *	
+ *    CObjectCloneTool, When created duplicate current selection, and manages cloned selection.
+ *
  */
 
-class CObjectCloneTool : public CEditTool
-{
+class CObjectCloneTool : public CEditTool {
 public:
-	DECLARE_DYNCREATE(CObjectCloneTool)
+    DECLARE_DYNCREATE(CObjectCloneTool)
 
-	CObjectCloneTool();
-	~CObjectCloneTool();
+    CObjectCloneTool();
+    ~CObjectCloneTool();
 
-	//////////////////////////////////////////////////////////////////////////
-	// Ovverides from CEditTool
-	bool MouseCallback( CViewport *view,EMouseEvent event,CPoint &point,int flags );
-	
-	// Delete itself.
-	void Release() { delete this; };
+    //////////////////////////////////////////////////////////////////////////
+    // Ovverides from CEditTool
+    bool MouseCallback(CViewport* view, EMouseEvent event, CPoint& point, int flags);
 
-	virtual void BeginEditParams( IEditor *ie,int flags );
-	virtual void EndEditParams();
+    // Delete itself.
+    void Release() {
+        delete this;
+    };
 
-	virtual void Display( DisplayContext &dc );
-	virtual bool OnKeyDown( CViewport *view,uint nChar,uint nRepCnt,uint nFlags );
-	virtual bool OnKeyUp( CViewport *view,uint nChar,uint nRepCnt,uint nFlags ) { return false; };
-	//////////////////////////////////////////////////////////////////////////
+    virtual void BeginEditParams(IEditor* ie, int flags);
+    virtual void EndEditParams();
 
-	void Accept();
-	void Abort();
+    virtual void Display(DisplayContext& dc);
+    virtual bool OnKeyDown(CViewport* view, uint nChar, uint nRepCnt, uint nFlags);
+    virtual bool OnKeyUp(CViewport* view, uint nChar, uint nRepCnt, uint nFlags) {
+        return false;
+    };
+    //////////////////////////////////////////////////////////////////////////
+
+    void Accept();
+    void Abort();
 
 private:
-	void CloneSelection();
-	void SetConstrPlane( CViewport *view,CPoint point );
+    void CloneSelection();
+    void SetConstrPlane(CViewport* view, CPoint point);
 
-	CSelectionGroup *m_selection;
-	Vec3 m_origin;
-	bool m_bSetConstrPlane;
+    CSelectionGroup* m_selection;
+    Vec3 m_origin;
+    bool m_bSetConstrPlane;
 };
-
 
 #endif // __ObjectCloneTool_h__

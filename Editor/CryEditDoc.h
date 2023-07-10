@@ -30,206 +30,229 @@ class CLayer;
 // CCryEditDoc.
 //
 //////////////////////////////////////////////////////////////////////////
-class CCryEditDoc : public CDocument
-{
+class CCryEditDoc : public CDocument {
 protected: // Create from serialization only
-	CCryEditDoc();
-	DECLARE_DYNCREATE(CCryEditDoc)
+    CCryEditDoc();
+    DECLARE_DYNCREATE(CCryEditDoc)
 
-// Attributes
+    // Attributes
 public:
+    // Heightmap
+    CHeightmap m_cHeightmap;
 
-	// Heightmap
-	CHeightmap m_cHeightmap;
-	
-	// Clouds
-	CClouds m_cClouds;
+    // Clouds
+    CClouds m_cClouds;
 
-	// Curve describing the coordinate space of the heightmap elevation
-	CCurveObject m_cTerrainCurve;
+    // Curve describing the coordinate space of the heightmap elevation
+    CCurveObject m_cTerrainCurve;
 
-// Operations
+    // Operations
 public:
-
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CCryEditDoc)
-	public:
-	virtual BOOL OnNewDocument();
-	virtual void Serialize(CArchive& ar);
-	virtual BOOL OnOpenDocument(LPCTSTR lpszPathName);
-	virtual BOOL OnCmdMsg(UINT nID, int nCode, void* pExtra, AFX_CMDHANDLERINFO* pHandlerInfo);
-	//}}AFX_VIRTUAL
-
-// Implementation
+    // Overrides
+    // ClassWizard generated virtual function overrides
+    //{{AFX_VIRTUAL(CCryEditDoc)
 public:
-	virtual ~CCryEditDoc();
+    virtual BOOL OnNewDocument();
+    virtual void Serialize(CArchive& ar);
+    virtual BOOL OnOpenDocument(LPCTSTR lpszPathName);
+    virtual BOOL OnCmdMsg(UINT nID, int nCode, void* pExtra, AFX_CMDHANDLERINFO* pHandlerInfo);
+    //}}AFX_VIRTUAL
 
-	//////////////////////////////////////////////////////////////////////////
-		//! Ovveridable from CDocument
-	virtual void DeleteContents();
-	virtual BOOL DoSave(LPCTSTR lpszPathName, BOOL bReplace);
-	//////////////////////////////////////////////////////////////////////////
+    // Implementation
+public:
+    virtual ~CCryEditDoc();
 
-	const CString& GetLevelName() const { return m_level; };
+    //////////////////////////////////////////////////////////////////////////
+    //! Ovveridable from CDocument
+    virtual void DeleteContents();
+    virtual BOOL DoSave(LPCTSTR lpszPathName, BOOL bReplace);
+    //////////////////////////////////////////////////////////////////////////
 
-	//! Save document.
-	bool Save();
-	void ChangeMission();
-	
-	// Serialize document data.
-	void Load( CXmlArchive &xmlAr,const CString &szFilename,bool bReloadEngineLevel=true );
-	void Save( CXmlArchive &xmlAr );
-	bool SaveToFile( const CString &szFilename );
-	bool LoadFromFile( const CString &szFilename,bool bReloadEngineLevel=true );
-	void HoldToFile( const CString &szFilename );
-	void FetchFromFile( const CString &szFilename );
+    const CString& GetLevelName() const {
+        return m_level;
+    };
 
-	void SerializeFogSettings( CXmlArchive &xmlAr );
-	void SerializeViewSettings( CXmlArchive &xmlAr );
-	void SerializeSurfaceTypes( CXmlArchive &xmlAr );
-	void SerializeMissions( CXmlArchive &xmlAr,CString &currentMission );
+    //! Save document.
+    bool Save();
+    void ChangeMission();
 
-	LightingSettings* GetLighting();
+    // Serialize document data.
+    void Load(CXmlArchive& xmlAr, const CString& szFilename, bool bReloadEngineLevel = true);
+    void Save(CXmlArchive& xmlAr);
+    bool SaveToFile(const CString& szFilename);
+    bool LoadFromFile(const CString& szFilename, bool bReloadEngineLevel = true);
+    void HoldToFile(const CString& szFilename);
+    void FetchFromFile(const CString& szFilename);
 
-	CHeightmap&	GetHeightmap() { return m_cHeightmap; };
+    void SerializeFogSettings(CXmlArchive& xmlAr);
+    void SerializeViewSettings(CXmlArchive& xmlAr);
+    void SerializeSurfaceTypes(CXmlArchive& xmlAr);
+    void SerializeMissions(CXmlArchive& xmlAr, CString& currentMission);
 
-	void SetTerrainSize( int resolution,int unitSize );
+    LightingSettings* GetLighting();
 
-	void SetWaterColor( COLORREF col ) { m_waterColor = col; };
-	COLORREF GetWaterColor() { return m_waterColor; };
+    CHeightmap& GetHeightmap() {
+        return m_cHeightmap;
+    };
 
+    void SetTerrainSize(int resolution, int unitSize);
 
-	// Debug
+    void SetWaterColor(COLORREF col) {
+        m_waterColor = col;
+    };
+    COLORREF GetWaterColor() {
+        return m_waterColor;
+    };
+
+        // Debug
 #ifdef _DEBUG
-	virtual void AssertValid() const;
-	virtual void Dump(CDumpContext& dc) const;
+    virtual void AssertValid() const;
+    virtual void Dump(CDumpContext& dc) const;
 #endif
 
-	// Misc
-	CString GetMasterCDFolder();
-	
-	BOOL CanCloseFrame(CFrameWnd* pFrame);
-	bool OnExportTerrainAsGeometrie(const char *pszFileName, RECT rcExport);
+    // Misc
+    CString GetMasterCDFolder();
 
-	//////////////////////////////////////////////////////////////////////////
-	// Surface Types.
-	//////////////////////////////////////////////////////////////////////////
-	CSurfaceType* GetSurfaceType( int i ) const { return m_surfaceTypes[i]; }
-	int  GetSurfaceTypeCount() const { return m_surfaceTypes.size(); }
-	//! Find surface type by name, return -1 if name not found.
-	int  FindSurfaceType( const CString &name );
-	void RemoveSurfaceType( int i );
-	int  AddSurfaceType( CSurfaceType *srf );
-	void RemoveAllSurfaceTypes();
-	//////////////////////////////////////////////////////////////////////////
+    BOOL CanCloseFrame(CFrameWnd* pFrame);
+    bool OnExportTerrainAsGeometrie(const char* pszFileName, RECT rcExport);
 
-	//////////////////////////////////////////////////////////////////////////
-	XmlNodeRef&	GetFogTemplate() { return m_fogTemplate; };
+    //////////////////////////////////////////////////////////////////////////
+    // Surface Types.
+    //////////////////////////////////////////////////////////////////////////
+    CSurfaceType* GetSurfaceType(int i) const {
+        return m_surfaceTypes[i];
+    }
+    int GetSurfaceTypeCount() const {
+        return m_surfaceTypes.size();
+    }
+    //! Find surface type by name, return -1 if name not found.
+    int FindSurfaceType(const CString& name);
+    void RemoveSurfaceType(int i);
+    int AddSurfaceType(CSurfaceType* srf);
+    void RemoveAllSurfaceTypes();
+    //////////////////////////////////////////////////////////////////////////
 
-	//////////////////////////////////////////////////////////////////////////
-	XmlNodeRef&	GetEnvironmentTemplate() { return m_environmentTemplate; };
+    //////////////////////////////////////////////////////////////////////////
+    XmlNodeRef& GetFogTemplate() {
+        return m_fogTemplate;
+    };
 
-	//////////////////////////////////////////////////////////////////////////
-	// Multiple missions per Map support.
-	//////////////////////////////////////////////////////////////////////////
-	//! Return currently active Mission.
-	CMission*	GetCurrentMission();
+    //////////////////////////////////////////////////////////////////////////
+    XmlNodeRef& GetEnvironmentTemplate() {
+        return m_environmentTemplate;
+    };
 
-	//! Get number of missions on Map.
-	int	GetMissionCount() const { return m_missions.size(); };
-	//! Get Mission by index.
-	CMission*	GetMission( int index ) const { return m_missions[index]; };
-	//! Find Mission by name.
-	CMission*	FindMission( const CString &name ) const;
+    //////////////////////////////////////////////////////////////////////////
+    // Multiple missions per Map support.
+    //////////////////////////////////////////////////////////////////////////
+    //! Return currently active Mission.
+    CMission* GetCurrentMission();
 
-	//! Makes specified mission current.
-	void SetCurrentMission( CMission *mission );
+    //! Get number of missions on Map.
+    int GetMissionCount() const {
+        return m_missions.size();
+    };
+    //! Get Mission by index.
+    CMission* GetMission(int index) const {
+        return m_missions[index];
+    };
+    //! Find Mission by name.
+    CMission* FindMission(const CString& name) const;
 
-	//! Add new mission to map.
-	void AddMission( CMission *mission );
-	//! Remove existing mission from map.
-	void RemoveMission( CMission *mission );
-	//////////////////////////////////////////////////////////////////////////
-	//////////////////////////////////////////////////////////////////////////
+    //! Makes specified mission current.
+    void SetCurrentMission(CMission* mission);
 
-	void RegisterListener( IDocListener *listener );
-	void UnregisterListener( IDocListener *listener );
+    //! Add new mission to map.
+    void AddMission(CMission* mission);
+    //! Remove existing mission from map.
+    void RemoveMission(CMission* mission);
+    //////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////
 
-	//////////////////////////////////////////////////////////////////////////
-	//////////////////////////////////////////////////////////////////////////
-	// Layers
-	int GetLayerCount() const { return m_layers.size(); };
-	CLayer* GetLayer( int layer ) const { return m_layers[layer]; };
-	//! Find layer by name.
-	CLayer* FindLayer( const char *sLayerName ) const;
-	void SwapLayers( int layer1,int layer2 );
-	void AddLayer( CLayer *layer ) { m_layers.push_back(layer); };
-	void RemoveLayer( int layer );
-	void RemoveLayer( CLayer *layer );
-	void InvalidateLayers();
-	void ClearLayers();
-	void SerializeLayerSettings( CXmlArchive &xmlAr );
-	//////////////////////////////////////////////////////////////////////////
+    void RegisterListener(IDocListener* listener);
+    void UnregisterListener(IDocListener* listener);
 
-	void LoadLightmaps();
-	void LogLoadTime( int time );
+    //////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////
+    // Layers
+    int GetLayerCount() const {
+        return m_layers.size();
+    };
+    CLayer* GetLayer(int layer) const {
+        return m_layers[layer];
+    };
+    //! Find layer by name.
+    CLayer* FindLayer(const char* sLayerName) const;
+    void SwapLayers(int layer1, int layer2);
+    void AddLayer(CLayer* layer) {
+        m_layers.push_back(layer);
+    };
+    void RemoveLayer(int layer);
+    void RemoveLayer(CLayer* layer);
+    void InvalidateLayers();
+    void ClearLayers();
+    void SerializeLayerSettings(CXmlArchive& xmlAr);
+    //////////////////////////////////////////////////////////////////////////
 
-	//////////////////////////////////////////////////////////////////////////
-	bool IsDocumentReady() const { return m_bDocumentReady; }
+    void LoadLightmaps();
+    void LogLoadTime(int time);
+
+    //////////////////////////////////////////////////////////////////////////
+    bool IsDocumentReady() const {
+        return m_bDocumentReady;
+    }
 
 protected:
-	virtual BOOL OnSaveDocument( LPCTSTR lpszPathName );
+    virtual BOOL OnSaveDocument(LPCTSTR lpszPathName);
 
-	void LoadTemplates();
+    void LoadTemplates();
 
-	//! Called immidiatly after saving the level.
-	void AfterSave();
+    //! Called immidiatly after saving the level.
+    void AfterSave();
 
-	//! Clear all missions on map.
-	void ClearMissions();
+    //! Clear all missions on map.
+    void ClearMissions();
 
-	//////////////////////////////////////////////////////////////////////////
-	
-	COLORREF m_waterColor;
+    //////////////////////////////////////////////////////////////////////////
 
-	// Master CD
-	CString m_strMasterCDFolder;
-	std::vector<CSurfaceType*> m_surfaceTypes;
+    COLORREF m_waterColor;
 
-	// Level Templates.
-	XmlNodeRef m_fogTemplate;
-	XmlNodeRef m_environmentTemplate;
+    // Master CD
+    CString m_strMasterCDFolder;
+    std::vector<CSurfaceType*> m_surfaceTypes;
 
-	bool m_loadFailed;
+    // Level Templates.
+    XmlNodeRef m_fogTemplate;
+    XmlNodeRef m_environmentTemplate;
 
-	CEntityScriptRegistry* m_entityScripts;
+    bool m_loadFailed;
 
-	//! Currently active mission.
-	CMission*	m_mission;
-	//! Name of level.
-	CString m_level;
-	
-	// Collection of missions for this map.
-	std::vector<CMission*> m_missions;
+    CEntityScriptRegistry* m_entityScripts;
 
-	// List of all document listeners.
-	std::list<IDocListener*> m_listeners;
+    //! Currently active mission.
+    CMission* m_mission;
+    //! Name of level.
+    CString m_level;
 
-	// Terrain texture
-	std::vector<CLayer*> m_layers;
+    // Collection of missions for this map.
+    std::vector<CMission*> m_missions;
 
-	bool m_bDocumentReady;
+    // List of all document listeners.
+    std::list<IDocListener*> m_listeners;
 
-// Generated message map functions
+    // Terrain texture
+    std::vector<CLayer*> m_layers;
+
+    bool m_bDocumentReady;
+
+    // Generated message map functions
 protected:
-	void CreateNewCurve();
-	//{{AFX_MSG(CCryEditDoc)
-		// NOTE - the ClassWizard will add and remove member functions here.
-		//    DO NOT EDIT what you see in these blocks of generated code !
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
-	
+    void CreateNewCurve();
+    //{{AFX_MSG(CCryEditDoc)
+    // NOTE - the ClassWizard will add and remove member functions here.
+    //    DO NOT EDIT what you see in these blocks of generated code !
+    //}}AFX_MSG
+    DECLARE_MESSAGE_MAP()
 };
 
 /////////////////////////////////////////////////////////////////////////////

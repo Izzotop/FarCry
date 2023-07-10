@@ -10,45 +10,44 @@
 /////////////////////////////////////////////////////////////////////////////
 // CMissionSelectDialog dialog
 
-class CMissionSelectDialog : public CDialog
-{
-// Construction
+class CMissionSelectDialog : public CDialog {
+    // Construction
 public:
-	CMissionSelectDialog(CWnd* pParent = NULL);   // standard constructor
+    CMissionSelectDialog(CWnd* pParent = nullptr); // standard constructor
 
-// Dialog Data
-	//{{AFX_DATA(CMissionSelectDialog)
-	enum { IDD = IDD_MISSIONS };
-	CListBox	m_missions;
-	CString	m_description;
-	CString	m_selected;
-	//}}AFX_DATA
+    // Dialog Data
+    //{{AFX_DATA(CMissionSelectDialog)
+    enum { IDD = IDD_MISSIONS };
+    CListBox m_missions;
+    CString m_description;
+    CString m_selected;
+    //}}AFX_DATA
 
-	CString GetSelected() { return m_selected; }
+    CString GetSelected() {
+        return m_selected;
+    }
 
-
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CMissionSelectDialog)
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	//}}AFX_VIRTUAL
-
-// Implementation
+    // Overrides
+    // ClassWizard generated virtual function overrides
+    //{{AFX_VIRTUAL(CMissionSelectDialog)
 protected:
+    virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
+    //}}AFX_VIRTUAL
 
-	// Generated message map functions
-	//{{AFX_MSG(CMissionSelectDialog)
-	virtual void OnOK();
-	virtual void OnCancel();
-	virtual BOOL OnInitDialog();
-	afx_msg void OnSelectMission();
-	afx_msg void OnDblclkMissions();
-	afx_msg void OnUpdateDescription();
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
+    // Implementation
+protected:
+    // Generated message map functions
+    //{{AFX_MSG(CMissionSelectDialog)
+    virtual void OnOK();
+    virtual void OnCancel();
+    virtual BOOL OnInitDialog();
+    afx_msg void OnSelectMission();
+    afx_msg void OnDblclkMissions();
+    afx_msg void OnUpdateDescription();
+    //}}AFX_MSG
+    DECLARE_MESSAGE_MAP()
 
-	std::vector<CString> m_descriptions;
+    std::vector<CString> m_descriptions;
 };
 
 //{{AFX_INSERT_LOCATION}}

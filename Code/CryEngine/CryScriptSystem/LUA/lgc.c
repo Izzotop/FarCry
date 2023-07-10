@@ -162,9 +162,9 @@ static void markall (lua_State *L) {
   markstacks(L, &st); /* mark all stacks */
   marktable(&st, G(L)->type2tag);
   marktable(&st, G(L)->registry);
-	marktable(&st, G(L)->xregistry);
+  marktable(&st, G(L)->xregistry);
   marktable(&st, G(L)->weakregistry);
-	for (;;) {  /* mark tables and closures */
+  for (;;) {  /* mark tables and closures */
     if (st.cmark) {
       Closure *f = st.cmark;  /* get first closure from list */
       st.cmark = f->mark;  /* remove it from list */
@@ -299,7 +299,7 @@ static void collectstrings (lua_State *L, int all) {
         if (curr->tsv.marked < FIXMARK)  /* does not change FIXMARKs */
           curr->tsv.marked = 0;
         p = &curr->tsv.nexthash;
-      } 
+      }
       else {  /* collect */
         *p = curr->tsv.nexthash;
         G(L)->strt.nuse--;
@@ -314,7 +314,7 @@ static void collectstrings (lua_State *L, int all) {
 
 
 
-#define MINBUFFER	256
+#define MINBUFFER  256
 static void checkMbuffer (lua_State *L) {
   if (G(L)->Mbuffsize > MINBUFFER*2) {  /* is buffer too big? */
     size_t newsize = G(L)->Mbuffsize/2;  /* still larger than MINBUFFER */
@@ -389,34 +389,34 @@ void luaC_collectgarbage (lua_State *L) {
 //ALBERTO
 void lua_getstatestats(lua_State *L,lua_StateStats *LSS)
 {
-	Proto *proto=L->G->rootproto;
-	Closure *closure=L->G->rootcl;
-	Hash *hash=L->G->roottable;
+  Proto *proto=L->G->rootproto;
+  Closure *closure=L->G->rootcl;
+  Hash *hash=L->G->roottable;
   Udata *udata=L->G->rootudata;
-	LSS->nProto=0;
-	LSS->nClosure=0;
-	LSS->nHash=0;
-	LSS->nString=L->G->strt.nuse;
-	LSS->nUdata=0;
+  LSS->nProto=0;
+  LSS->nClosure=0;
+  LSS->nHash=0;
+  LSS->nString=L->G->strt.nuse;
+  LSS->nUdata=0;
 
-	while(proto!=NULL)
-	{
-		LSS->nProto++;
-		proto=proto->next;
-	}
-	while(closure!=NULL)
-	{
-		LSS->nClosure++;
-		closure=closure->next;
-	}
-	while(hash!=NULL)
-	{
-		LSS->nHash++;
-		hash=hash->next;
-	}
-	while(udata!=NULL)
-	{
-		LSS->nUdata++;
-		udata=udata->uv.next;
-	}
+  while(proto!=NULL)
+  {
+    LSS->nProto++;
+    proto=proto->next;
+  }
+  while(closure!=NULL)
+  {
+    LSS->nClosure++;
+    closure=closure->next;
+  }
+  while(hash!=NULL)
+  {
+    LSS->nHash++;
+    hash=hash->next;
+  }
+  while(udata!=NULL)
+  {
+    LSS->nUdata++;
+    udata=udata->uv.next;
+  }
 }

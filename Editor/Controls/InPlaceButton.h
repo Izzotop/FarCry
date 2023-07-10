@@ -7,7 +7,7 @@
 //  Version:     v1.00
 //  Created:     6/6/2002 by Timur.
 //  Compilers:   Visual Studio.NET
-//  Description: 
+//  Description:
 // -------------------------------------------------------------------------
 //  History:
 //
@@ -23,25 +23,24 @@
 // CInPlaceButton
 #include <XTToolkit.h>
 
-class CInPlaceButton : public CXTButton
-{
-	DECLARE_DYNAMIC(CInPlaceButton)
+class CInPlaceButton : public CXTButton {
+    DECLARE_DYNAMIC(CInPlaceButton)
 
 public:
-	typedef Functor0 OnClick;
+    typedef Functor0 OnClick;
 
-	CInPlaceButton( OnClick onClickFunctor );
-	virtual ~CInPlaceButton();
+    CInPlaceButton(OnClick onClickFunctor);
+    virtual ~CInPlaceButton();
 
-	// Simuale on click.
-	void Click();
+    // Simuale on click.
+    void Click();
 
 protected:
-	DECLARE_MESSAGE_MAP()
+    DECLARE_MESSAGE_MAP()
 public:
-	afx_msg void OnBnClicked();
+    afx_msg void OnBnClicked();
 
-	OnClick m_onClick;
+    OnClick m_onClick;
 };
 
 #endif // __inplacebutton_h__

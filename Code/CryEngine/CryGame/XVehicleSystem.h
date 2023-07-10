@@ -1,13 +1,13 @@
 
 //////////////////////////////////////////////////////////////////////
 //
-//	Crytek Source code 
-//	Copyright (c) Crytek 2001-2004
+//  Crytek Source code
+//  Copyright (c) Crytek 2001-2004
 //
-//	XVehicleSystem.h
-//	- vehicle system class declaration  - 
-//	A simple class that takes care of the class id's of the vehicles
-//	Created by: Petar Kotevski
+//  XVehicleSystem.h
+//  - vehicle system class declaration  -
+//  A simple class that takes care of the class id's of the vehicles
+//  Created by: Petar Kotevski
 //
 //////////////////////////////////////////////////////////////////////////
 
@@ -18,25 +18,16 @@
 
 typedef std::vector<EntityClassId> VehicleClassVector;
 
+class CVehicleSystem {
 
-class CVehicleSystem
-{
-
-	VehicleClassVector	m_vVehicleClasses;
+    VehicleClassVector m_vVehicleClasses;
 
 public:
-	CVehicleSystem();
-	~CVehicleSystem();
+    CVehicleSystem();
+    ~CVehicleSystem();
 
-	void AddVehicleClass(const EntityClassId classid);
-	bool IsVehicleClass(const EntityClassId classid);
+    void AddVehicleClass(const EntityClassId classid);
+    bool IsVehicleClass(const EntityClassId classid);
 };
 
-
 #endif // _CVEHICLESYSTEM_
-
-
-
-
-
-

@@ -70,25 +70,25 @@ static TString *newlstr (lua_State *L, const l_char *str, size_t l, lu_hash h) {
 /*just a test!
 __forceinline int _memcmp(void *a,void *b,size_t size)
 {
-	//static unsigned int *an,*bn,nIdx;
-	
-	while(size>=4)
-	{
-		if(*((unsigned int *)a)!=*((unsigned int *)b))
-			return -1;
-		*((unsigned int *)a)++;
-		*((unsigned int *)b)++;
-		size-=4;
-	}
-	while(size>0)
-	{
-		if(*((unsigned char *)a)!=*((unsigned char *)b))
-			return -1;
-		*((unsigned char *)a)++;
-		*((unsigned char *)b)++;
-		size--;
-	}
-	return 0;
+  //static unsigned int *an,*bn,nIdx;
+
+  while(size>=4)
+  {
+    if(*((unsigned int *)a)!=*((unsigned int *)b))
+      return -1;
+    *((unsigned int *)a)++;
+    *((unsigned int *)b)++;
+    size-=4;
+  }
+  while(size>0)
+  {
+    if(*((unsigned char *)a)!=*((unsigned char *)b))
+      return -1;
+    *((unsigned char *)a)++;
+    *((unsigned char *)b)++;
+    size--;
+  }
+  return 0;
 }*/
 
 TString *luaS_newlstr (lua_State *L, const l_char *str, size_t l) {

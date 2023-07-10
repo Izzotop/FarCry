@@ -1,14 +1,14 @@
 
 //////////////////////////////////////////////////////////////////////
 //
-//	Crytek Common Source code
+//  Crytek Common Source code
 //
-//	File:Cry_Math.h
-//	Description: Misc mathematical functions
+//  File:Cry_Math.h
+//  Description: Misc mathematical functions
 //
-//	History:
-//	-Jan 31,2001: Created by Marco Corbetta
-//	-Jan 04,2003: SSE and 3DNow optimizations by Andrey Honich
+//  History:
+//  -Jan 31,2001: Created by Marco Corbetta
+//  -Jan 04,2003: SSE and 3DNow optimizations by Andrey Honich
 //
 //////////////////////////////////////////////////////////////////////
 
@@ -16,7 +16,7 @@
 #define CRY_SIMD_H
 
 #if _MSC_VER > 1000
-# pragma once
+#pragma once
 #endif
 
 #include "TArray.h"
@@ -25,113 +25,95 @@
 
 extern int g_CpuFlags;
 
-
-inline float AngleMod(float a)
-{
-  a = (float)((360.0/65536) * ((int)(a*(65536/360.0)) & 65535));
-  return a;
+inline float AngleMod(float a) {
+    a = (float)((360.0 / 65536) * ((int)(a * (65536 / 360.0)) & 65535));
+    return a;
 }
 
-inline unsigned short Degr2Word(float f)
-{
-  return (unsigned short)(AngleMod(f)/360.0f*65536.0f);
+inline unsigned short Degr2Word(float f) {
+    return (unsigned short)(AngleMod(f) / 360.0f * 65536.0f);
 }
-inline float Word2Degr(unsigned short s)
-{
-  return (float)s / 65536.0f * 360.0f;
+inline float Word2Degr(unsigned short s) {
+    return (float)s / 65536.0f * 360.0f;
 }
 
 /*****************************************************
 MISC FUNCTIONS
 *****************************************************/
 
-
-//////////////////////////////////////
 #if defined(_CPU_X86)
 ILINE float __fastcall Ffabs(float f) {
-	*((unsigned *) & f) &= ~0x80000000;
-	return (f);
+    *((unsigned*)&f) &= ~0x80000000;
+    return (f);
 }
 #else
-inline float Ffabs(float x) { return fabsf(x); }
+inline float Ffabs(float x) {
+    return fabsf(x);
+}
 #endif
 
-//////////////////////////////////////////////////////////////////////////
 #if defined(_CPU_X86) && !defined(LINUX)
-inline int fastftol_positive(float f)
-{
-  int i;
-  f -= 0.5f;
-  __asm fld [f]
-  __asm fistp [i]
-  return i;
+inline int fastftol_positive(float f) {
+    int i;
+    f -= 0.5f;
+    __asm fld[f];
+    __asm fistp[i];
+    return i;
 }
 #else
-inline int fastftol_positive (float x) { return (int)x; }
+inline int fastftol_positive(float x) {
+    return (int)x;
+}
 #endif
 
-
 #if defined(_CPU_X86) && !defined(LINUX)
-ILINE int __fastcall FtoI(float  x)
-{
-  int	   t;
-  __asm
-  {
+ILINE int __fastcall FtoI(float x) {
+    int t;
+    __asm
+    {
     fld   x
     fistp t
-  }
-  return t;
+    }
+    return t;
 }
 #else
-inline int FtoI(float x) { return (int)x; }
+inline int FtoI(float x) {
+    return (int)x;
+}
 #endif
 
-
+//////////////////////////////////////
+#define rnd() (((float)rand()) / RAND_MAX) // Floating point random number generator ( 0 -> 1)
 
 //////////////////////////////////////
-#define rnd()	(((float)rand())/RAND_MAX)  // Floating point random number generator ( 0 -> 1)
+inline void multMatrices(double dst[16], const double a[16], const double b[16]) {
+    int i, j;
 
-//////////////////////////////////////
-inline void multMatrices(double dst[16], const double a[16], const double b[16])
-{
-  int i, j;
-
-  for (i = 0; i < 4; i++) {
-    for (j = 0; j < 4; j++) {
-      dst[i * 4 + j] =
-        b[i * 4 + 0] * a[0 * 4 + j] +
-        b[i * 4 + 1] * a[1 * 4 + j] +
-        b[i * 4 + 2] * a[2 * 4 + j] +
-        b[i * 4 + 3] * a[3 * 4 + j];
+    for (i = 0; i < 4; i++) {
+        for (j = 0; j < 4; j++) {
+            dst[i * 4 + j] = b[i * 4 + 0] * a[0 * 4 + j] + b[i * 4 + 1] * a[1 * 4 + j] + b[i * 4 + 2] * a[2 * 4 + j] + b[i * 4 + 3] * a[3 * 4 + j];
+        }
     }
-  }
 }
 
 //////////////////////////////////////
-inline void multMatrices(float dst[16], const float a[16], const float b[16])
-{
-  int i, j;
+inline void multMatrices(float dst[16], const float a[16], const float b[16]) {
+    int i, j;
 
-  for (i = 0; i < 4; i++) {
-    for (j = 0; j < 4; j++) {
-      dst[i * 4 + j] =
-        b[i * 4 + 0] * a[0 * 4 + j] +
-        b[i * 4 + 1] * a[1 * 4 + j] +
-        b[i * 4 + 2] * a[2 * 4 + j] +
-        b[i * 4 + 3] * a[3 * 4 + j];
+    for (i = 0; i < 4; i++) {
+        for (j = 0; j < 4; j++) {
+            dst[i * 4 + j] = b[i * 4 + 0] * a[0 * 4 + j] + b[i * 4 + 1] * a[1 * 4 + j] + b[i * 4 + 2] * a[2 * 4 + j] + b[i * 4 + 3] * a[3 * 4 + j];
+        }
     }
-  }
 }
 
 //////////////////////////////////////
 // transform vector
-inline void matmult_trans_only(float a[3], float b[4][4], float result[3])
-{
-  result[0] = a[0] * b[0][0] + a[1] * b[1][0] + a[2] * b[2][0] + b[3][0];
-  result[1] = a[0] * b[0][1] + a[1] * b[1][1] + a[2] * b[2][1] + b[3][1];
-  result[2] = a[0] * b[0][2] + a[1] * b[1][2] + a[2] * b[2][2] + b[3][2];
+inline void matmult_trans_only(float a[3], float b[4][4], float result[3]) {
+    result[0] = a[0] * b[0][0] + a[1] * b[1][0] + a[2] * b[2][0] + b[3][0];
+    result[1] = a[0] * b[0][1] + a[1] * b[1][1] + a[2] * b[2][1] + b[3][1];
+    result[2] = a[0] * b[0][2] + a[1] * b[1][2] + a[2] * b[2][2] + b[3][2];
 }
-
 
 /*
 ======================================
@@ -139,197 +121,228 @@ Matrix 4x4
 ======================================
 */
 
+inline void multMatrixf(float* product, const float* m1, const float* m2) {
+#define A(row, col) m1[(col << 2) + row]
+#define B(row, col) m2[(col << 2) + row]
+#define P(row, col) product[(col << 2) + row]
 
-inline void multMatrixf(float *product, const float *m1, const float *m2)
-{
-#define A(row,col)  m1[(col<<2)+row]
-#define B(row,col)  m2[(col<<2)+row]
-#define P(row,col)  product[(col<<2)+row]
-
-  int i;
-  for (i=0; i<4; i++)
-  {
-    float ai0=A(i,0),  ai1=A(i,1),  ai2=A(i,2),  ai3=A(i,3);
-    P(i,0) = ai0 * B(0,0) + ai1 * B(1,0) + ai2 * B(2,0) + ai3 * B(3,0);
-    P(i,1) = ai0 * B(0,1) + ai1 * B(1,1) + ai2 * B(2,1) + ai3 * B(3,1);
-    P(i,2) = ai0 * B(0,2) + ai1 * B(1,2) + ai2 * B(2,2) + ai3 * B(3,2);
-    P(i,3) = ai0 * B(0,3) + ai1 * B(1,3) + ai2 * B(2,3) + ai3 * B(3,3);
-  }
+    int i;
+    for (i = 0; i < 4; i++) {
+        float ai0 = A(i, 0), ai1 = A(i, 1), ai2 = A(i, 2), ai3 = A(i, 3);
+        P(i, 0) = ai0 * B(0, 0) + ai1 * B(1, 0) + ai2 * B(2, 0) + ai3 * B(3, 0);
+        P(i, 1) = ai0 * B(0, 1) + ai1 * B(1, 1) + ai2 * B(2, 1) + ai3 * B(3, 1);
+        P(i, 2) = ai0 * B(0, 2) + ai1 * B(1, 2) + ai2 * B(2, 2) + ai3 * B(3, 2);
+        P(i, 3) = ai0 * B(0, 3) + ai1 * B(1, 3) + ai2 * B(2, 3) + ai3 * B(3, 3);
+    }
 
 #undef A
 #undef B
 #undef P
 }
 
-#if !defined (GAMECUBE) && !defined PS2
+#if !defined(GAMECUBE) && !defined PS2
 
 //==========================================================================================
 // 3DNow! optimizations
 
 #pragma warning(push)
-#pragma warning(disable:4731) // frame pointer register 'ebp' modified by inline assembly code
+#pragma warning(disable : 4731) // frame pointer register 'ebp' modified by inline assembly code
 
-struct SConst3DN
-{
-  float m_fVal0;
-  float m_fVal1;
+struct SConst3DN {
+    float m_fVal0;
+    float m_fVal1;
 };
 const SConst3DN const3DN_1_N1 = {1.0f, -1.0f};
 const SConst3DN const3DN_0_1 = {0.0f, 1.0f};
-
-
-
 
 /*!
 Compute inverse of 4x4 transformation SINGLE-PRECISION matrix.
 Code lifted from Brian Paul's Mesa freeware OpenGL implementation.
 Return true for success, false for failure (singular matrix)
 */
-inline bool QQinvertMatrixf(float *out, const float *m)
-{
-#define SWAP_ROWS(a, b) { float *_tmp = a; (a)=(b); (b)=_tmp; }
-#define MAT(m,r,c) (m)[(c)*4+(r)]
+inline bool QQinvertMatrixf(float* out, const float* m) {
+#define SWAP_ROWS(a, b)                                                                                                                                                            \
+    {                                                                                                                                                                              \
+        float* _tmp = a;                                                                                                                                                           \
+        (a) = (b);                                                                                                                                                                 \
+        (b) = _tmp;                                                                                                                                                                \
+    }
+#define MAT(m, r, c) (m)[(c)*4 + (r)]
 
-	float wtmp[4][8];
-	float m0, m1, m2, m3, s;
-	float *r0, *r1, *r2, *r3;
+    float wtmp[4][8];
+    float m0, m1, m2, m3, s;
+    float *r0, *r1, *r2, *r3;
 
-	r0 = wtmp[0], r1 = wtmp[1], r2 = wtmp[2], r3 = wtmp[3];
+    r0 = wtmp[0], r1 = wtmp[1], r2 = wtmp[2], r3 = wtmp[3];
 
-	r0[0] = MAT(m,0,0), r0[1] = MAT(m,0,1),
-		r0[2] = MAT(m,0,2), r0[3] = MAT(m,0,3),
-		r0[4] = 1.0f, r0[5] = r0[6] = r0[7] = 0.0f,
+    r0[0] = MAT(m, 0, 0), r0[1] = MAT(m, 0, 1), r0[2] = MAT(m, 0, 2), r0[3] = MAT(m, 0, 3), r0[4] = 1.0f, r0[5] = r0[6] = r0[7] = 0.0f,
 
-		r1[0] = MAT(m,1,0), r1[1] = MAT(m,1,1),
-		r1[2] = MAT(m,1,2), r1[3] = MAT(m,1,3),
-		r1[5] = 1.0f, r1[4] = r1[6] = r1[7] = 0.0f,
+    r1[0] = MAT(m, 1, 0), r1[1] = MAT(m, 1, 1), r1[2] = MAT(m, 1, 2), r1[3] = MAT(m, 1, 3), r1[5] = 1.0f, r1[4] = r1[6] = r1[7] = 0.0f,
 
-		r2[0] = MAT(m,2,0), r2[1] = MAT(m,2,1),
-		r2[2] = MAT(m,2,2), r2[3] = MAT(m,2,3),
-		r2[6] = 1.0f, r2[4] = r2[5] = r2[7] = 0.0f,
+    r2[0] = MAT(m, 2, 0), r2[1] = MAT(m, 2, 1), r2[2] = MAT(m, 2, 2), r2[3] = MAT(m, 2, 3), r2[6] = 1.0f, r2[4] = r2[5] = r2[7] = 0.0f,
 
-		r3[0] = MAT(m,3,0), r3[1] = MAT(m,3,1),
-		r3[2] = MAT(m,3,2), r3[3] = MAT(m,3,3),
-		r3[7] = 1.0f, r3[4] = r3[5] = r3[6] = 0.0f;
+    r3[0] = MAT(m, 3, 0), r3[1] = MAT(m, 3, 1), r3[2] = MAT(m, 3, 2), r3[3] = MAT(m, 3, 3), r3[7] = 1.0f, r3[4] = r3[5] = r3[6] = 0.0f;
 
-	/* choose pivot - or die */
-	if (fabs(r3[0])>fabs(r2[0])) SWAP_ROWS(r3, r2);
-	if (fabs(r2[0])>fabs(r1[0])) SWAP_ROWS(r2, r1);
-	if (fabs(r1[0])>fabs(r0[0])) SWAP_ROWS(r1, r0);
-	if (0.0 == r0[0])
-	{
-		return 0;
-	}
+    /* choose pivot - or die */
+    if (fabs(r3[0]) > fabs(r2[0]))
+        SWAP_ROWS(r3, r2);
+    if (fabs(r2[0]) > fabs(r1[0]))
+        SWAP_ROWS(r2, r1);
+    if (fabs(r1[0]) > fabs(r0[0]))
+        SWAP_ROWS(r1, r0);
+    if (0.0 == r0[0]) {
+        return 0;
+    }
 
-	/* eliminate first variable     */
-	m1 = r1[0]/r0[0]; m2 = r2[0]/r0[0]; m3 = r3[0]/r0[0];
-	s = r0[1]; r1[1] -= m1 * s; r2[1] -= m2 * s; r3[1] -= m3 * s;
-	s = r0[2]; r1[2] -= m1 * s; r2[2] -= m2 * s; r3[2] -= m3 * s;
-	s = r0[3]; r1[3] -= m1 * s; r2[3] -= m2 * s; r3[3] -= m3 * s;
-	s = r0[4];
-	if (s != 0.0) { r1[4] -= m1 * s; r2[4] -= m2 * s; r3[4] -= m3 * s; }
-	s = r0[5];
-	if (s != 0.0) { r1[5] -= m1 * s; r2[5] -= m2 * s; r3[5] -= m3 * s; }
-	s = r0[6];
-	if (s != 0.0) { r1[6] -= m1 * s; r2[6] -= m2 * s; r3[6] -= m3 * s; }
-	s = r0[7];
-	if (s != 0.0) { r1[7] -= m1 * s; r2[7] -= m2 * s; r3[7] -= m3 * s; }
+    /* eliminate first variable     */
+    m1 = r1[0] / r0[0];
+    m2 = r2[0] / r0[0];
+    m3 = r3[0] / r0[0];
+    s = r0[1];
+    r1[1] -= m1 * s;
+    r2[1] -= m2 * s;
+    r3[1] -= m3 * s;
+    s = r0[2];
+    r1[2] -= m1 * s;
+    r2[2] -= m2 * s;
+    r3[2] -= m3 * s;
+    s = r0[3];
+    r1[3] -= m1 * s;
+    r2[3] -= m2 * s;
+    r3[3] -= m3 * s;
+    s = r0[4];
+    if (s != 0.0) {
+        r1[4] -= m1 * s;
+        r2[4] -= m2 * s;
+        r3[4] -= m3 * s;
+    }
+    s = r0[5];
+    if (s != 0.0) {
+        r1[5] -= m1 * s;
+        r2[5] -= m2 * s;
+        r3[5] -= m3 * s;
+    }
+    s = r0[6];
+    if (s != 0.0) {
+        r1[6] -= m1 * s;
+        r2[6] -= m2 * s;
+        r3[6] -= m3 * s;
+    }
+    s = r0[7];
+    if (s != 0.0) {
+        r1[7] -= m1 * s;
+        r2[7] -= m2 * s;
+        r3[7] -= m3 * s;
+    }
 
-	/* choose pivot - or die */
-	if (fabs(r3[1])>fabs(r2[1])) SWAP_ROWS(r3, r2);
-	if (fabs(r2[1])>fabs(r1[1])) SWAP_ROWS(r2, r1);
-	if (0.0 == r1[1])
-	{
-		return 0;
-	}
+    /* choose pivot - or die */
+    if (fabs(r3[1]) > fabs(r2[1]))
+        SWAP_ROWS(r3, r2);
+    if (fabs(r2[1]) > fabs(r1[1]))
+        SWAP_ROWS(r2, r1);
+    if (0.0 == r1[1]) {
+        return 0;
+    }
 
-	/* eliminate second variable */
-	m2 = r2[1]/r1[1]; m3 = r3[1]/r1[1];
-	r2[2] -= m2 * r1[2]; r3[2] -= m3 * r1[2];
-	r2[3] -= m2 * r1[3]; r3[3] -= m3 * r1[3];
-	s = r1[4]; if (0.0 != s) { r2[4] -= m2 * s; r3[4] -= m3 * s; }
-	s = r1[5]; if (0.0 != s) { r2[5] -= m2 * s; r3[5] -= m3 * s; }
-	s = r1[6]; if (0.0 != s) { r2[6] -= m2 * s; r3[6] -= m3 * s; }
-	s = r1[7]; if (0.0 != s) { r2[7] -= m2 * s; r3[7] -= m3 * s; }
+    /* eliminate second variable */
+    m2 = r2[1] / r1[1];
+    m3 = r3[1] / r1[1];
+    r2[2] -= m2 * r1[2];
+    r3[2] -= m3 * r1[2];
+    r2[3] -= m2 * r1[3];
+    r3[3] -= m3 * r1[3];
+    s = r1[4];
+    if (0.0 != s) {
+        r2[4] -= m2 * s;
+        r3[4] -= m3 * s;
+    }
+    s = r1[5];
+    if (0.0 != s) {
+        r2[5] -= m2 * s;
+        r3[5] -= m3 * s;
+    }
+    s = r1[6];
+    if (0.0 != s) {
+        r2[6] -= m2 * s;
+        r3[6] -= m3 * s;
+    }
+    s = r1[7];
+    if (0.0 != s) {
+        r2[7] -= m2 * s;
+        r3[7] -= m3 * s;
+    }
 
-	/* choose pivot - or die */
-	if (fabs(r3[2])>fabs(r2[2])) SWAP_ROWS(r3, r2);
-	if (0.0 == r2[2])
-	{
-		return 0;
-	}
+    /* choose pivot - or die */
+    if (fabs(r3[2]) > fabs(r2[2]))
+        SWAP_ROWS(r3, r2);
+    if (0.0 == r2[2]) {
+        return 0;
+    }
 
-	/* eliminate third variable */
-	m3 = r3[2]/r2[2];
-	r3[3] -= m3 * r2[3], r3[4] -= m3 * r2[4],
-		r3[5] -= m3 * r2[5], r3[6] -= m3 * r2[6],
-		r3[7] -= m3 * r2[7];
+    /* eliminate third variable */
+    m3 = r3[2] / r2[2];
+    r3[3] -= m3 * r2[3], r3[4] -= m3 * r2[4], r3[5] -= m3 * r2[5], r3[6] -= m3 * r2[6], r3[7] -= m3 * r2[7];
 
-	/* last check */
-	if (0.0 == r3[3])
-	{
-		return 0;
-	}
+    /* last check */
+    if (0.0 == r3[3]) {
+        return 0;
+    }
 
-	s = 1.0f/r3[3];              /* now back substitute row 3 */
-	r3[4] *= s; r3[5] *= s; r3[6] *= s; r3[7] *= s;
+    s = 1.0f / r3[3]; /* now back substitute row 3 */
+    r3[4] *= s;
+    r3[5] *= s;
+    r3[6] *= s;
+    r3[7] *= s;
 
-	m2 = r2[3];                 /* now back substitute row 2 */
-	s  = 1.0f/r2[2];
-	r2[4] = s * (r2[4] - r3[4] * m2), r2[5] = s * (r2[5] - r3[5] * m2),
-		r2[6] = s * (r2[6] - r3[6] * m2), r2[7] = s * (r2[7] - r3[7] * m2);
-	m1 = r1[3];
-	r1[4] -= r3[4] * m1, r1[5] -= r3[5] * m1,
-		r1[6] -= r3[6] * m1, r1[7] -= r3[7] * m1;
-	m0 = r0[3];
-	r0[4] -= r3[4] * m0, r0[5] -= r3[5] * m0,
-		r0[6] -= r3[6] * m0, r0[7] -= r3[7] * m0;
+    m2 = r2[3]; /* now back substitute row 2 */
+    s = 1.0f / r2[2];
+    r2[4] = s * (r2[4] - r3[4] * m2), r2[5] = s * (r2[5] - r3[5] * m2), r2[6] = s * (r2[6] - r3[6] * m2), r2[7] = s * (r2[7] - r3[7] * m2);
+    m1 = r1[3];
+    r1[4] -= r3[4] * m1, r1[5] -= r3[5] * m1, r1[6] -= r3[6] * m1, r1[7] -= r3[7] * m1;
+    m0 = r0[3];
+    r0[4] -= r3[4] * m0, r0[5] -= r3[5] * m0, r0[6] -= r3[6] * m0, r0[7] -= r3[7] * m0;
 
-	m1 = r1[2];                 /* now back substitute row 1 */
-	s  = 1.0f/r1[1];
-	r1[4] = s * (r1[4] - r2[4] * m1), r1[5] = s * (r1[5] - r2[5] * m1),
-		r1[6] = s * (r1[6] - r2[6] * m1), r1[7] = s * (r1[7] - r2[7] * m1);
-	m0 = r0[2];
-	r0[4] -= r2[4] * m0, r0[5] -= r2[5] * m0,
-		r0[6] -= r2[6] * m0, r0[7] -= r2[7] * m0;
+    m1 = r1[2]; /* now back substitute row 1 */
+    s = 1.0f / r1[1];
+    r1[4] = s * (r1[4] - r2[4] * m1), r1[5] = s * (r1[5] - r2[5] * m1), r1[6] = s * (r1[6] - r2[6] * m1), r1[7] = s * (r1[7] - r2[7] * m1);
+    m0 = r0[2];
+    r0[4] -= r2[4] * m0, r0[5] -= r2[5] * m0, r0[6] -= r2[6] * m0, r0[7] -= r2[7] * m0;
 
-	m0 = r0[1];                 /* now back substitute row 0 */
-	s  = 1.0f/r0[0];
-	r0[4] = s * (r0[4] - r1[4] * m0), r0[5] = s * (r0[5] - r1[5] * m0),
-		r0[6] = s * (r0[6] - r1[6] * m0), r0[7] = s * (r0[7] - r1[7] * m0);
+    m0 = r0[1]; /* now back substitute row 0 */
+    s = 1.0f / r0[0];
+    r0[4] = s * (r0[4] - r1[4] * m0), r0[5] = s * (r0[5] - r1[5] * m0), r0[6] = s * (r0[6] - r1[6] * m0), r0[7] = s * (r0[7] - r1[7] * m0);
 
-	MAT(out,0,0) = r0[4]; MAT(out,0,1) = r0[5],
-		MAT(out,0,2) = r0[6]; MAT(out,0,3) = r0[7],
-		MAT(out,1,0) = r1[4]; MAT(out,1,1) = r1[5],
-		MAT(out,1,2) = r1[6]; MAT(out,1,3) = r1[7],
-		MAT(out,2,0) = r2[4]; MAT(out,2,1) = r2[5],
-		MAT(out,2,2) = r2[6]; MAT(out,2,3) = r2[7],
-		MAT(out,3,0) = r3[4]; MAT(out,3,1) = r3[5],
-		MAT(out,3,2) = r3[6]; MAT(out,3,3) = r3[7];
+    MAT(out, 0, 0) = r0[4];
+    MAT(out, 0, 1) = r0[5], MAT(out, 0, 2) = r0[6];
+    MAT(out, 0, 3) = r0[7], MAT(out, 1, 0) = r1[4];
+    MAT(out, 1, 1) = r1[5], MAT(out, 1, 2) = r1[6];
+    MAT(out, 1, 3) = r1[7], MAT(out, 2, 0) = r2[4];
+    MAT(out, 2, 1) = r2[5], MAT(out, 2, 2) = r2[6];
+    MAT(out, 2, 3) = r2[7], MAT(out, 3, 0) = r3[4];
+    MAT(out, 3, 1) = r3[5], MAT(out, 3, 2) = r3[6];
+    MAT(out, 3, 3) = r3[7];
 
-	return 1;
+    return 1;
 
 #undef MAT
 #undef SWAP_ROWS
 }
 
-inline float cryISqrtf(float fVal)
-{
-  unsigned int *n1 = (unsigned int *)&fVal;
-  unsigned int n = 0x5f3759df - (*n1 >> 1);
-  float *n2 = (float *)&n;
-  fVal = (1.5f - (fVal * 0.5f) * *n2 * *n2) * *n2;
-  return fVal;
+inline float cryISqrtf(float fVal) {
+    unsigned int* n1 = (unsigned int*)&fVal;
+    unsigned int n = 0x5f3759df - (*n1 >> 1);
+    float* n2 = (float*)&n;
+    fVal = (1.5f - (fVal * 0.5f) * *n2 * *n2) * *n2;
+    return fVal;
 }
 #if defined _CPU_X86 && !defined(LINUX)
 // ***************************************************************************
-inline void cryPrecacheSSE(const void *src, int nbytes)
-{
-  _asm
-  {
+inline void cryPrecacheSSE(const void* src, int nbytes) {
+    _asm
+    {
     mov esi, src
     mov ecx, nbytes
-    // 64 bytes per pass
+          // 64 bytes per pass
     shr ecx, 6
     jz endLabel
 
@@ -353,16 +366,15 @@ loopMemToL1:
     emms
 
 endLabel:
-  }
+    }
 }
 // ***************************************************************************
-inline void cryPrecacheMMX(const void *src, int nbytes)
-{
-  _asm
-  {
+inline void cryPrecacheMMX(const void* src, int nbytes) {
+    _asm
+    {
     mov esi, src
     mov ecx, nbytes
-    // 64 bytes per pass
+          // 64 bytes per pass
     shr ecx, 6
     jz endLabel
 
@@ -383,39 +395,33 @@ loopMemToL1:
     emms
 
 endLabel:
-  }
+    }
 }
-
 
 #endif
 
-inline void cryPrefetchNTSSE(const void *src)
-{
+inline void cryPrefetchNTSSE(const void* src) {
 #if defined(WIN32) && !defined(WIN64) && !defined(LINUX)
-	_asm
-  {
+    _asm
+    {
     mov esi, src
     prefetchnta [ESI] // Prefetch non-temporal
-  }
+    }
 #endif
 }
 
-
-
-ILINE void cryPrefetchT0SSE(const void *src)
-{
+ILINE void cryPrefetchT0SSE(const void* src) {
 #if defined(WIN32) && !defined(WIN64)
-  _asm
-  {
+    _asm
+        {
     mov esi, src
     prefetchT0 [ESI] // Prefetch
-  }
+        }
 #endif
 
-#if defined(WIN64) &&  defined(_CPU_AMD64) && !defined(LINUX)
-		_mm_prefetch( (char*)src, _MM_HINT_T0 );
+#if defined(WIN64) && defined(_CPU_AMD64) && !defined(LINUX)
+    _mm_prefetch((char*)src, _MM_HINT_T0);
 #endif
-
 }
 
 //=================================================================================
@@ -427,11 +433,11 @@ ILINE void cryPrefetchT0SSE(const void *src)
 // "Streaming Store"), and also uses the software prefetch instructions,
 // be sure you're running on Athlon/Duron or other recent CPU before calling!
 
-#define TINY_BLOCK_COPY 64       // upper limit for movsd type copy
+#define TINY_BLOCK_COPY 64 // upper limit for movsd type copy
 // The smallest copy uses the X86 "movsd" instruction, in an optimized
 // form which is an "unrolled loop".
 
-#define IN_CACHE_COPY 64 * 1024  // upper limit for movq/movq copy w/SW prefetch
+#define IN_CACHE_COPY 64 * 1024 // upper limit for movq/movq copy w/SW prefetch
 // Next is a copy that uses the MMX registers to copy 8 bytes at a time,
 // also using the "unrolled loop" optimization.   This code uses
 // the software prefetch instruction to get the data into the cache.
@@ -443,235 +449,228 @@ ILINE void cryPrefetchT0SSE(const void *src)
 // uses the software prefetch instruction to pre-read the data.
 // USE 64 * 1024 FOR THIS VALUE IF YOU'RE ALWAYS FILLING A "CLEAN CACHE"
 
-#define BLOCK_PREFETCH_COPY  infinity // no limit for movq/movntq w/block prefetch
-#define CACHEBLOCK 80h // number of 64-byte blocks (cache lines) for block prefetch
+#define BLOCK_PREFETCH_COPY infinity // no limit for movq/movntq w/block prefetch
+#define CACHEBLOCK 80h               // number of 64-byte blocks (cache lines) for block prefetch
 // For the largest size blocks, a special technique called Block Prefetch
 // can be used to accelerate the read operations.   Block Prefetch reads
 // one address per cache line, for a series of cache lines, in a short loop.
 // This is faster than using software prefetch.  The technique is great for
 // getting maximum read bandwidth, especially in DDR memory systems.
 
-
 #if defined _CPU_X86 && !defined(LINUX)
 // Inline assembly syntax for use with Visual C++
-inline void cryMemcpy( void* Dst, const void* Src, int Count )
-{
-  if (g_CpuFlags & CPUF_SSE)
-  {
-	  __asm
-	  {
-		  mov		ecx, [Count]	; number of bytes to copy
-		  mov		edi, [Dst]		; destination
-		  mov		esi, [Src]		; source
-		  mov		ebx, ecx		; keep a copy of count
+inline void cryMemcpy(void* Dst, const void* Src, int Count) {
+    if (g_CpuFlags & CPUF_SSE) {
+        __asm
+        {
+      mov    ecx, [Count]  ; number of bytes to copy
+      mov    edi, [Dst]    ; destination
+      mov    esi, [Src]    ; source
+      mov    ebx, ecx    ; keep a copy of count
 
-		  cld
-		  cmp		ecx, TINY_BLOCK_COPY
-		  jb		$memcpy_ic_3	; tiny? skip mmx copy
+      cld
+      cmp    ecx, TINY_BLOCK_COPY
+      jb    $memcpy_ic_3  ; tiny? skip mmx copy
 
-		  cmp		ecx, 32*1024		; dont align between 32k-64k because
-		  jbe		$memcpy_do_align	;  it appears to be slower
-		  cmp		ecx, 64*1024
-		  jbe		$memcpy_align_done
-	  $memcpy_do_align:
-		  mov		ecx, 8			; a trick thats faster than rep movsb...
-		  sub		ecx, edi		; align destination to qword
-		  and		ecx, 111b		; get the low bits
-		  sub		ebx, ecx		; update copy count
-		  neg		ecx				; set up to jump into the array
-		  add		ecx, offset $memcpy_align_done
-		  jmp		ecx				; jump to array of movsbs
+      cmp    ecx, 32*1024    ; dont align between 32k-64k because
+      jbe    $memcpy_do_align  ;  it appears to be slower
+      cmp    ecx, 64*1024
+      jbe    $memcpy_align_done
+    $memcpy_do_align:
+      mov    ecx, 8      ; a trick thats faster than rep movsb...
+      sub    ecx, edi    ; align destination to qword
+      and    ecx, 111b    ; get the low bits
+      sub    ebx, ecx    ; update copy count
+      neg    ecx        ; set up to jump into the array
+      add    ecx, offset $memcpy_align_done
+      jmp    ecx        ; jump to array of movsbs
 
-	  align 4
-		  movsb
-		  movsb
-		  movsb
-		  movsb
-		  movsb
-		  movsb
-		  movsb
-		  movsb
+    align 4
+      movsb
+      movsb
+      movsb
+      movsb
+      movsb
+      movsb
+      movsb
+      movsb
 
-	  $memcpy_align_done:			; destination is dword aligned
-		  mov		ecx, ebx		; number of bytes left to copy
-		  shr		ecx, 6			; get 64-byte block count
-		  jz		$memcpy_ic_2	; finish the last few bytes
+    $memcpy_align_done:      ; destination is dword aligned
+      mov    ecx, ebx    ; number of bytes left to copy
+      shr    ecx, 6      ; get 64-byte block count
+      jz    $memcpy_ic_2  ; finish the last few bytes
 
-		  cmp		ecx, IN_CACHE_COPY/64	; too big 4 cache? use uncached copy
-		  jae		$memcpy_uc_test
+      cmp    ecx, IN_CACHE_COPY/64  ; too big 4 cache? use uncached copy
+      jae    $memcpy_uc_test
 
-	  // This is small block copy that uses the MMX registers to copy 8 bytes
-	  // at a time.  It uses the "unrolled loop" optimization, and also uses
-	  // the software prefetch instruction to get the data into the cache.
-	  align 16
-	  $memcpy_ic_1:			; 64-byte block copies, in-cache copy
+                               // This is small block copy that uses the MMX registers to copy 8 bytes
+                               // at a time.  It uses the "unrolled loop" optimization, and also uses
+                               // the software prefetch instruction to get the data into the cache.
+    align 16
+    $memcpy_ic_1:      ; 64-byte block copies, in-cache copy
 
-		  prefetchnta [esi + (200*64/34+192)]		; start reading ahead
+      prefetchnta [esi + (200*64/34+192)]    ; start reading ahead
 
-		  movq	mm0, [esi+0]	; read 64 bits
-		  movq	mm1, [esi+8]
-		  movq	[edi+0], mm0	; write 64 bits
-		  movq	[edi+8], mm1	;    note:  the normal movq writes the
-		  movq	mm2, [esi+16]	;    data to cache; a cache line will be
-		  movq	mm3, [esi+24]	;    allocated as needed, to store the data
-		  movq	[edi+16], mm2
-		  movq	[edi+24], mm3
-		  movq	mm0, [esi+32]
-		  movq	mm1, [esi+40]
-		  movq	[edi+32], mm0
-		  movq	[edi+40], mm1
-		  movq	mm2, [esi+48]
-		  movq	mm3, [esi+56]
-		  movq	[edi+48], mm2
-		  movq	[edi+56], mm3
+      movq  mm0, [esi+0]  ; read 64 bits
+      movq  mm1, [esi+8]
+      movq  [edi+0], mm0  ; write 64 bits
+      movq  [edi+8], mm1  ;    note:  the normal movq writes the
+      movq  mm2, [esi+16]  ;    data to cache; a cache line will be
+      movq  mm3, [esi+24]  ;    allocated as needed, to store the data
+      movq  [edi+16], mm2
+      movq  [edi+24], mm3
+      movq  mm0, [esi+32]
+      movq  mm1, [esi+40]
+      movq  [edi+32], mm0
+      movq  [edi+40], mm1
+      movq  mm2, [esi+48]
+      movq  mm3, [esi+56]
+      movq  [edi+48], mm2
+      movq  [edi+56], mm3
 
-		  add		esi, 64			; update source pointer
-		  add		edi, 64			; update destination pointer
-		  dec		ecx				; count down
-		  jnz		$memcpy_ic_1	; last 64-byte block?
+      add    esi, 64      ; update source pointer
+      add    edi, 64      ; update destination pointer
+      dec    ecx        ; count down
+      jnz    $memcpy_ic_1  ; last 64-byte block?
 
-	  $memcpy_ic_2:
-		  mov		ecx, ebx		; has valid low 6 bits of the byte count
-	  $memcpy_ic_3:
-		  shr		ecx, 2			; dword count
-		  and		ecx, 1111b		; only look at the "remainder" bits
-		  neg		ecx				; set up to jump into the array
-		  add		ecx, offset $memcpy_last_few
-		  jmp		ecx				; jump to array of movsds
+    $memcpy_ic_2:
+      mov    ecx, ebx    ; has valid low 6 bits of the byte count
+    $memcpy_ic_3:
+      shr    ecx, 2      ; dword count
+      and    ecx, 1111b    ; only look at the "remainder" bits
+      neg    ecx        ; set up to jump into the array
+      add    ecx, offset $memcpy_last_few
+      jmp    ecx        ; jump to array of movsds
 
-	  $memcpy_uc_test:
-		  cmp		ecx, UNCACHED_COPY/64	; big enough? use block prefetch copy
-		  jae		$memcpy_bp_1
+    $memcpy_uc_test:
+      cmp    ecx, UNCACHED_COPY/64  ; big enough? use block prefetch copy
+      jae    $memcpy_bp_1
 
-	  $memcpy_64_test:
-		  or		ecx, ecx		; tail end of block prefetch will jump here
-		  jz		$memcpy_ic_2	; no more 64-byte blocks left
+    $memcpy_64_test:
+      or    ecx, ecx    ; tail end of block prefetch will jump here
+      jz    $memcpy_ic_2  ; no more 64-byte blocks left
 
-	  // For larger blocks, which will spill beyond the cache, it's faster to
-	  // use the Streaming Store instruction MOVNTQ.   This write instruction
-	  // bypasses the cache and writes straight to main memory.  This code also
-	  // uses the software prefetch instruction to pre-read the data.
-	  align 16
-	  $memcpy_uc_1:				; 64-byte blocks, uncached copy
+                         // For larger blocks, which will spill beyond the cache, it's faster to
+                         // use the Streaming Store instruction MOVNTQ.   This write instruction
+                         // bypasses the cache and writes straight to main memory.  This code also
+                         // uses the software prefetch instruction to pre-read the data.
+    align 16
+    $memcpy_uc_1:        ; 64-byte blocks, uncached copy
 
-		  prefetchnta [esi + (200*64/34+192)]		; start reading ahead
+      prefetchnta [esi + (200*64/34+192)]    ; start reading ahead
 
-		  movq	mm0,[esi+0]		; read 64 bits
-		  add		edi,64			; update destination pointer
-		  movq	mm1,[esi+8]
-		  add		esi,64			; update source pointer
-		  movq	mm2,[esi-48]
-		  movntq	[edi-64], mm0	; write 64 bits, bypassing the cache
-		  movq	mm0,[esi-40]	;    note: movntq also prevents the CPU
-		  movntq	[edi-56], mm1	;    from READING the destination address
-		  movq	mm1,[esi-32]	;    into the cache, only to be over-written
-		  movntq	[edi-48], mm2	;    so that also helps performance
-		  movq	mm2,[esi-24]
-		  movntq	[edi-40], mm0
-		  movq	mm0,[esi-16]
-		  movntq	[edi-32], mm1
-		  movq	mm1,[esi-8]
-		  movntq	[edi-24], mm2
-		  movntq	[edi-16], mm0
-		  dec		ecx
-		  movntq	[edi-8], mm1
-		  jnz		$memcpy_uc_1	; last 64-byte block?
+      movq  mm0,[esi+0]    ; read 64 bits
+      add    edi,64      ; update destination pointer
+      movq  mm1,[esi+8]
+      add    esi,64      ; update source pointer
+      movq  mm2,[esi-48]
+      movntq  [edi-64], mm0  ; write 64 bits, bypassing the cache
+      movq  mm0,[esi-40]  ;    note: movntq also prevents the CPU
+      movntq  [edi-56], mm1  ;    from READING the destination address
+      movq  mm1,[esi-32]  ;    into the cache, only to be over-written
+      movntq  [edi-48], mm2  ;    so that also helps performance
+      movq  mm2,[esi-24]
+      movntq  [edi-40], mm0
+      movq  mm0,[esi-16]
+      movntq  [edi-32], mm1
+      movq  mm1,[esi-8]
+      movntq  [edi-24], mm2
+      movntq  [edi-16], mm0
+      dec    ecx
+      movntq  [edi-8], mm1
+      jnz    $memcpy_uc_1  ; last 64-byte block?
 
-		  jmp		$memcpy_ic_2		; almost done
+      jmp    $memcpy_ic_2    ; almost done
 
-	  // For the largest size blocks, a special technique called Block Prefetch
-	  // can be used to accelerate the read operations.   Block Prefetch reads
-	  // one address per cache line, for a series of cache lines, in a short loop.
-	  // This is faster than using software prefetch.  The technique is great for
-	  // getting maximum read bandwidth, especially in DDR memory systems.
-	  $memcpy_bp_1:			; large blocks, block prefetch copy
+              // For the largest size blocks, a special technique called Block Prefetch
+              // can be used to accelerate the read operations.   Block Prefetch reads
+              // one address per cache line, for a series of cache lines, in a short loop.
+              // This is faster than using software prefetch.  The technique is great for
+              // getting maximum read bandwidth, especially in DDR memory systems.
+    $memcpy_bp_1:      ; large blocks, block prefetch copy
 
-		  cmp		ecx, CACHEBLOCK			; big enough to run another prefetch loop?
-		  jl		$memcpy_64_test			; no, back to regular uncached copy
+      cmp    ecx, CACHEBLOCK      ; big enough to run another prefetch loop?
+      jl    $memcpy_64_test      ; no, back to regular uncached copy
 
-		  mov		eax, CACHEBLOCK / 2		; block prefetch loop, unrolled 2X
-		  add		esi, CACHEBLOCK * 64	; move to the top of the block
-	  align 16
-	  $memcpy_bp_2:
-		  mov		edx, [esi-64]		; grab one address per cache line
-		  mov		edx, [esi-128]		; grab one address per cache line
-		  sub		esi, 128			; go reverse order to suppress HW prefetcher
-		  dec		eax					; count down the cache lines
-		  jnz		$memcpy_bp_2		; keep grabbing more lines into cache
+      mov    eax, CACHEBLOCK / 2    ; block prefetch loop, unrolled 2X
+      add    esi, CACHEBLOCK * 64  ; move to the top of the block
+    align 16
+    $memcpy_bp_2:
+      mov    edx, [esi-64]    ; grab one address per cache line
+      mov    edx, [esi-128]    ; grab one address per cache line
+      sub    esi, 128      ; go reverse order to suppress HW prefetcher
+      dec    eax          ; count down the cache lines
+      jnz    $memcpy_bp_2    ; keep grabbing more lines into cache
 
-		  mov		eax, CACHEBLOCK		; now that its in cache, do the copy
-	  align 16
-	  $memcpy_bp_3:
-		  movq	mm0, [esi   ]		; read 64 bits
-		  movq	mm1, [esi+ 8]
-		  movq	mm2, [esi+16]
-		  movq	mm3, [esi+24]
-		  movq	mm4, [esi+32]
-		  movq	mm5, [esi+40]
-		  movq	mm6, [esi+48]
-		  movq	mm7, [esi+56]
-		  add		esi, 64				; update source pointer
-		  movntq	[edi   ], mm0		; write 64 bits, bypassing cache
-		  movntq	[edi+ 8], mm1		;    note: movntq also prevents the CPU
-		  movntq	[edi+16], mm2		;    from READING the destination address
-		  movntq	[edi+24], mm3		;    into the cache, only to be over-written,
-		  movntq	[edi+32], mm4		;    so that also helps performance
-		  movntq	[edi+40], mm5
-		  movntq	[edi+48], mm6
-		  movntq	[edi+56], mm7
-		  add		edi, 64				; update dest pointer
+      mov    eax, CACHEBLOCK    ; now that its in cache, do the copy
+    align 16
+    $memcpy_bp_3:
+      movq  mm0, [esi   ]    ; read 64 bits
+      movq  mm1, [esi+ 8]
+      movq  mm2, [esi+16]
+      movq  mm3, [esi+24]
+      movq  mm4, [esi+32]
+      movq  mm5, [esi+40]
+      movq  mm6, [esi+48]
+      movq  mm7, [esi+56]
+      add    esi, 64        ; update source pointer
+      movntq  [edi   ], mm0    ; write 64 bits, bypassing cache
+      movntq  [edi+ 8], mm1    ;    note: movntq also prevents the CPU
+      movntq  [edi+16], mm2    ;    from READING the destination address
+      movntq  [edi+24], mm3    ;    into the cache, only to be over-written,
+      movntq  [edi+32], mm4    ;    so that also helps performance
+      movntq  [edi+40], mm5
+      movntq  [edi+48], mm6
+      movntq  [edi+56], mm7
+      add    edi, 64        ; update dest pointer
 
-		  dec		eax					; count down
+      dec    eax          ; count down
 
-		  jnz		$memcpy_bp_3		; keep copying
-		  sub		ecx, CACHEBLOCK		; update the 64-byte block count
-		  jmp		$memcpy_bp_1		; keep processing chunks
+      jnz    $memcpy_bp_3    ; keep copying
+      sub    ecx, CACHEBLOCK    ; update the 64-byte block count
+      jmp    $memcpy_bp_1    ; keep processing chunks
 
-	  // The smallest copy uses the X86 "movsd" instruction, in an optimized
-	  // form which is an "unrolled loop".   Then it handles the last few bytes.
-	  align 4
-		  movsd
-		  movsd			; perform last 1-15 dword copies
-		  movsd
-		  movsd
-		  movsd
-		  movsd
-		  movsd
-		  movsd
-		  movsd
-		  movsd			; perform last 1-7 dword copies
-		  movsd
-		  movsd
-		  movsd
-		  movsd
-		  movsd
-		  movsd
+              // The smallest copy uses the X86 "movsd" instruction, in an optimized
+              // form which is an "unrolled loop".   Then it handles the last few bytes.
+    align 4
+      movsd
+      movsd      ; perform last 1-15 dword copies
+      movsd
+      movsd
+      movsd
+      movsd
+      movsd
+      movsd
+      movsd
+      movsd      ; perform last 1-7 dword copies
+      movsd
+      movsd
+      movsd
+      movsd
+      movsd
+      movsd
 
-	  $memcpy_last_few:		; dword aligned from before movsds
-		  mov		ecx, ebx	; has valid low 2 bits of the byte count
-		  and		ecx, 11b	; the last few cows must come home
-		  jz		$memcpy_final	; no more, lets leave
-		  rep		movsb		; the last 1, 2, or 3 bytes
+    $memcpy_last_few:    ; dword aligned from before movsds
+      mov    ecx, ebx  ; has valid low 2 bits of the byte count
+      and    ecx, 11b  ; the last few cows must come home
+      jz    $memcpy_final  ; no more, lets leave
+      rep    movsb    ; the last 1, 2, or 3 bytes
 
-	  $memcpy_final:
-		  emms				; clean up the MMX state
-		  sfence				; flush the write buffer
-	  //	mov		eax, [dest]	; ret value = destination pointer
-	  }
-  }
-  else
-  {
-    memcpy(Dst, Src, Count);
-  }
+    $memcpy_final:
+      emms        ; clean up the MMX state
+      sfence        ; flush the write buffer
+          //  mov    eax, [dest]  ; ret value = destination pointer
+        }
+    } else {
+        memcpy(Dst, Src, Count);
+    }
 }
 
-inline void cryPrefetch(const void* Src, int nCount)
-{
-  nCount >>= 6;
-  if (nCount > 0)
-  {
-    _asm
-    {
+inline void cryPrefetch(const void* Src, int nCount) {
+    nCount >>= 6;
+    if (nCount > 0) {
+        _asm
+        {
       mov esi, Src;
       mov ecx, nCount;
 mPr0:
@@ -681,12 +680,10 @@ mPr0:
       mov eax,0;
       lea esi, [esi+40h];
       jne mPr0;
-    }
-  }
-  else
-  {
-    _asm
-    {
+        }
+    } else {
+        _asm
+        {
       mov esi, Src;
       mov ecx, nCount;
 mPr1:
@@ -696,68 +693,55 @@ mPr1:
       mov eax,0;
       lea esi, [esi-40h];
       jne mPr1;
+        }
     }
-  }
 }
 
-inline void cryMemcpy (void* inDst, const void* inSrc, int nCount, int nFlags)
-{
-  int i;
-  int cnt;
-  INT_PTR nAlign16;
-  unsigned char *Src = (unsigned char *)inSrc;
-  unsigned char *Dst = (unsigned char *)inDst;
-  if (nCount < 32 || (nCount < 128 && !(nFlags & 4)))
-  {
-    memcpy(Dst, Src, nCount);
-    return;
-  }
-  if (nFlags & 1)
-    nAlign16 = (INT_PTR)Src & 0xf;
-  else
-    nAlign16 = (INT_PTR)Dst & 0xf;
-  if (nCount >= 4)
-  {
-    if (nAlign16 & 3)
-    {
-      cnt = (int)(4 - nAlign16);
-      for (i=0; i<cnt; i++)
-      {
-        *Dst++ = *Src++;
-      }
-      nCount -= cnt;
+inline void cryMemcpy(void* inDst, const void* inSrc, int nCount, int nFlags) {
+    int i;
+    int cnt;
+    INT_PTR nAlign16;
+    unsigned char* Src = (unsigned char*)inSrc;
+    unsigned char* Dst = (unsigned char*)inDst;
+    if (nCount < 32 || (nCount < 128 && !(nFlags & 4))) {
+        memcpy(Dst, Src, nCount);
+        return;
     }
-    if (nCount >= 16 && (nAlign16 & 0xc))
-    {
-      cnt = (int)(16 - nAlign16);
-      for (i=0; i<(cnt>>2); i++)
-      {
-        *(UINT_PTR *)Dst = *(UINT_PTR *)Src;
-        Dst += 4;
-        Src += 4;
-      }
-      nCount -= cnt;
+    if (nFlags & 1)
+        nAlign16 = (INT_PTR)Src & 0xf;
+    else
+        nAlign16 = (INT_PTR)Dst & 0xf;
+    if (nCount >= 4) {
+        if (nAlign16 & 3) {
+            cnt = (int)(4 - nAlign16);
+            for (i = 0; i < cnt; i++) {
+                *Dst++ = *Src++;
+            }
+            nCount -= cnt;
+        }
+        if (nCount >= 16 && (nAlign16 & 0xc)) {
+            cnt = (int)(16 - nAlign16);
+            for (i = 0; i < (cnt >> 2); i++) {
+                *(UINT_PTR*)Dst = *(UINT_PTR*)Src;
+                Dst += 4;
+                Src += 4;
+            }
+            nCount -= cnt;
+        }
     }
-  }
-  int Count_64 = 0xffffffc0 & nCount;
-  int Count_16 = 0x30 & nCount;
-  int Count_12 = 0xc & nCount;
-  int Count_4 = 0x3 & nCount;
-  if (Count_64)
-  {
-    if (nFlags & 4)
-    {
-      while (Count_64 > 2048)
-      {
-        cryPrefetch(Src, 2048);
-        if (g_CpuFlags & CPUF_SSE)
-        {
-          if ((INT_PTR)Src & 0xf)
-          {
-            if ((INT_PTR)Dst & 0xf)
-            {
-              _asm
-              {
+    int Count_64 = 0xffffffc0 & nCount;
+    int Count_16 = 0x30 & nCount;
+    int Count_12 = 0xc & nCount;
+    int Count_4 = 0x3 & nCount;
+    if (Count_64) {
+        if (nFlags & 4) {
+            while (Count_64 > 2048) {
+                cryPrefetch(Src, 2048);
+                if (g_CpuFlags & CPUF_SSE) {
+                    if ((INT_PTR)Src & 0xf) {
+                        if ((INT_PTR)Dst & 0xf) {
+                            _asm
+                            {
                 mov ebx, Src;
                 mov edx, Dst;
                 mov ecx, 32;
@@ -774,12 +758,10 @@ inline void cryMemcpy (void* inDst, const void* inSrc, int nCount, int nFlags)
                 add         edx,40h
                 dec         ecx
                 jne         St0
-              }
-            }
-            else
-            {
-              _asm
-              {
+                            }
+                        } else {
+                            _asm
+                            {
                 mov ebx, Src;
                 mov edx, Dst;
                 mov ecx, 32;
@@ -797,15 +779,12 @@ inline void cryMemcpy (void* inDst, const void* inSrc, int nCount, int nFlags)
                 add         edx,40h
                 dec         ecx
                 jne         St1
-              }
-            }
-          }
-          else
-          {
-            if ((INT_PTR)Dst & 0xf)
-            {
-              _asm
-              {
+                            }
+                        }
+                    } else {
+                        if ((INT_PTR)Dst & 0xf) {
+                            _asm
+                            {
                 mov ebx, Src;
                 mov edx, Dst;
                 mov ecx, 32;
@@ -822,12 +801,10 @@ inline void cryMemcpy (void* inDst, const void* inSrc, int nCount, int nFlags)
                 add         edx,40h
                 dec         ecx
                 jne         St2
-              }
-            }
-            else
-            {
-              _asm
-              {
+                            }
+                        } else {
+                            _asm
+                            {
                 mov ebx, Src;
                 mov edx, Dst;
                 mov ecx, 32;
@@ -845,15 +822,12 @@ inline void cryMemcpy (void* inDst, const void* inSrc, int nCount, int nFlags)
                 add         edx,40h
                 dec         ecx
                 jne         St3
-              }
-            }
-          }
-        }
-        else
-        if (g_CpuFlags & CPUF_MMX)
-        {
-          _asm
-          {
+                            }
+                        }
+                    }
+                } else if (g_CpuFlags & CPUF_MMX) {
+                    _asm
+                    {
             mov ebx, Src;
             mov edx, Dst;
             mov ecx, 32;
@@ -880,12 +854,10 @@ St4:
             dec       ecx
             jne       St4
             emms
-          }
-        }
-        else
-        {
-          _asm
-          {
+                    }
+                } else {
+                    _asm
+                    {
             mov ebx, Src;
             mov edx, Dst;
             mov ecx, 32;
@@ -898,25 +870,21 @@ St5:
             add      edx,4h
             dec      ecx
             jne      St5
-          }
-        }
-        Src += 2048;
-        Dst += 2048;
-        Count_64 -= 2048;
-      }
-      if (Count_64 > 128)
-      {
-        cryPrefetch(Src, Count_64);
-        cnt = Count_64>>6;
+                    }
+                }
+                Src += 2048;
+                Dst += 2048;
+                Count_64 -= 2048;
+            }
+            if (Count_64 > 128) {
+                cryPrefetch(Src, Count_64);
+                cnt = Count_64 >> 6;
 
-        if (g_CpuFlags & CPUF_SSE)
-        {
-          if ((INT_PTR)Src & 0xf)
-          {
-            if ((INT_PTR)Dst & 0xf)
-            {
-              _asm
-              {
+                if (g_CpuFlags & CPUF_SSE) {
+                    if ((INT_PTR)Src & 0xf) {
+                        if ((INT_PTR)Dst & 0xf) {
+                            _asm
+                            {
                 mov ebx, Src;
                 mov edx, Dst;
                 mov ecx, cnt;
@@ -933,12 +901,10 @@ St5:
                 add         edx,40h
                 dec         ecx
                 jne         St6
-              }
-            }
-            else
-            {
-              _asm
-              {
+                            }
+                        } else {
+                            _asm
+                            {
                 mov ebx, Src;
                 mov edx, Dst;
                 mov ecx, cnt;
@@ -956,15 +922,12 @@ St5:
                 add         edx,40h
                 dec         ecx
                 jne         St7
-              }
-            }
-          }
-          else
-          {
-            if ((INT_PTR)Dst & 0xf)
-            {
-              _asm
-              {
+                            }
+                        }
+                    } else {
+                        if ((INT_PTR)Dst & 0xf) {
+                            _asm
+                            {
                 mov ebx, Src;
                 mov edx, Dst;
                 mov ecx, cnt;
@@ -981,12 +944,10 @@ St5:
                 add         edx,40h
                 dec         ecx
                 jne         St8
-              }
-            }
-            else
-            {
-              _asm
-              {
+                            }
+                        } else {
+                            _asm
+                            {
                 mov ebx, Src;
                 mov edx, Dst;
                 mov ecx, cnt;
@@ -1004,15 +965,12 @@ St5:
                 add         edx,40h
                 dec         ecx
                 jne         St9
-              }
-            }
-          }
-        }
-        else
-        if (g_CpuFlags & CPUF_MMX)
-        {
-          _asm
-          {
+                            }
+                        }
+                    }
+                } else if (g_CpuFlags & CPUF_MMX) {
+                    _asm
+                    {
             mov ebx, Src;
             mov edx, Dst;
             mov ecx, cnt;
@@ -1039,12 +997,10 @@ St10:
             dec       ecx
             jne       St10
             emms
-          }
-        }
-        else
-        {
-          _asm
-          {
+                    }
+                } else {
+                    _asm
+                    {
             mov ebx, Src;
             mov edx, Dst;
             mov ecx, cnt;
@@ -1057,25 +1013,21 @@ St11:
             add      edx,4h
             dec      ecx
             jne      St11
-          }
+                    }
+                }
+                Src += Count_64;
+                Dst += Count_64;
+                Count_64 = 0;
+            }
         }
-        Src += Count_64;
-        Dst += Count_64;
-        Count_64 = 0;
-      }
-    }
-    if (Count_64)
-    {
-      cnt = Count_64>>6;
+        if (Count_64) {
+            cnt = Count_64 >> 6;
 
-      if (g_CpuFlags & CPUF_SSE)
-      {
-        if ((INT_PTR)Src & 0xf)
-        {
-          if ((INT_PTR)Dst & 0xf)
-          {
-            _asm
-            {
+            if (g_CpuFlags & CPUF_SSE) {
+                if ((INT_PTR)Src & 0xf) {
+                    if ((INT_PTR)Dst & 0xf) {
+                        _asm
+                        {
               mov ebx, Src;
               mov edx, Dst;
               mov ecx, cnt;
@@ -1092,12 +1044,10 @@ St12:
               add         edx,40h
               dec         ecx
               jne         St12
-            }
-          }
-          else
-          {
-            _asm
-            {
+                        }
+                    } else {
+                        _asm
+                        {
               mov ebx, Src;
               mov edx, Dst;
               mov ecx, cnt;
@@ -1115,15 +1065,12 @@ St13:
               add         edx,40h
               dec         ecx
               jne         St13
-            }
-          }
-        }
-        else
-        {
-          if ((INT_PTR)Dst & 0xf)
-          {
-            _asm
-            {
+                        }
+                    }
+                } else {
+                    if ((INT_PTR)Dst & 0xf) {
+                        _asm
+                        {
               mov ebx, Src;
               mov edx, Dst;
               mov ecx, cnt;
@@ -1140,12 +1087,10 @@ St14:
               add         edx,40h
               dec         ecx
               jne         St14
-            }
-          }
-          else
-          {
-            _asm
-            {
+                        }
+                    } else {
+                        _asm
+                        {
               mov ebx, Src;
               mov edx, Dst;
               mov ecx, cnt;
@@ -1163,15 +1108,12 @@ St15:
               add         edx,40h
               dec         ecx
               jne         St15
-            }
-          }
-        }
-      }
-      else
-      if (g_CpuFlags & CPUF_MMX)
-      {
-        _asm
-        {
+                        }
+                    }
+                }
+            } else if (g_CpuFlags & CPUF_MMX) {
+                _asm
+                {
           mov ebx, Src;
           mov edx, Dst;
           mov ecx, cnt;
@@ -1198,12 +1140,10 @@ St16:
           dec       ecx
           jne       St16
           emms
-        }
-      }
-      else
-      {
-        _asm
-        {
+                }
+            } else {
+                _asm
+                {
           mov ebx, Src;
           mov edx, Dst;
           mov ecx, cnt;
@@ -1216,23 +1156,19 @@ St17:
           add      edx,4h
           dec      ecx
           jne      St17
+                }
+            }
+            Src += Count_64;
+            Dst += Count_64;
         }
-      }
-      Src += Count_64;
-      Dst += Count_64;
     }
-  }
-  if (Count_16)
-  {
-    cnt = Count_16>>4;
-    if (g_CpuFlags & CPUF_SSE)
-    {
-      if ((INT_PTR)Src & 0xf)
-      {
-        if ((INT_PTR)Dst & 0xf)
-        {
-          _asm
-          {
+    if (Count_16) {
+        cnt = Count_16 >> 4;
+        if (g_CpuFlags & CPUF_SSE) {
+            if ((INT_PTR)Src & 0xf) {
+                if ((INT_PTR)Dst & 0xf) {
+                    _asm
+                    {
             mov ebx, Src;
             mov edx, Dst;
             mov ecx, cnt;
@@ -1243,12 +1179,10 @@ St18:
             add         edx,10h
             dec         ecx
             jne         St18
-          }
-        }
-        else
-        {
-          _asm
-          {
+                    }
+                } else {
+                    _asm
+                    {
             mov ebx, Src;
             mov edx, Dst;
             mov ecx, cnt;
@@ -1260,15 +1194,12 @@ St19:
             add         edx,10h
             dec         ecx
             jne         St19
-          }
-        }
-      }
-      else
-      {
-        if ((INT_PTR)Dst & 0xf)
-        {
-          _asm
-          {
+                    }
+                }
+            } else {
+                if ((INT_PTR)Dst & 0xf) {
+                    _asm
+                    {
             mov ebx, Src;
             mov edx, Dst;
             mov ecx, cnt;
@@ -1279,12 +1210,10 @@ St20:
             add         edx,10h
             dec         ecx
             jne         St20
-          }
-        }
-        else
-        {
-          _asm
-          {
+                    }
+                } else {
+                    _asm
+                    {
             mov ebx, Src;
             mov edx, Dst;
             mov ecx, cnt;
@@ -1296,15 +1225,12 @@ St21:
             add         edx,10h
             dec         ecx
             jne         St21
-          }
-        }
-      }
-    }
-    else
-    if (g_CpuFlags & CPUF_MMX)
-    {
-      _asm
-      {
+                    }
+                }
+            }
+        } else if (g_CpuFlags & CPUF_MMX) {
+            _asm
+            {
         mov ebx, Src;
         mov edx, Dst;
         mov ecx, cnt;
@@ -1319,12 +1245,10 @@ St22:
         dec       ecx
         jne       St22
         emms
-      }
-    }
-    else
-    {
-      _asm
-      {
+            }
+        } else {
+            _asm
+            {
         mov ebx, Src;
         mov edx, Dst;
         mov ecx, cnt;
@@ -1337,15 +1261,14 @@ St23:
         add      edx,4h
         dec      ecx
         jne      St23
-      }
+            }
+        }
+        Src += Count_16;
+        Dst += Count_16;
     }
-    Src += Count_16;
-    Dst += Count_16;
-  }
-  if (Count_12)
-  {
-    _asm
-    {
+    if (Count_12) {
+        _asm
+        {
       mov ebx, Src;
       mov edx, Dst;
       mov ecx, Count_12;
@@ -1358,14 +1281,13 @@ St24:
       add      edx,4h
       dec      ecx
       jne      St24
+        }
+        Src += Count_12;
+        Dst += Count_12;
     }
-    Src += Count_12;
-    Dst += Count_12;
-  }
-  if (Count_4)
-  {
-    _asm
-    {
+    if (Count_4) {
+        _asm
+        {
       mov ebx, Src;
       mov edx, Dst;
       mov ecx, Count_4;
@@ -1377,19 +1299,17 @@ St25:
       add      edx,4h
       dec      ecx
       jne      St25
+        }
     }
-  }
 }
 
 //==============================================================================
 
-
 // Matrix inversion using 3DNow! instructions set
 // NOTE: On AMD Athlon - much faster then SSE version
-inline bool invertMatrixf_3DNow(float *pOut, const float *pIn)
-{
-  _asm
-  {
+inline bool invertMatrixf_3DNow(float* pOut, const float* pIn) {
+    _asm
+    {
     mov         edx, pIn
     sub         esp,40h
     movq        mm1,mmword ptr [edx+10h]
@@ -1581,16 +1501,15 @@ inline bool invertMatrixf_3DNow(float *pOut, const float *pIn)
 m1:
     femms
     add         esp,40h
-  }
-  return true;
+    }
+    return true;
 }
 
 // Matrix multiplication using 3DNow! instructions set
 // NOTE: On AMD Athlon - much faster then SSE version
-inline void multMatrixf_3DNow(float *product, const float *m1, const float *m2)
-{
-  __asm
-  {
+inline void multMatrixf_3DNow(float* product, const float* m1, const float* m2) {
+    __asm
+    {
     femms
     sub         esp,44h
     mov         edx, m1
@@ -1727,15 +1646,14 @@ inline void multMatrixf_3DNow(float *product, const float *m1, const float *m2)
     mov         ebp,dword ptr [esp+40h]
     add         esp,44h
     femms
-  }
+    }
 }
 
 // Matrix transposing using 3DNow! instructions set
 // NOTE: On AMD Athlon - much faster then SSE version
-inline void transposeMatrixf_3DNow(float *product, const float *m)
-{
-  __asm
-  {
+inline void transposeMatrixf_3DNow(float* product, const float* m) {
+    __asm
+    {
     mov         edx,m
     movq        mm0,mmword ptr [edx]
     movq        mm1,mmword ptr [edx+10h]
@@ -1767,15 +1685,14 @@ inline void transposeMatrixf_3DNow(float *product, const float *m)
     movq        mmword ptr [eax+18h],mm0
     movq        mmword ptr [eax+8],mm2
     femms
-  }
+    }
 }
 
 // Matrix identity using 3DNow! instructions set
 // NOTE: On AMD Athlon - much faster then SSE version
-inline void indentityMatrixf_3DNow(float *product)
-{
-  __asm
-  {
+inline void indentityMatrixf_3DNow(float* product) {
+    __asm
+    {
     movd        mm1,dword ptr const3DN_1_N1
     mov         eax,dword ptr product
     pxor        mm0,mm0
@@ -1791,15 +1708,14 @@ inline void indentityMatrixf_3DNow(float *product)
     movq        mmword ptr [eax+10h],mm2
     movq        mmword ptr [eax+38h],mm2
     femms
-  }
+    }
 }
 
 // Scale Matrix using 3DNow! instructions set
 // NOTE: On AMD Athlon - much faster then SSE version
-inline void scaleMatrixf_3DNow(float *product, float x, float y, float z)
-{
-  __asm
-  {
+inline void scaleMatrixf_3DNow(float* product, float x, float y, float z) {
+    __asm
+    {
     femms
     mov         eax, product
     movd        mm3, y
@@ -1817,15 +1733,14 @@ inline void scaleMatrixf_3DNow(float *product, float x, float y, float z)
     movq        mmword ptr [eax+28h],mm4
     movq        mmword ptr [eax+38h],mm1
     femms
-  }
+    }
 }
 
 // Transform position using 3DNow! instructions set
 // NOTE: On AMD Athlon - much faster then SSE version
-inline void transformVec3f_3DNow(float *result, float *inV, float *matrix)
-{
-  _asm
-  {
+inline void transformVec3f_3DNow(float* result, float* inV, float* matrix) {
+    _asm
+    {
     femms
     mov         eax,inV
     mov         edx,matrix
@@ -1854,15 +1769,14 @@ inline void transformVec3f_3DNow(float *result, float *inV, float *matrix)
     movq        mmword ptr [ecx],mm0
     movq        mmword ptr [ecx+8],mm3
     femms
-  }
+    }
 }
 
 // Transform normal using 3DNow! instructions set
 // NOTE: On AMD Athlon - much faster then SSE version
-inline void transformVec3Nf_3DNow(float *result, float *inV, float *matrix)
-{
-  _asm
-  {
+inline void transformVec3Nf_3DNow(float* result, float* inV, float* matrix) {
+    _asm
+    {
     femms
     mov         eax,inV
     mov         edx,matrix
@@ -1889,17 +1803,16 @@ inline void transformVec3Nf_3DNow(float *result, float *inV, float *matrix)
     movq        mmword ptr [ecx],mm0
     movd        dword ptr [ecx+8],mm3
     femms
-  }
+    }
 }
 
 //==========================================================================================
 // SSE optimizations
 
 // Matrix inversion using SSE instructions set
-inline bool invertMatrixf_SSE(float *pOut, const float *pIn)
-{
-  _asm
-  {
+inline bool invertMatrixf_SSE(float* pOut, const float* pIn) {
+    _asm
+    {
     mov         ebx, esp
     and         esp,0FFFFFFF0h
     sub         esp,90h
@@ -2111,16 +2024,15 @@ m1:
     movhps      qword ptr [ecx],xmm0
 mEnd:
     mov         esp, ebx
-  }
-  return true;
+    }
+    return true;
 }
 
 // Matrix multiplication using SSE instructions set
 // IMPORTANT NOTE: much faster if matrices m1 and product is 16 bytes aligned
-inline void multMatrixf_SSE(float *product, const float *m1, const float *m2)
-{
-  __asm
-  {
+inline void multMatrixf_SSE(float* product, const float* m1, const float* m2) {
+    __asm
+    {
     mov         eax, m2;
     mov         ecx, m1;
     mov         edx, product;
@@ -2275,15 +2187,14 @@ lNonAligned:
     movlps      qword ptr [edx+30h],xmm0
     movhps      qword ptr [edx+38h],xmm0
 lEnd:
-  }
+    }
 }
 
 // Transform position using SSE instructions set
 // IMPORTANT NOTE: much faster if matrix is 16 bytes aligned
-inline void transformVec3f_SSE(float *result, float *inV, float *matrix)
-{
-  _asm
-  {
+inline void transformVec3f_SSE(float* result, float* inV, float* matrix) {
+    _asm
+    {
     and         esp,0FFFFFFF0h
     sub         esp,1Ch
     mov         ecx,inV
@@ -2346,15 +2257,14 @@ lEnd:
     addps       xmm0,xmm2
     addps       xmm0,xmm3
     movups      xmmword ptr [eax],xmm0
-  }
+    }
 }
 
 // Transform normal using SSE instructions set
 // IMPORTANT NOTE: much faster if matrix is 16 bytes aligned
-inline void transformVec3Nf_SSE(float *result, float *inV, float *matrix)
-{
-  _asm
-  {
+inline void transformVec3Nf_SSE(float* result, float* inV, float* matrix) {
+    _asm
+    {
     and         esp,0FFFFFFF0h
     sub         esp,20h
     mov         eax, matrix
@@ -2420,259 +2330,270 @@ lEnd:
     mov         esp,ebp
     pop         ebp
     ret         0Ch
-  }
+    }
 }
 #else
 
 const int PREFNTA_BLOCK = 0x4000;
 
 ILINE void cryMemcpy(void* Dst, const void* Src, int n) {
-	char* dst=(char*)Dst;
-	char* src=(char*)Src;
-	while (n > PREFNTA_BLOCK) 
-	{
+    char* dst = (char*)Dst;
+    char* src = (char*)Src;
+    while (n > PREFNTA_BLOCK) {
 #if !defined(LINUX)
-		for (int p = 0; p < PREFNTA_BLOCK; p+=64) { _mm_prefetch((char *) src + p, _MM_HINT_NTA); }
+        for (int p = 0; p < PREFNTA_BLOCK; p += 64) {
+            _mm_prefetch((char*)src + p, _MM_HINT_NTA);
+        }
 #endif
-		memcpy(dst, src, PREFNTA_BLOCK);
-		src += PREFNTA_BLOCK;
-		dst += PREFNTA_BLOCK;
-		n -= PREFNTA_BLOCK;
-	}
+        memcpy(dst, src, PREFNTA_BLOCK);
+        src += PREFNTA_BLOCK;
+        dst += PREFNTA_BLOCK;
+        n -= PREFNTA_BLOCK;
+    }
 #if !defined(LINUX)
-	for (int p = 0; p < n; p+=64) { _mm_prefetch((char *) src + p, _MM_HINT_NTA); }
+    for (int p = 0; p < n; p += 64) {
+        _mm_prefetch((char*)src + p, _MM_HINT_NTA);
+    }
 #endif
-	memcpy(dst, src, n);
+    memcpy(dst, src, n);
 }
 
-ILINE void cryMemcpy( void* Dst, const void* Src, INT n, int nFlags )
-{
-	char* dst=(char*)Dst;
-	char* src=(char*)Src;
-	while (n > PREFNTA_BLOCK) 
-	{
+ILINE void cryMemcpy(void* Dst, const void* Src, INT n, int nFlags) {
+    char* dst = (char*)Dst;
+    char* src = (char*)Src;
+    while (n > PREFNTA_BLOCK) {
 #if !defined(LINUX)
-		for (int p = 0; p < PREFNTA_BLOCK; p+=64) { _mm_prefetch((char *) src + p, _MM_HINT_NTA); }
+        for (int p = 0; p < PREFNTA_BLOCK; p += 64) {
+            _mm_prefetch((char*)src + p, _MM_HINT_NTA);
+        }
 #endif
-		memcpy(dst, src, PREFNTA_BLOCK);
-		src += PREFNTA_BLOCK;
-		dst += PREFNTA_BLOCK;
-		n -= PREFNTA_BLOCK;
-	}
+        memcpy(dst, src, PREFNTA_BLOCK);
+        src += PREFNTA_BLOCK;
+        dst += PREFNTA_BLOCK;
+        n -= PREFNTA_BLOCK;
+    }
 #if !defined(LINUX)
-	for (int p = 0; p < n; p+=64) { _mm_prefetch((char *) src + p, _MM_HINT_NTA); }
+    for (int p = 0; p < n; p += 64) {
+        _mm_prefetch((char*)src + p, _MM_HINT_NTA);
+    }
 #endif
-	memcpy(dst, src, n);
+    memcpy(dst, src, n);
 }
 #endif
 
-inline void mathTransformVec3fN(float *pOut, float *pIn, float *matrix, int nV, int OptFlags)
-{
+inline void mathTransformVec3fN(float* pOut, float* pIn, float* matrix, int nV, int OptFlags) {
 #if defined _CPU_X86 && !defined(LINUX)
-	// TODO: AMD64 port: NEED TO IMPLEMENT!!!
-	int i;
-  if (OptFlags & CPUF_3DNOW)
-  {
-    for (i=0; i<nV; i++)
-    {
-      transformVec3Nf_3DNow(pOut, pIn, matrix);
-      pIn += 3;
-      pOut += 3;
+    // TODO: AMD64 port: NEED TO IMPLEMENT!!!
+    int i;
+    if (OptFlags & CPUF_3DNOW) {
+        for (i = 0; i < nV; i++) {
+            transformVec3Nf_3DNow(pOut, pIn, matrix);
+            pIn += 3;
+            pOut += 3;
+        }
+    } else if (OptFlags & CPUF_SSE) {
+        for (i = 0; i < nV; i++) {
+            transformVec3Nf_SSE(pOut, pIn, matrix);
+            pIn += 3;
+            pOut += 3;
+        }
+    } else {
+        for (i = 0; i < nV; i++) {
+            transformVec3Nf_SSE(pOut, pIn, matrix);
+            pIn += 3;
+            pOut += 3;
+        }
     }
-  }
-  else
-  if (OptFlags & CPUF_SSE)
-  {
-    for (i=0; i<nV; i++)
-    {
-      transformVec3Nf_SSE(pOut, pIn, matrix);
-      pIn += 3;
-      pOut += 3;
-    }
-  }
-  else
-  {
-    for (i=0; i<nV; i++)
-    {
-      transformVec3Nf_SSE(pOut, pIn, matrix);
-      pIn += 3;
-      pOut += 3;
-    }
-  }
 #endif
 }
 
-inline void mathTransformVec3f(float *pOut, float *pIn, float *matrix, int nV, int OptFlags)
-{
+inline void mathTransformVec3f(float* pOut, float* pIn, float* matrix, int nV, int OptFlags) {
 #if defined(_CPU_X86) && !defined(LINUX)
-	int i;
-	// TODO: AMD64 port: NEED TO IMPLEMENT!!!
-  if (OptFlags & CPUF_3DNOW)
-  {
-    for (i=0; i<nV; i++)
-    {
-      transformVec3f_3DNow(pOut, pIn, matrix);
-      pIn += 3;
-      pOut += 3;
+    int i;
+    // TODO: AMD64 port: NEED TO IMPLEMENT!!!
+    if (OptFlags & CPUF_3DNOW) {
+        for (i = 0; i < nV; i++) {
+            transformVec3f_3DNow(pOut, pIn, matrix);
+            pIn += 3;
+            pOut += 3;
+        }
+    } else if (OptFlags & CPUF_SSE) {
+        for (i = 0; i < nV; i++) {
+            transformVec3f_SSE(pOut, pIn, matrix);
+            pIn += 3;
+            pOut += 3;
+        }
+    } else {
+        for (i = 0; i < nV; i++) {
+            transformVec3f_SSE(pOut, pIn, matrix);
+            pIn += 3;
+            pOut += 3;
+        }
     }
-  }
-  else
-  if (OptFlags & CPUF_SSE)
-  {
-    for (i=0; i<nV; i++)
-    {
-      transformVec3f_SSE(pOut, pIn, matrix);
-      pIn += 3;
-      pOut += 3;
-    }
-  }
-  else
-  {
-    for (i=0; i<nV; i++)
-    {
-      transformVec3f_SSE(pOut, pIn, matrix);
-      pIn += 3;
-      pOut += 3;
-    }
-  }
 #endif
 }
 
-inline void mathMatrixInverse(float *pOut, float *pIn, int OptFlags)
-{
+inline void mathMatrixInverse(float* pOut, float* pIn, int OptFlags) {
 #if defined(_CPU_X86) && !defined(LINUX)
-	// TODO: AMD64 port: NEED TO IMPLEMENT!!!
-  if (OptFlags & CPUF_3DNOW)
-    invertMatrixf_3DNow(pOut, pIn);
-  else
-  if (OptFlags & CPUF_SSE)
-    invertMatrixf_SSE(pOut, pIn);
-  else
-#endif
-    QQinvertMatrixf(pOut, pIn);
-}
-
-inline void mathMatrixMultiply(float *pOut, float *pM1, float *pM2, int OptFlags)
-{
-#if defined _CPU_X86 && !defined(LINUX)
-  if (OptFlags & CPUF_3DNOW)
-    multMatrixf_3DNow(pOut, pM1, pM2);
-  else
-  if (OptFlags & CPUF_SSE)
-    multMatrixf_SSE(pOut, pM1, pM2);
-  else
-#endif
-    multMatrixf(pOut, pM1, pM2);
-}
-
-inline void mathMatrixTranspose(float *pOut, float *pIn, int OptFlags)
-{
-#if defined _CPU_X86 && !defined(LINUX)
-	// TODO: AMD64 port: NEED TO IMPLEMENT!!!
-  if (OptFlags & CPUF_3DNOW)
-    transposeMatrixf_3DNow(pOut, pIn);
-  else
-#endif
-	{
-    if (pOut == pIn)
-    {
-      Exchange(pOut[1], pOut[4]);
-      Exchange(pOut[2], pOut[8]);
-      Exchange(pOut[3], pOut[12]);
-
-      Exchange(pOut[6], pOut[9]);
-      Exchange(pOut[7], pOut[13]);
-
-      Exchange(pOut[11], pOut[14]);
-    }
+    // TODO: AMD64 port: NEED TO IMPLEMENT!!!
+    if (OptFlags & CPUF_3DNOW)
+        invertMatrixf_3DNow(pOut, pIn);
+    else if (OptFlags & CPUF_SSE)
+        invertMatrixf_SSE(pOut, pIn);
     else
+#endif
+        QQinvertMatrixf(pOut, pIn);
+}
+
+inline void mathMatrixMultiply(float* pOut, float* pM1, float* pM2, int OptFlags) {
+#if defined _CPU_X86 && !defined(LINUX)
+    if (OptFlags & CPUF_3DNOW)
+        multMatrixf_3DNow(pOut, pM1, pM2);
+    else if (OptFlags & CPUF_SSE)
+        multMatrixf_SSE(pOut, pM1, pM2);
+    else
+#endif
+        multMatrixf(pOut, pM1, pM2);
+}
+
+inline void mathMatrixTranspose(float* pOut, float* pIn, int OptFlags) {
+#if defined _CPU_X86 && !defined(LINUX)
+    // TODO: AMD64 port: NEED TO IMPLEMENT!!!
+    if (OptFlags & CPUF_3DNOW)
+        transposeMatrixf_3DNow(pOut, pIn);
+    else
+#endif
     {
-      pOut[0] = pIn[0];
-      pOut[4] = pIn[1];
-      pOut[8] = pIn[2];
-      pOut[12] = pIn[3];
+        if (pOut == pIn) {
+            Exchange(pOut[1], pOut[4]);
+            Exchange(pOut[2], pOut[8]);
+            Exchange(pOut[3], pOut[12]);
 
-      pOut[1] = pIn[4];
-      pOut[5] = pIn[5];
-      pOut[9] = pIn[6];
-      pOut[13] = pIn[7];
+            Exchange(pOut[6], pOut[9]);
+            Exchange(pOut[7], pOut[13]);
 
-      pOut[2] = pIn[8];
-      pOut[6] = pIn[9];
-      pOut[10] = pIn[10];
-      pOut[14] = pIn[11];
+            Exchange(pOut[11], pOut[14]);
+        } else {
+            pOut[0] = pIn[0];
+            pOut[4] = pIn[1];
+            pOut[8] = pIn[2];
+            pOut[12] = pIn[3];
 
-      pOut[3] = pIn[12];
-      pOut[7] = pIn[13];
-      pOut[11] = pIn[14];
-      pOut[15] = pIn[15];
+            pOut[1] = pIn[4];
+            pOut[5] = pIn[5];
+            pOut[9] = pIn[6];
+            pOut[13] = pIn[7];
+
+            pOut[2] = pIn[8];
+            pOut[6] = pIn[9];
+            pOut[10] = pIn[10];
+            pOut[14] = pIn[11];
+
+            pOut[3] = pIn[12];
+            pOut[7] = pIn[13];
+            pOut[11] = pIn[14];
+            pOut[15] = pIn[15];
+        }
     }
-  }
 }
 
-inline void mathRotateX(float *pMatr, float fDegr, int OptFlags)
-{
-  Matrix44 rm;
-  float cossin[2];
-  sincos_tpl(fDegr*gf_DEGTORAD, cossin);
-  rm(0,0) = 1; rm(0,1) = 0; rm(0,2) = 0; rm(0,3) = 0;
-  rm(1,0) = 0; rm(1,1) = cossin[0]; rm(1,2) = cossin[1]; rm(1,3) = 0;
-  rm(2,0) = 0; rm(2,1) = -cossin[1]; rm(2,2) = cossin[0]; rm(2,3) = 0;
-  rm(3,0) = 0; rm(3,1) = 0; rm(3,2) = 0; rm(3,3) = 1;
-  mathMatrixMultiply(pMatr, pMatr, rm.GetData(), OptFlags);
+inline void mathRotateX(float* pMatr, float fDegr, int OptFlags) {
+    Matrix44 rm;
+    float cossin[2];
+    sincos_tpl(fDegr * gf_DEGTORAD, cossin);
+    rm(0, 0) = 1;
+    rm(0, 1) = 0;
+    rm(0, 2) = 0;
+    rm(0, 3) = 0;
+    rm(1, 0) = 0;
+    rm(1, 1) = cossin[0];
+    rm(1, 2) = cossin[1];
+    rm(1, 3) = 0;
+    rm(2, 0) = 0;
+    rm(2, 1) = -cossin[1];
+    rm(2, 2) = cossin[0];
+    rm(2, 3) = 0;
+    rm(3, 0) = 0;
+    rm(3, 1) = 0;
+    rm(3, 2) = 0;
+    rm(3, 3) = 1;
+    mathMatrixMultiply(pMatr, pMatr, rm.GetData(), OptFlags);
 }
-inline void mathRotateY(float *pMatr, float fDegr, int OptFlags)
-{
-  Matrix44 rm;
-  float cossin[2];
-  sincos_tpl(fDegr*gf_DEGTORAD, cossin);
-  rm(0,0) = cossin[0]; rm(0,1) = 0; rm(0,2) = -cossin[1]; rm(0,3) = 0;
-  rm(1,0) = 0; rm(1,1) = 1; rm(1,2) = 0; rm(1,3) = 0;
-  rm(2,0) = cossin[1]; rm(2,1) = 0; rm(2,2) = cossin[0]; rm(2,3) = 0;
-  rm(3,0) = 0; rm(3,1) = 0; rm(3,2) = 0; rm(3,3) = 1;
-  mathMatrixMultiply(pMatr, pMatr, rm.GetData(), OptFlags);
+inline void mathRotateY(float* pMatr, float fDegr, int OptFlags) {
+    Matrix44 rm;
+    float cossin[2];
+    sincos_tpl(fDegr * gf_DEGTORAD, cossin);
+    rm(0, 0) = cossin[0];
+    rm(0, 1) = 0;
+    rm(0, 2) = -cossin[1];
+    rm(0, 3) = 0;
+    rm(1, 0) = 0;
+    rm(1, 1) = 1;
+    rm(1, 2) = 0;
+    rm(1, 3) = 0;
+    rm(2, 0) = cossin[1];
+    rm(2, 1) = 0;
+    rm(2, 2) = cossin[0];
+    rm(2, 3) = 0;
+    rm(3, 0) = 0;
+    rm(3, 1) = 0;
+    rm(3, 2) = 0;
+    rm(3, 3) = 1;
+    mathMatrixMultiply(pMatr, pMatr, rm.GetData(), OptFlags);
 }
-inline void mathRotateZ(float *pMatr, float fDegr, int OptFlags)
-{
-  Matrix44 rm;
-  float cossin[2];
-  sincos_tpl(fDegr*gf_DEGTORAD, cossin);
-  rm(0,0) = cossin[0]; rm(0,1) = cossin[1]; rm(0,2) = 0; rm(0,3) = 0;
-  rm(1,0) = -cossin[1]; rm(1,1) = cossin[0]; rm(1,2) = 0; rm(1,3) = 0;
-  rm(2,0) = 0; rm(2,1) = 0; rm(2,2) = 1; rm(2,3) = 0;
-  rm(3,0) = 0; rm(3,1) = 0; rm(3,2) = 0; rm(3,3) = 1;
-  mathMatrixMultiply(pMatr, pMatr, rm.GetData(), OptFlags);
+inline void mathRotateZ(float* pMatr, float fDegr, int OptFlags) {
+    Matrix44 rm;
+    float cossin[2];
+    sincos_tpl(fDegr * gf_DEGTORAD, cossin);
+    rm(0, 0) = cossin[0];
+    rm(0, 1) = cossin[1];
+    rm(0, 2) = 0;
+    rm(0, 3) = 0;
+    rm(1, 0) = -cossin[1];
+    rm(1, 1) = cossin[0];
+    rm(1, 2) = 0;
+    rm(1, 3) = 0;
+    rm(2, 0) = 0;
+    rm(2, 1) = 0;
+    rm(2, 2) = 1;
+    rm(2, 3) = 0;
+    rm(3, 0) = 0;
+    rm(3, 1) = 0;
+    rm(3, 2) = 0;
+    rm(3, 3) = 1;
+    mathMatrixMultiply(pMatr, pMatr, rm.GetData(), OptFlags);
 }
 
-inline void mathScale(float *pMatr, Vec3d vScale, int)
-{
-  pMatr[0] *= vScale.x;   pMatr[4] *= vScale.y;   pMatr[8]  *= vScale.z;
-  pMatr[1] *= vScale.x;   pMatr[5] *= vScale.y;   pMatr[9]  *= vScale.z;
-  pMatr[2] *= vScale.x;   pMatr[6] *= vScale.y;   pMatr[10] *= vScale.z;
-  pMatr[3] *= vScale.x;   pMatr[7] *= vScale.y;   pMatr[11] *= vScale.z;
+inline void mathScale(float* pMatr, Vec3d vScale, int) {
+    pMatr[0] *= vScale.x;
+    pMatr[4] *= vScale.y;
+    pMatr[8] *= vScale.z;
+    pMatr[1] *= vScale.x;
+    pMatr[5] *= vScale.y;
+    pMatr[9] *= vScale.z;
+    pMatr[2] *= vScale.x;
+    pMatr[6] *= vScale.y;
+    pMatr[10] *= vScale.z;
+    pMatr[3] *= vScale.x;
+    pMatr[7] *= vScale.y;
+    pMatr[11] *= vScale.z;
 }
 
-inline void mathCalcMatrix(Matrix44& Matrix, Vec3d vPos, Vec3d vAngs, Vec3d vScale, int OptFlags)
-{
-  Matrix.SetTranslationMat(vPos);
+inline void mathCalcMatrix(Matrix44& Matrix, Vec3d vPos, Vec3d vAngs, Vec3d vScale, int OptFlags) {
+    Matrix.SetTranslationMat(vPos);
 
-  if (vAngs.z)
-    mathRotateZ(Matrix.GetData(), vAngs.z, OptFlags);
-  if (vAngs.y)
-    mathRotateY(Matrix.GetData(), vAngs.y, OptFlags);
-  if (vAngs.x)
-    mathRotateX(Matrix.GetData(), vAngs.x, OptFlags);
-  if (!IsEquivalent(vScale, Vec3d(1.0f, 1.0f, 1.0f)))
-    mathScale(Matrix.GetData(), vScale, OptFlags);
+    if (vAngs.z)
+        mathRotateZ(Matrix.GetData(), vAngs.z, OptFlags);
+    if (vAngs.y)
+        mathRotateY(Matrix.GetData(), vAngs.y, OptFlags);
+    if (vAngs.x)
+        mathRotateX(Matrix.GetData(), vAngs.x, OptFlags);
+    if (!IsEquivalent(vScale, Vec3d(1.0f, 1.0f, 1.0f)))
+        mathScale(Matrix.GetData(), vScale, OptFlags);
 }
 
 #pragma warning(pop)
 
 #endif
 
-
-
-
-
-
-#endif //math
+#endif // math

@@ -67,7 +67,7 @@ static void f_luaopen (lua_State *L, void *ud) {
     G(L)->type2tag = luaH_new(L, 10);
     G(L)->registry = luaH_new(L, 0);
     G(L)->weakregistry = luaH_new(L, 0);
-		G(L)->xregistry = luaH_new(L, 0);
+    G(L)->xregistry = luaH_new(L, 0);
     /* make weakregistry weak */
     G(L)->weakregistry->weakmode = LUA_WEAK_KEY | LUA_WEAK_VALUE;
     luaS_resize(L, MINPOWER2);
@@ -94,9 +94,9 @@ LUA_API lua_State *lua_newthread (lua_State *OL, int stacksize) {
     L->linehook = NULL;
     L->allowhooks = 1;
     L->next = L->previous = L;
-		/*ALBERTO*/
-		L->userptr=NULL;
-		/*END ALBERTO*/
+    /*ALBERTO*/
+    L->userptr=NULL;
+    /*END ALBERTO*/
     so.stacksize = stacksize;
     so.L = OL;
     if (luaD_runprotected(L, f_luaopen, &so) != 0) {

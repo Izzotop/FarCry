@@ -1,7 +1,7 @@
 /////////////////////////////////////////////////////////////////////////
 //
 // CSizingControlBarCF          Version 2.44
-// 
+//
 // Created: Dec 21, 1998        Last Modified: March 31, 2002
 //
 // See the official site at www.datamekanix.com for documentation and
@@ -10,7 +10,7 @@
 /////////////////////////////////////////////////////////////////////////
 // Copyright (C) 1998-2002 by Cristi Posea. All rights reserved.
 //
-// This code is free for personal and commercial use, providing this 
+// This code is free for personal and commercial use, providing this
 // notice remains intact in the source files and all eventual changes are
 // clearly marked with comments.
 //
@@ -45,27 +45,26 @@
 #define baseCSizingControlBarCF CSizingControlBarG
 #endif
 
-class CSizingControlBarCF : public baseCSizingControlBarCF
-{
+class CSizingControlBarCF : public baseCSizingControlBarCF {
     DECLARE_DYNAMIC(CSizingControlBarCF)
 
-// Construction
+    // Construction
 public:
     CSizingControlBarCF();
 
-// Overridables
+    // Overridables
     virtual void OnUpdateCmdUI(CFrameWnd* pTarget, BOOL bDisableIfNoHndler);
 
-// Implementation
+    // Implementation
 protected:
     // implementation helpers
     virtual void NcPaintGripper(CDC* pDC, CRect rcClient);
 
 protected:
-    BOOL    m_bActive; // a child has focus
+    BOOL m_bActive; // a child has focus
     CString m_sFontFace;
 
-// Generated message map functions
+    // Generated message map functions
 protected:
     //{{AFX_MSG(CSizingControlBarCF)
     //}}AFX_MSG

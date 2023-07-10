@@ -1,12 +1,12 @@
 //////////////////////////////////////////////////////////////////////
 //
-//	Crytek CryENGINE Source code
-// 
-//	File: System.h	
-// 
-//	History:
-//	-Jan 31,2001:Originally Created by Marco Corbetta
-//	-: modified by all
+//  Crytek CryENGINE Source code
+//
+//  File: System.h
+//
+//  History:
+//  -Jan 31,2001:Originally Created by Marco Corbetta
+//  -: modified by all
 //
 //////////////////////////////////////////////////////////////////////
 
@@ -14,7 +14,7 @@
 #define SYSTEM_H
 
 #if _MSC_VER > 1000
-# pragma once
+#pragma once
 #endif
 
 #include <ISystem.h>
@@ -33,12 +33,12 @@
 #include "DownloadManager.h"
 
 #if defined(LINUX)
-	#include "CryLibrary.h"
+#include "CryLibrary.h"
 #endif
 
 #ifdef WIN32
 #include <Tlhelp32.h>
-#endif	
+#endif
 
 #ifdef WIN32
 typedef HMODULE WIN_HMODULE;
@@ -46,7 +46,7 @@ typedef HMODULE WIN_HMODULE;
 typedef void* WIN_HMODULE;
 #endif
 
-//forward declarations
+// forward declarations
 class CScriptSink;
 class CLUADbg;
 struct IMusicSystem;
@@ -55,7 +55,7 @@ struct IDataProbe;
 
 #define PHSYICS_OBJECT_ENTITY 0
 
-typedef void (__cdecl *VTuneFunction)(void);
+typedef void(__cdecl* VTuneFunction)();
 extern VTuneFunction VTResume;
 extern VTuneFunction VTPause;
 
@@ -66,480 +66,472 @@ The System interface Class
 */
 class CXConsole;
 //////////////////////////////////////////////////////////////////////
-//!	ISystem implementation
-class CSystem : 
-	public ISystem
-{
+//!  ISystem implementation
+class CSystem : public ISystem {
 public:
-	
-	CSystem();
-	~CSystem();
-	bool IsDedicated(){return m_bDedicatedServer;}
-	///////////////////////////////////////////////////////////////////////////
-	//! @name ISystem implementation
-	//@{ 
-	virtual bool Init( const SSystemInitParams &params );
-	virtual void Release();
-	// Release all resources.
-	void	ShutDown(bool bRelaunch);
+    CSystem();
+    ~CSystem();
 
-	virtual bool CreateGame( const SGameInitParams &params );
-	virtual bool Update( int updateFlags=0, int nPauseMode=0);
-	virtual void UpdateScriptSink();
+    bool IsDedicated() override { return m_bDedicatedServer; }
 
-	//! Begin rendering frame.
-	void	RenderBegin();
-	//! Render subsystems.
-	void	Render();
-	//! End rendering frame and swap back buffer.
-	void	RenderEnd();
+    ///////////////////////////////////////////////////////////////////////////
+    //! @name ISystem implementation
+    //@{
+    virtual bool Init(const SSystemInitParams& params);
+    void Release() override;
+    // Release all resources.
+    void ShutDown(bool bRelaunch);
 
-	//! Update screen during loading.
-	void UpdateLoadingScreen();
+    bool CreateGame(const SGameInitParams& params) override;
+    bool Update(int updateFlags = 0, int nPauseMode = 0) override;
+    void UpdateScriptSink() override;
 
-	//! Renders the statistics; this is called from RenderEnd, but if the 
-	//! Host application (Editor) doesn't employ the Render cycle in ISystem,
-	//! it may call this method to render the essencial statistics
-	void RenderStatistics ();
+    //! Begin rendering frame.
+    void RenderBegin() override;
+    //! Render subsystems.
+    void Render() override;
+    //! End rendering frame and swap back buffer.
+    void RenderEnd() override;
 
-	//! dumps the memory usage statistics to the log
-	void DumpMemoryUsageStatistics();
+    //! Update screen during loading.
+    void UpdateLoadingScreen();
 
-	void Relaunch( bool bRelaunch );
-	bool IsRelaunch() const { return m_bRelaunch; };
-	void Quit();
-	bool IsQuitting();
-	void SetAffinity();
-  const char *GetUserName();
-	
-	IGame						*GetIGame(){ return m_pGame; }
-	INetwork				*GetINetwork(){ return m_pNetwork; }
-	IRenderer				*GetIRenderer(){ return CSystem::m_pRenderer; }
-	IInput					*GetIInput(){ return m_pIInput; }
-	ITimer					*GetITimer(){ return &m_Time; }
-	ICryPak					*GetIPak(){ return m_pIPak; }
-	IConsole				*GetIConsole();
-	IScriptSystem		*GetIScriptSystem(){ return m_pScriptSystem; }
-	I3DEngine				*GetI3DEngine(){ return m_pI3DEngine; }
-	ICryCharManager *GetIAnimationSystem() {return m_pICryCharManager;}
-	ISoundSystem		*GetISoundSystem(){ return m_pISound; }
-	IMusicSystem		*GetIMusicSystem(){ return m_pIMusic; }
-  IPhysicalWorld	*GetIPhysicalWorld(){ return m_pIPhysicalWorld;}
-	IMovieSystem		*GetIMovieSystem() { return m_pIMovieSystem; };
-	IAISystem				*GetAISystem(){ return m_pAISystem;}
-	IMemoryManager	*GetIMemoryManager(){ return m_pMemoryManager;}
-	IEntitySystem		*GetIEntitySystem(){ return m_pEntitySystem;}
-	ICryFont				*GetICryFont(){ return m_pICryFont; }
-	ILog						*GetILog(){ return m_pLog; }
-	IStreamEngine   *GetStreamEngine() {return m_pStreamEngine;}
-	CLUADbg					*GetLuaDebugger() { return m_pLuaDebugger; }
-	IValidator			*GetIValidator() { return m_pValidator; };
-	IFrameProfileSystem* GetIProfileSystem() { return &m_FrameProfileSystem; }
-	const char			*GetGameMOD() { if (m_szGameMOD[0]) return (m_szGameMOD);return (NULL); }
+    //! Renders the statistics; this is called from RenderEnd, but if the
+    //! Host application (Editor) doesn't employ the Render cycle in ISystem,
+    //! it may call this method to render the essencial statistics
+    void RenderStatistics() override;
 
-	XDOM::IXMLDOMDocument *CreateXMLDocument();
+    //! dumps the memory usage statistics to the log
+    void DumpMemoryUsageStatistics() override;
 
-	//////////////////////////////////////////////////////////////////////////
-	virtual XmlNodeRef CreateXmlNode( const char *sNodeName="" );
-	virtual XmlNodeRef LoadXmlFile( const char *sFilename );
-	virtual XmlNodeRef LoadXmlFromString( const char *sXmlString );
-	//////////////////////////////////////////////////////////////////////////
+    void Relaunch(bool bRelaunch) override;
+    bool IsRelaunch() const { return m_bRelaunch; }
+    void Quit() override;
+    bool IsQuitting() override;
+    void SetAffinity();
+    const char* GetUserName();
 
-	void SetViewCamera(class CCamera &Camera){ m_ViewCamera = Camera; }
-	CCamera& GetViewCamera() { return m_ViewCamera; }
+    IGame* GetIGame() override { return m_pGame; }
+    INetwork* GetINetwork() override { return m_pNetwork; }
+    IRenderer* GetIRenderer() override { return CSystem::m_pRenderer; }
+    IInput* GetIInput() override { return m_pIInput; }
+    ITimer* GetITimer() override { return &m_Time; }
+    ICryPak* GetIPak() override { return m_pIPak; }
+    IConsole* GetIConsole() override;
+    IScriptSystem* GetIScriptSystem() override { return m_pScriptSystem; }
+    I3DEngine* GetI3DEngine() override { return m_pI3DEngine; }
+    ICryCharManager* GetIAnimationSystem() override { return m_pICryCharManager; }
+    ISoundSystem* GetISoundSystem() override { return m_pISound; }
+    IMusicSystem* GetIMusicSystem() override { return m_pIMusic; }
+    IPhysicalWorld* GetIPhysicalWorld() override { return m_pIPhysicalWorld; }
+    IMovieSystem* GetIMovieSystem() override { return m_pIMovieSystem; }
+    IAISystem* GetAISystem() override { return m_pAISystem; }
+    IMemoryManager* GetIMemoryManager() override { return m_pMemoryManager; }
+    IEntitySystem* GetIEntitySystem() override { return m_pEntitySystem; }
+    ICryFont* GetICryFont() override { return m_pICryFont; }
+    ILog* GetILog() override { return m_pLog; }
+    IStreamEngine* GetStreamEngine() override { return m_pStreamEngine; }
+    CLUADbg* GetLuaDebugger() const { return m_pLuaDebugger; }
+    IValidator* GetIValidator() override { return m_pValidator; }
+    IFrameProfileSystem* GetIProfileSystem() override { return &m_FrameProfileSystem; }
+    const char* GetGameMOD() { return m_szGameMOD[0] ? m_szGameMOD : nullptr; }
 
-  virtual int GetCPUFlags()
-  {
-    int Flags = 0;
-    if (!m_pCpu)
-      return Flags;
-    if (m_pCpu->hasMMX())
-      Flags |= CPUF_MMX;
-    if (m_pCpu->hasSSE())
-      Flags |= CPUF_SSE;
-    if (m_pCpu->hasSSE2())
-      Flags |= CPUF_SSE;
-    if (m_pCpu->has3DNow())
-      Flags |= CPUF_3DNOW;
+    XDOM::IXMLDOMDocument* CreateXMLDocument() override;
 
-    return Flags;
-  }
-  virtual double GetSecondsPerCycle()
-  {
-    if (!m_pCpu)
-      return 0;
-    else
-      return m_pCpu->m_Cpu[0].m_SecondsPerCycle;
-  }
+    //////////////////////////////////////////////////////////////////////////
+    XmlNodeRef CreateXmlNode(const char* sNodeName = "") override;
+    XmlNodeRef LoadXmlFile(const char* sFilename) override;
+    XmlNodeRef LoadXmlFromString(const char* sXmlString) override;
+    //////////////////////////////////////////////////////////////////////////
 
-	void CreateEntityScriptBinding(IEntity *pEntity);
+    void SetViewCamera(class CCamera& Camera) override { m_ViewCamera = Camera; }
+    CCamera& GetViewCamera() override { return m_ViewCamera; }
 
-	void IgnoreUpdates( bool bIgnore ) { m_bIgnoreUpdates = bIgnore; };
-	void SetGCFrequency( const float fRate );
+    int GetCPUFlags() override {
+        int Flags = 0;
+        if (!m_pCpu)
+            return Flags;
+        if (m_pCpu->hasMMX())
+            Flags |= CPUF_MMX;
+        if (m_pCpu->hasSSE())
+            Flags |= CPUF_SSE;
+        if (m_pCpu->hasSSE2())
+            Flags |= CPUF_SSE;
+        if (m_pCpu->has3DNow())
+            Flags |= CPUF_3DNOW;
 
-	void SetIProcess(IProcess *process);
-	IProcess* GetIProcess(){ return m_pProcess; }
+        return Flags;
+    }
+    double GetSecondsPerCycle() override {
+        return m_pCpu ? m_pCpu->m_Cpu[0].m_SecondsPerCycle : 0;
+    }
 
-	bool IsTestMode() const { return m_bTestMode; }
-	//@}
+    void CreateEntityScriptBinding(IEntity* pEntity) override;
 
-	IRenderer	*CreateRenderer(bool fullscreen, void* hinst, void* hWndAttach = 0);
+    void IgnoreUpdates(bool bIgnore) override { m_bIgnoreUpdates = bIgnore; }
+    void SetGCFrequency(float fRate) override;
 
-	virtual void Error( const char *format,... );
-	// Validator Warning.
-	void Warning( EValidatorModule module,EValidatorSeverity severity,int flags,const char *file,const char *format,... );
-	bool CheckLogVerbosity( int verbosity );
-		
-	virtual void DebugStats(bool checkpoint, bool leaks);
-	void DumpWinHeaps();
-	// this enumeration describes the purpose for which the statistics is gathered.
-	// if it's gathered to be dumped, then some different rules may be applied
-	enum MemStatsPurposeEnum {nMSP_ForDisplay, nMSP_ForDump};
-	void GetExeSizes (ICrySizer* pSizer, MemStatsPurposeEnum nPurpose = nMSP_ForDisplay);
-	
-	// tries to log the call stack . for DEBUG purposes only
-	void LogCallStack();
+    void SetIProcess(IProcess* process) override;
+    IProcess* GetIProcess() override { return m_pProcess; }
 
-	struct DumpHeap32Stats
-	{
-		DumpHeap32Stats():dwFree(0),dwMoveable(0),dwFixed(0),dwUnknown(0)
-		{}
-		void operator += (const DumpHeap32Stats& right)
-		{
-			dwFree += right.dwFree;
-			dwMoveable += right.dwMoveable;
-			dwFixed += right.dwFixed;
-			dwUnknown += right.dwUnknown;
-		}
-		DWORD dwFree;
-		DWORD dwMoveable;
-		DWORD dwFixed;
-		DWORD dwUnknown;
-	};
+    bool IsTestMode() const override { return m_bTestMode; }
+    //@}
+
+    IRenderer* CreateRenderer(bool fullscreen, void* hinst, void* hWndAttach = nullptr) override;
+
+    void Error(const char* format, ...) override;
+    // Validator Warning.
+    void Warning(EValidatorModule module, EValidatorSeverity severity, int flags, const char* file, const char* format, ...) override;
+    bool CheckLogVerbosity(int verbosity) override;
+
+    void DebugStats(bool checkpoint, bool leaks) override;
+    void DumpWinHeaps() override;
+    // this enumeration describes the purpose for which the statistics is gathered.
+    // if it's gathered to be dumped, then some different rules may be applied
+    enum MemStatsPurposeEnum { nMSP_ForDisplay, nMSP_ForDump };
+    void GetExeSizes(ICrySizer* pSizer, MemStatsPurposeEnum nPurpose = nMSP_ForDisplay);
+
+    // tries to log the call stack . for DEBUG purposes only
+    void LogCallStack();
+
+    struct DumpHeap32Stats {
+        DumpHeap32Stats() : dwFree(0), dwMoveable(0), dwFixed(0), dwUnknown(0) {}
+        void operator+=(const DumpHeap32Stats& right) {
+            dwFree += right.dwFree;
+            dwMoveable += right.dwMoveable;
+            dwFixed += right.dwFixed;
+            dwUnknown += right.dwUnknown;
+        }
+        DWORD dwFree;
+        DWORD dwMoveable;
+        DWORD dwFixed;
+        DWORD dwUnknown;
+    };
 #if defined(_XBOX) || defined(LINUX)
-	//ASH: HEAPLIST32 doesn't exist on xbox.
-	//void DumpHeap32 (const HEAPLIST32& hl, DumpHeap32Stats& stats);
-#else // _XBOX
-	void DumpHeap32 (const HEAPLIST32& hl, DumpHeap32Stats& stats);
+    // ASH: HEAPLIST32 doesn't exist on xbox.
+    // void DumpHeap32 (const HEAPLIST32& hl, DumpHeap32Stats& stats);
+#else  // _XBOX
+    void DumpHeap32(const HEAPLIST32& hl, DumpHeap32Stats& stats);
 #endif // _XBOX
-	virtual int DumpMMStats(bool log);
+    int DumpMMStats(bool log) override;
 
-	//! Return pointer to user defined callback.
-	ISystemUserCallback* GetUserCallback() const { return m_pUserCallback; };
+    //! Return pointer to user defined callback.
+    ISystemUserCallback* GetUserCallback() const {
+        return m_pUserCallback;
+    };
 
-	//! refreshes the m_pMemStats if necessary; creates it if it's not created
-	void TickMemStats(MemStatsPurposeEnum nPurpose = nMSP_ForDisplay);
-	void SaveConfiguration();
-	ESystemConfigSpec GetConfigSpec();
+    //! refreshes the m_pMemStats if necessary; creates it if it's not created
+    void TickMemStats(MemStatsPurposeEnum nPurpose = nMSP_ForDisplay);
+    void SaveConfiguration() override;
+    ESystemConfigSpec GetConfigSpec() override;
 
 private:
-	//! @name Initialization routines
-	//@{ 
-	bool InitNetwork();
-	bool InitInput(WIN_HINSTANCE hinst,WIN_HWND hwnd);
-	bool InitConsole();
-	bool InitRenderer(WIN_HINSTANCE hinst,WIN_HWND hwnd,const char *szCmdLine);
-	bool InitSound(WIN_HWND hwnd);
-	bool InitPhysics();
-	bool InitFont();
-	bool InitFlash();
-	bool InitAISystem();
-	bool InitScriptSystem();
-	bool InitFileSystem();
-	bool InitStreamEngine();
-	bool Init3DEngine();
-	bool InitAnimationSystem();
-	bool InitMovieSystem();
-	bool InitEntitySystem(WIN_HINSTANCE hInstance, WIN_HWND hWnd);
-	bool InitScriptBindings();
-	bool OpenRenderLibrary(int type);
+    //! @name Initialization routines
+    //@{
+    bool InitNetwork();
+    bool InitInput(WIN_HINSTANCE hinst, WIN_HWND hwnd);
+    bool InitConsole();
+    bool InitRenderer(WIN_HINSTANCE hinst, WIN_HWND hwnd, const char* szCmdLine);
+    bool InitSound(WIN_HWND hwnd);
+    bool InitPhysics();
+    bool InitFont();
+    bool InitFlash();
+    bool InitAISystem();
+    bool InitScriptSystem();
+    bool InitFileSystem();
+    bool InitStreamEngine();
+    bool Init3DEngine();
+    bool InitAnimationSystem();
+    bool InitMovieSystem();
+    bool InitEntitySystem(WIN_HINSTANCE hInstance, WIN_HWND hWnd);
+    bool InitScriptBindings();
+    bool OpenRenderLibrary(int type);
 #if !defined(LINUX)
-	int AutoDetectRenderer(char *Vendor, char *Device);
+    int AutoDetectRenderer(char* Vendor, char* Device);
 #endif
-  bool OpenRenderLibrary(const char *t_rend);
-  bool CloseRenderLibrary();
-	bool ShutDownScriptBindings();
-	//@}
-	void Strange();
-	bool ParseSystemConfig(string &sFileName);
+    bool OpenRenderLibrary(const char* t_rend);
+    bool CloseRenderLibrary();
+    bool ShutDownScriptBindings();
+    //@}
+    void Strange();
+    bool ParseSystemConfig(string& sFileName);
 
-	//////////////////////////////////////////////////////////////////////////
-	// Helper functions.
-	//////////////////////////////////////////////////////////////////////////
-	void CreateRendererVars();
-	void CreateSystemVars();
-	void RenderStats();
-	void RenderMemStats();
-	// collects the whole memory statistics into the given sizer object
-	void CollectMemStats (class CrySizerImpl* pSizer, MemStatsPurposeEnum nPurpose = nMSP_ForDisplay);
-	WIN_HMODULE LoadDLL( const char *dllName, bool bQuitIfNotFound=true);
+    //////////////////////////////////////////////////////////////////////////
+    // Helper functions.
+    //////////////////////////////////////////////////////////////////////////
+    void CreateRendererVars();
+    void CreateSystemVars();
+    void RenderStats();
+    void RenderMemStats();
+    // collects the whole memory statistics into the given sizer object
+    void CollectMemStats(class CrySizerImpl* pSizer, MemStatsPurposeEnum nPurpose = nMSP_ForDisplay);
+    WIN_HMODULE LoadDLL(const char* dllName, bool bQuitIfNotFound = true);
 #if defined(LINUX)
-	void FreeLib(HMODULE hLibModule);
+    void FreeLib(HMODULE hLibModule);
 #else
-	void FreeLib(IN OUT HMODULE hLibModule);
+    void FreeLib(IN OUT HMODULE hLibModule);
 #endif
-	void QueryVersionInfo();
-	void LogVersion();
-	void SetDevMode( bool bEnable );
-	void InitScriptDebugger();
-	
+    void QueryVersionInfo();
+    void LogVersion();
+    void SetDevMode(bool bEnable);
+    void InitScriptDebugger();
+
 public:
+    // interface ISystem -------------------------------------------
 
-	// interface ISystem -------------------------------------------
+    void ShowDebugger(const char* pszSourceFile, int iLine, const char* pszReason) override;
+    bool GetSSFileInfo(const char* inszFileName, char* outszInfo, DWORD indwBufferSize) override;
+    IDataProbe* GetIDataProbe() override { return m_pDataProbe; }
+    void SetForceNonDevMode(bool bValue) override;
+    bool GetForceNonDevMode() const override;
+    bool WasInDevMode() const override { return m_bWasInDevMode; }
+    bool IsDevMode() const override { return m_bInDevMode && !GetForceNonDevMode(); }
 
-	virtual void ShowDebugger(const char *pszSourceFile, int iLine, const char *pszReason);
-	virtual bool GetSSFileInfo( const char *inszFileName, char *outszInfo, const DWORD indwBufferSize );
-	virtual IDataProbe* GetIDataProbe() { return m_pDataProbe; };
-	virtual void SetForceNonDevMode( const bool bValue );
-	virtual bool GetForceNonDevMode() const;
-	virtual bool WasInDevMode() const { return m_bWasInDevMode; };
-	virtual bool IsDevMode() const { return m_bInDevMode && !GetForceNonDevMode(); }
+    // -------------------------------------------------------------
 
-	// -------------------------------------------------------------
+    //! attaches the given variable to the given container;
+    //! recreates the variable if necessary
+    ICVar* attachVariable(const char* szVarName, int* pContainer, const char* szComment, int dwFlags = 0);
 
-	//! attaches the given variable to the given container;
-	//! recreates the variable if necessary
-	ICVar* attachVariable (const char* szVarName, int* pContainer, const char *szComment,int dwFlags=0 );
+private:                                    // ------------------------------------------------------
+    CTimer m_Time;                          //!<
+    CCamera m_ViewCamera;                   //!<
+    CXConsole* m_pConsole;                  //!<
+    bool m_bQuit;                           //!< if is true the system is quitting
+    bool m_bRelaunch;                       //!< relaunching the app or not (true beforerelaunch)
+    bool m_bRelaunched;                     //!< Application was started with the -RELAUNCH option (true after relaunch)
+    bool m_bTestMode;                       //!< If running in testing mode.
+    bool m_bEditor;                         //!< If running in Editor.
+    bool m_bDedicatedServer;                //!< If running as Dedicated server.
+    bool m_bIgnoreUpdates;                  //!< When set to true will ignore Update and Render calls,
+    IValidator* m_pValidator;               //!< Pointer to validator interface.
+    bool m_bForceNonDevMode;                //!< true when running on a cheat protected server or a client that is connected to it (not used in singlplayer)
+    bool m_bWasInDevMode;                   //!< Set to true if was in dev mode.
+    bool m_bInDevMode;                      //!< Set to true if was in dev mode.
+    SDefaultValidator* m_pDefaultValidator; //!<
+    int m_nStrangeRatio;                    //!<
 
-private: // ------------------------------------------------------
+    //! Input system
+    //! @see CRenderer
+    IRenderer* m_pRenderer;
 
-	CTimer								m_Time;								//!<
-	CCamera								m_ViewCamera;					//!<
-	CXConsole *						m_pConsole;						//!<
-	bool									m_bQuit;							//!< if is true the system is quitting
-	bool									m_bRelaunch;					//!< relaunching the app or not (true beforerelaunch)
-	bool									m_bRelaunched;				//!< Application was started with the -RELAUNCH option (true after relaunch)
-	bool									m_bTestMode;					//!< If running in testing mode.
-	bool									m_bEditor;						//!< If running in Editor.
-	bool									m_bDedicatedServer;		//!< If running as Dedicated server.
-	bool									m_bIgnoreUpdates;			//!< When set to true will ignore Update and Render calls,
-	IValidator *					m_pValidator;					//!< Pointer to validator interface.
-	bool									m_bForceNonDevMode;		//!< true when running on a cheat protected server or a client that is connected to it (not used in singlplayer)
-	bool									m_bWasInDevMode;			//!< Set to true if was in dev mode.
-	bool									m_bInDevMode;					//!< Set to true if was in dev mode.
-	SDefaultValidator *		m_pDefaultValidator;	//!<
-	int										m_nStrangeRatio;			//!<
+    //! CPU features
+    CCpuFeatures* m_pCpu;
 
-	//! Input system
-	//! @see CRenderer
-	IRenderer		*m_pRenderer;
+    //! DLLs handles.
+    struct SDllHandles {
+        WIN_HMODULE hRenderer;
+        WIN_HMODULE hInput;
+        WIN_HMODULE hFlash;
+        WIN_HMODULE hSound;
+        WIN_HMODULE hEntitySystem;
+        WIN_HMODULE hNetwork;
+        WIN_HMODULE hAI;
+        WIN_HMODULE hMovie;
+        WIN_HMODULE hPhysics;
+        WIN_HMODULE hFont;
+        WIN_HMODULE hScript;
+        WIN_HMODULE h3DEngine;
+        WIN_HMODULE hAnimation;
+        WIN_HMODULE hIndoor;
+        WIN_HMODULE hGame;
+    };
+    SDllHandles m_dll;
 
-  //! CPU features
-  CCpuFeatures *m_pCpu;
+    //! Input system
+    //! @see CInput
+    IInput* m_pIInput;
 
-	//! DLLs handles.
-	struct SDllHandles
-	{
-		WIN_HMODULE hRenderer;
-		WIN_HMODULE hInput;
-    WIN_HMODULE hFlash;
-		WIN_HMODULE hSound;
-		WIN_HMODULE hEntitySystem;
-		WIN_HMODULE hNetwork;
-		WIN_HMODULE hAI;
-		WIN_HMODULE	hMovie;
-		WIN_HMODULE	hPhysics;
-		WIN_HMODULE	hFont;
-		WIN_HMODULE hScript;
-		WIN_HMODULE h3DEngine;
-		WIN_HMODULE hAnimation;
-		WIN_HMODULE hIndoor;
-		WIN_HMODULE hGame;
-	};
-	SDllHandles m_dll;
+    //! Log interface.
+    ILog* m_pLog;
 
-	//! Input system
-	//! @see CInput
-	IInput *m_pIInput;
+    //! THe streaming engine
+    CStreamEngine* m_pStreamEngine;
 
-	//! Log interface.
-	ILog* m_pLog;
+    //! current active process
+    IProcess* m_pProcess;
 
-	//! THe streaming engine
-	CStreamEngine* m_pStreamEngine;
-	
-	//! current active process
-	IProcess *m_pProcess;
+    IMemoryManager* m_pMemoryManager;
 
-	IMemoryManager *m_pMemoryManager;
+    //! Pack file system.
+    CCryPak* m_pIPak;
 
-	//! Pack file system.
-	CCryPak*	m_pIPak;
+    //! Flash Module
+    // IFlash *m_pFlashManager;
 
-	//! Flash Module
-	//IFlash *m_pFlashManager;
+    //! Sound System
+    //! @see CSoundSystem
+    ISoundSystem* m_pISound;
 
-	//! Sound System
-	//! @see CSoundSystem
-	ISoundSystem*	m_pISound;
+    //! Music System
+    //! @see CMusicSystem
+    IMusicSystem* m_pIMusic;
 
-	//! Music System
-	//! @see CMusicSystem
-	IMusicSystem*	m_pIMusic;
+    //! Entity System
+    //! @see CEntitySystem
+    IEntitySystem* m_pEntitySystem;
 
-	//! Entity System
-	//! @see CEntitySystem
-	IEntitySystem * m_pEntitySystem;
+    //! Network Module
+    //! @see CNetwork
+    INetwork* m_pNetwork;
 
-	//! Network Module
-	//! @see CNetwork
-	INetwork *m_pNetwork;
+    //! AI System
+    //! @see CAISystem
+    IAISystem* m_pAISystem;
 
-	//! AI System
-	//! @see CAISystem
-	IAISystem *m_pAISystem;
+    //! Physics System
+    IPhysicalWorld* m_pIPhysicalWorld;
 
-	//! Physics System
-	IPhysicalWorld* m_pIPhysicalWorld;
+    //! Movie System.
+    IMovieSystem* m_pIMovieSystem;
 
-	//! Movie System.
-	IMovieSystem* m_pIMovieSystem;
-	
-	//! Font System
-	//! @see CCryFont
-	ICryFont*	m_pICryFont;
-	
-	//! Script System
-	//! @see CScriptSystem
-	IScriptSystem *m_pScriptSystem;
-	//[Timur] CREATEDOMDOCUMENT_FNCPTR m_CreateDOMDocument;
-	
-	//! 3D Engine
-	//! @see C3DEngine
-	I3DEngine *m_pI3DEngine;
-	ICryCharManager* m_pICryCharManager;
+    //! Font System
+    //! @see CCryFont
+    ICryFont* m_pICryFont;
 
-	//! The default font
-	IFFont*	m_pIFont;
+    //! Script System
+    //! @see CScriptSystem
+    IScriptSystem* m_pScriptSystem;
+    //[Timur] CREATEDOMDOCUMENT_FNCPTR m_CreateDOMDocument;
 
-	//! game path folder
-	char	m_szGameMOD[MAX_PATH];
+    //! 3D Engine
+    //! @see C3DEngine
+    I3DEngine* m_pI3DEngine;
+    ICryCharManager* m_pICryCharManager;
 
-	//! to hold the values stored in system.cfg
-	//! because editor uses it's own values,
-	//! and then saves them to file, overwriting the user's resolution.
-	int m_iHeight;
-	int m_iWidth;
-	int m_iColorBits;
-	
-	// System console variables.
-	//////////////////////////////////////////////////////////////////////////
-	ICVar *m_cvAIUpdate;
-	ICVar *m_rWidth;
-	ICVar *m_rHeight;
-	ICVar *m_rColorBits;
-	ICVar *m_rDepthBits;
-	ICVar *m_rStencilBits;
-	ICVar *m_rFullscreen;
-	ICVar *m_rDriver;
-	ICVar *m_rDisplayInfo;
-	ICVar *m_sysNoUpdate;
-	ICVar *i_direct_input;
-	ICVar *sys_script_debugger;
-	ICVar *m_cvEntitySuppressionLevel;
-	ICVar *m_pCVarQuit;
-	ICVar *m_cvMemStats;
-	ICVar *m_cvMemStatsThreshold;
-	ICVar *m_cvMemStatsMaxDepth;
-	ICVar *m_sysWarnings;										//!< might be 0, "sys_warnings" - Treat warning as errors.
-	ICVar *m_cvSSInfo;											//!< might be 0, "sys_SSInfo" 0/1 - get file sourcesafe info
-	ICVar *m_sys_profile;
-	ICVar *m_sys_profile_graph;
-	ICVar *m_sys_profile_graphScale;
-	ICVar *m_sys_profile_pagefaultsgraph;
-	ICVar *m_sys_profile_filter;
-	ICVar *m_sys_profile_network;
-	ICVar *m_sys_profile_peak;
-	ICVar *m_sys_profile_memory;
-	ICVar *m_sys_spec;
-	ICVar *m_sys_skiponlowspec;
-	ICVar *m_sys_firstlaunch;
-	ICVar *m_sys_StreamCallbackTimeBudget;
-	ICVar *m_sys_StreamCompressionMask;			//!< bitmask, lossy compression, useful for network comunication, should be 0 for load/save
+    //! The default font
+    IFFont* m_pIFont;
 
-	string	m_sSavedRDriver;								//!< to restore the driver when quitting the dedicated server
+    //! game path folder
+    char m_szGameMOD[MAX_PATH];
 
-	ICVar* m_cvPakPriority;
-	ICVar* m_cvPakReadSlice;
-	ICVar* m_cvPakLogMissingFiles;
-	// the contents of the pak priority file
-	PakVars m_PakVar;
+    //! to hold the values stored in system.cfg
+    //! because editor uses it's own values,
+    //! and then saves them to file, overwriting the user's resolution.
+    int m_iHeight;
+    int m_iWidth;
+    int m_iColorBits;
 
-	//////////////////////////////////////////////////////////////////////////
+    // System console variables.
+    //////////////////////////////////////////////////////////////////////////
+    ICVar* m_cvAIUpdate;
+    ICVar* m_rWidth;
+    ICVar* m_rHeight;
+    ICVar* m_rColorBits;
+    ICVar* m_rDepthBits;
+    ICVar* m_rStencilBits;
+    ICVar* m_rFullscreen;
+    ICVar* m_rDriver;
+    ICVar* m_rDisplayInfo;
+    ICVar* m_sysNoUpdate;
+    ICVar* i_direct_input;
+    ICVar* sys_script_debugger;
+    ICVar* m_cvEntitySuppressionLevel;
+    ICVar* m_pCVarQuit;
+    ICVar* m_cvMemStats;
+    ICVar* m_cvMemStatsThreshold;
+    ICVar* m_cvMemStatsMaxDepth;
+    ICVar* m_sysWarnings; //!< might be 0, "sys_warnings" - Treat warning as errors.
+    ICVar* m_cvSSInfo;    //!< might be 0, "sys_SSInfo" 0/1 - get file sourcesafe info
+    ICVar* m_sys_profile;
+    ICVar* m_sys_profile_graph;
+    ICVar* m_sys_profile_graphScale;
+    ICVar* m_sys_profile_pagefaultsgraph;
+    ICVar* m_sys_profile_filter;
+    ICVar* m_sys_profile_network;
+    ICVar* m_sys_profile_peak;
+    ICVar* m_sys_profile_memory;
+    ICVar* m_sys_spec;
+    ICVar* m_sys_skiponlowspec;
+    ICVar* m_sys_firstlaunch;
+    ICVar* m_sys_StreamCallbackTimeBudget;
+    ICVar* m_sys_StreamCompressionMask; //!< bitmask, lossy compression, useful for network comunication, should be 0 for load/save
 
-	CScriptSink					*m_pScriptSink;
+    string m_sSavedRDriver; //!< to restore the driver when quitting the dedicated server
 
-	//! User define callback for system events.
-	ISystemUserCallback *m_pUserCallback;
+    ICVar* m_cvPakPriority;
+    ICVar* m_cvPakReadSlice;
+    ICVar* m_cvPakLogMissingFiles;
+    // the contents of the pak priority file
+    PakVars m_PakVar;
 
-	WIN_HWND		m_hWnd;
-	WIN_HINSTANCE	m_hInst;
+    //////////////////////////////////////////////////////////////////////////
 
-	// this is the memory statistics that is retained in memory between frames
-	// in which it's not gathered
-	class CrySizerStats* m_pMemStats;
-	class CrySizerImpl* m_pSizer;
+    CScriptSink* m_pScriptSink;
 
-	struct CScriptBindings* m_pScriptBindings;
-	
-	CFrameProfileSystem m_FrameProfileSystem;
-	int m_profile_old;
+    //! User define callback for system events.
+    ISystemUserCallback* m_pUserCallback;
 
-	//int m_nCurrentLogVerbosity;
+    WIN_HWND m_hWnd;
+    WIN_HINSTANCE m_hInst;
 
-	SFileVersion m_fileVersion;
-	SFileVersion m_productVersion;
-	IDataProbe *m_pDataProbe;
+    // this is the memory statistics that is retained in memory between frames
+    // in which it's not gathered
+    class CrySizerStats* m_pMemStats;
+    class CrySizerImpl* m_pSizer;
+
+    struct CScriptBindings* m_pScriptBindings;
+
+    CFrameProfileSystem m_FrameProfileSystem;
+    int m_profile_old;
+
+    // int m_nCurrentLogVerbosity;
+
+    SFileVersion m_fileVersion;
+    SFileVersion m_productVersion;
+    IDataProbe* m_pDataProbe;
+
 public:
-	//! Pointer to Game Interface,
-	IGame								*m_pGame;
+    //! Pointer to Game Interface,
+    IGame* m_pGame;
 
-	//! Pointer to the download manager
-	CDownloadManager		*m_pDownloadManager;
+    //! Pointer to the download manager
+    CDownloadManager* m_pDownloadManager;
 
-	CLUADbg *m_pLuaDebugger;
+    CLUADbg* m_pLuaDebugger;
 
 #ifdef USE_FRAME_PROFILER
-	void SetFrameProfiler(bool on, bool display, char *prefix) { m_FrameProfileSystem.SetProfiling(on, display, prefix, this); };
-	void StartProfilerSection( CFrameProfilerSection *pProfileSection );
-	void EndProfilerSection( CFrameProfilerSection *pProfileSection );
+    void SetFrameProfiler(bool on, bool display, char* prefix) override {
+        m_FrameProfileSystem.SetProfiling(on, display, prefix, this);
+    };
+    void StartProfilerSection(CFrameProfilerSection* pProfileSection) override;
+    void EndProfilerSection(CFrameProfilerSection* pProfileSection) override;
 #else
-	void SetFrameProfiler(bool on, bool display, char *prefix) {};
-	void StartProfilerSection( CFrameProfilerSection *pProfileSection ) {};
-	void EndProfilerSection( CFrameProfilerSection *pProfileSection ) {};
+    void SetFrameProfiler(bool on, bool display, char* prefix){};
+    void StartProfilerSection(CFrameProfilerSection* pProfileSection){};
+    void EndProfilerSection(CFrameProfilerSection* pProfileSection){};
 #endif
 
-	//////////////////////////////////////////////////////////////////////////
-	// VTune.
-	virtual void VTuneResume();
-	virtual void VTunePause();
-	//////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////
+    // VTune.
+    void VTuneResume() override;
+    void VTunePause() override;
+    //////////////////////////////////////////////////////////////////////////
 
-	//////////////////////////////////////////////////////////////////////////
-	// File version.
-	//////////////////////////////////////////////////////////////////////////
-	virtual const SFileVersion& GetFileVersion();
-	virtual const SFileVersion& GetProductVersion();
+    //////////////////////////////////////////////////////////////////////////
+    // File version.
+    //////////////////////////////////////////////////////////////////////////
+    const SFileVersion& GetFileVersion() override;
+    const SFileVersion& GetProductVersion() override;
 
-	bool WriteCompressedFile(char *filename, void *data, unsigned int bitlen);
-	unsigned int ReadCompressedFile(char *filename, void *data, unsigned int maxbitlen);
-	unsigned int GetCompressedFileSize(char *filename);
-	void InitVTuneProfiler();
+    bool WriteCompressedFile(char* filename, void* data, unsigned int bitlen) override;
+    unsigned int ReadCompressedFile(char* filename, void* data, unsigned int maxbitlen) override;
+    unsigned int GetCompressedFileSize(char* filename) override;
+    void InitVTuneProfiler();
 
-	void OpenBasicPaks();
-	void OpenLanguagePak( const char *sLanguage );
+    void OpenBasicPaks();
+    void OpenLanguagePak(const char* sLanguage);
 
-	void	Deltree(const char *szFolder, bool bRecurse);
-	void	LoadConfiguration(const string &sFilename);
+    void Deltree(const char* szFolder, bool bRecurse) override;
+    void LoadConfiguration(const string& sFilename) override;
 
 protected: // -------------------------------------------------------------
+    // this heap is used for small allocations - the queues
+    CMTSafeHeap m_SmallHeap;
+    // this heap is used for big allocations - the chunks to be loaded
+    CMTSafeHeap m_BigHeap;
 
-	// this heap is used for small allocations - the queues
-	CMTSafeHeap m_SmallHeap;
-	// this heap is used for big allocations - the chunks to be loaded
-	CMTSafeHeap m_BigHeap;
-
-	friend struct SDefaultValidator;
+    friend struct SDefaultValidator;
 };
 
 #endif // SYSTEM_H

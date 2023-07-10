@@ -20,7 +20,7 @@
 #pragma once
 #endif
 
-#include "IEntitySystem.h"				// EntityClassId
+#include "IEntitySystem.h" // EntityClassId
 
 #define PROPERTIES_TABLE "Properties"
 #define PROPERTIES2_TABLE "PropertiesInstance"
@@ -35,126 +35,154 @@ struct IScriptObject;
 /*!
  *  CEntityScript holds information about Entity lua script.
  */
-class CEntityScript : public CRefCountBase
-{
+class CEntityScript : public CRefCountBase {
 public:
-	CEntityScript( const EntityClassId ClassId,const char *sName,const char *sFile );
-	virtual ~CEntityScript();
+    CEntityScript(const EntityClassId ClassId, const char* sName, const char* sFile);
+    virtual ~CEntityScript();
 
-	//! Get name of entity script.
-	const CString& GetName() const { return m_name; }
-	const CString& GetFile() const { return m_file; }
-	const CString& GetRelativeFile() const { return m_relFile; }
-	EntityClassId	GetClsId() const { return m_ClassId; };
+    //! Get name of entity script.
+    const CString& GetName() const {
+        return m_name;
+    }
+    const CString& GetFile() const {
+        return m_file;
+    }
+    const CString& GetRelativeFile() const {
+        return m_relFile;
+    }
+    EntityClassId GetClsId() const {
+        return m_ClassId;
+    };
 
-	int GetMethodCount() const { return m_methods.size(); }
-	const CString& GetMethod( int index ) const { return m_methods[index]; }
+    int GetMethodCount() const {
+        return m_methods.size();
+    }
+    const CString& GetMethod(int index) const {
+        return m_methods[index];
+    }
 
-	//////////////////////////////////////////////////////////////////////////
-	int	GetEventCount();
-	CString GetEvent( int i );
+    //////////////////////////////////////////////////////////////////////////
+    int GetEventCount();
+    CString GetEvent(int i);
 
-	//////////////////////////////////////////////////////////////////////////
-	//! Get properties of this sacript.
-	CVarBlock* GetProperties() const { return m_properties; }
-	CVarBlock* GetProperties2() const { return m_properties2; }
-	//////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////
+    //! Get properties of this sacript.
+    CVarBlock* GetProperties() const {
+        return m_properties;
+    }
+    CVarBlock* GetProperties2() const {
+        return m_properties2;
+    }
+    //////////////////////////////////////////////////////////////////////////
 
-	bool	Load();
-	void	Reload();
-	bool	IsValid() const { return m_valid; };
+    bool Load();
+    void Reload();
+    bool IsValid() const {
+        return m_valid;
+    };
 
-	//! Marks script not valid, must be loaded on next access.
-	void Invalidate() { m_valid = false; };
+    //! Marks script not valid, must be loaded on next access.
+    void Invalidate() {
+        m_valid = false;
+    };
 
-	//! Takes current values of properties from Entity and put it to entity table.
-	void	SetProperties( IEntity *entity,CVarBlock *properties,bool bCallUpdate );
-	void	SetProperties2( IEntity *entity,CVarBlock *properties,bool bCallUpdate );
+    //! Takes current values of properties from Entity and put it to entity table.
+    void SetProperties(IEntity* entity, CVarBlock* properties, bool bCallUpdate);
+    void SetProperties2(IEntity* entity, CVarBlock* properties, bool bCallUpdate);
 
-	//! Setup entity target events table
-	void	SetEventsTable( CEntity *entity );
+    //! Setup entity target events table
+    void SetEventsTable(CEntity* entity);
 
-	//! Run method.
-	void	RunMethod( IEntity *entity,const CString &method );
-	void	SendEvent( IEntity *entity,const CString &event );
+    //! Run method.
+    void RunMethod(IEntity* entity, const CString& method);
+    void SendEvent(IEntity* entity, const CString& event);
 
-	// Edit methods.
-	void	GotoMethod( const CString &method );
-	void	AddMethod( const CString &method );
+    // Edit methods.
+    void GotoMethod(const CString& method);
+    void AddMethod(const CString& method);
 
-	//! Get visual object for this entity script.
-	const CString&	GetVisualObject() { return m_visualObject; };
+    //! Get visual object for this entity script.
+    const CString& GetVisualObject() {
+        return m_visualObject;
+    };
 
-	//! Is Standart class
-	bool IsStandart() const { return m_standart; };
-	int GetVisibilityMask() const { return m_visibilityMask; };
+    //! Is Standart class
+    bool IsStandart() const {
+        return m_standart;
+    };
+    int GetVisibilityMask() const {
+        return m_visibilityMask;
+    };
 
-	//! Check if entity of this class can be used in editor.
-	bool IsUsable() const { return m_usable; }
+    //! Check if entity of this class can be used in editor.
+    bool IsUsable() const {
+        return m_usable;
+    }
 
-	// Set class as placable or not.
-	void SetUsable( bool usable ) { m_usable = usable; }
+    // Set class as placable or not.
+    void SetUsable(bool usable) {
+        m_usable = usable;
+    }
 
 private:
-	bool	ParseScript();
-	int FindLineNum( const CString &line );
+    bool ParseScript();
+    int FindLineNum(const CString& line);
 
-	//! Put var block to script properties.
-	void VarToScriptObject( IVariable *var,IScriptObject *obj );
+    //! Put var block to script properties.
+    void VarToScriptObject(IVariable* var, IScriptObject* obj);
 
-	CString m_name;
-	CString m_file;
-	CString m_relFile;
-	EntityClassId m_ClassId;
-	bool m_valid;
-	//! True if standart entity class.
-	bool m_standart;
+    CString m_name;
+    CString m_file;
+    CString m_relFile;
+    EntityClassId m_ClassId;
+    bool m_valid;
+    //! True if standart entity class.
+    bool m_standart;
 
-	bool m_haveEventsTable;
-	
-	//! True if entity script have update entity
-	bool m_bUpdatePropertiesImplemented;
+    bool m_haveEventsTable;
 
-	CString m_visualObject;
-	int m_visibilityMask;
+    //! True if entity script have update entity
+    bool m_bUpdatePropertiesImplemented;
 
-	bool m_usable;
+    CString m_visualObject;
+    int m_visibilityMask;
 
-	//! Array of methods in this script.
-	std::vector<CString> m_methods;
+    bool m_usable;
 
-	//! Array of events supported by this script.
-	std::vector<CString> m_events;
+    //! Array of methods in this script.
+    std::vector<CString> m_methods;
 
-	TSmartPtr<CVarBlock> m_properties;
-	TSmartPtr<CVarBlock> m_properties2;
+    //! Array of events supported by this script.
+    std::vector<CString> m_events;
+
+    TSmartPtr<CVarBlock> m_properties;
+    TSmartPtr<CVarBlock> m_properties2;
 };
 
 typedef TSmartPtr<CEntityScript> CEntityScriptPtr;
 
 /*!
- *	CEntityScriptRegistry	manages all known CEntityScripts instances.
+ *    CEntityScriptRegistry    manages all known CEntityScripts instances.
  */
-class CEntityScriptRegistry
-{
+class CEntityScriptRegistry {
 public:
-	CEntityScriptRegistry();
-	~CEntityScriptRegistry();
+    CEntityScriptRegistry();
+    ~CEntityScriptRegistry();
 
-	CEntityScript* Find( const CString &name );
-	void	Insert( CEntityScript *script );
+    CEntityScript* Find(const CString& name);
+    void Insert(CEntityScript* script);
 
-	void LoadScripts();
+    void LoadScripts();
 
-	//! Get all scripts as array.
-	void	GetScripts( std::vector<CEntityScript*> &scripts );
+    //! Get all scripts as array.
+    void GetScripts(std::vector<CEntityScript*>& scripts);
 
-	static CEntityScriptRegistry* Instance();
-	static void Release();
+    static CEntityScriptRegistry* Instance();
+    static void Release();
 
 private:
-	StdMap<CString,CEntityScriptPtr> m_scripts;
-	static CEntityScriptRegistry* m_instance;
+    StdMap<CString, CEntityScriptPtr> m_scripts;
+    static CEntityScriptRegistry* m_instance;
 };
 
 #endif // __EntityScript_h__

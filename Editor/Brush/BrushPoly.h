@@ -7,7 +7,7 @@
 //  Version:     v1.00
 //  Created:     9/7/2002 by Timur.
 //  Compilers:   Visual Studio.NET
-//  Description: 
+//  Description:
 // -------------------------------------------------------------------------
 //  History: Based on Andrey's Indoor editor.
 //
@@ -23,28 +23,31 @@
 struct SBrushPlane;
 
 /** Brush vertex used in SBrushPoly structure.
-*/
-struct SBrushVert
-{
-  Vec3d xyz;
-  float st[2];
+ */
+struct SBrushVert {
+    Vec3d xyz;
+    float st[2];
 };
 
 /** Brush polygon.
-*/
-struct SBrushPoly
-{
-  SBrushPoly(int nv) { m_Pts.resize(nv); }
-  SBrushPoly() {}
-  SBrushPoly& operator = (const SBrushPoly& src) { m_Pts = src.m_Pts; return *this; }
+ */
+struct SBrushPoly {
+    SBrushPoly(int nv) {
+        m_Pts.resize(nv);
+    }
+    SBrushPoly() {}
+    SBrushPoly& operator=(const SBrushPoly& src) {
+        m_Pts = src.m_Pts;
+        return *this;
+    }
 
-  SBrushPoly *ClipByPlane(SBrushPlane *p, bool keep);
-  void ClipByPlane(SBrushPlane *p, float eps, SBrushPoly **front, SBrushPoly **back);
-  void CalcBounds(Vec3d& mins, Vec3d& maxs);
-  void MakePlane(SBrushPlane *pl);
-  float Area();
+    SBrushPoly* ClipByPlane(SBrushPlane* p, bool keep);
+    void ClipByPlane(SBrushPlane* p, float eps, SBrushPoly** front, SBrushPoly** back);
+    void CalcBounds(Vec3d& mins, Vec3d& maxs);
+    void MakePlane(SBrushPlane* pl);
+    float Area();
 
-	std::vector<SBrushVert> m_Pts;
+    std::vector<SBrushVert> m_Pts;
 };
 
 #endif // __brushpoly_h__

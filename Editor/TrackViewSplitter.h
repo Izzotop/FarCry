@@ -20,29 +20,25 @@
 #pragma once
 #endif
 
-
 // CTrackViewSplitter
 
-class CTrackViewSplitter : public CSplitterWnd
-{
-	DECLARE_DYNAMIC(CTrackViewSplitter)
+class CTrackViewSplitter : public CSplitterWnd {
+    DECLARE_DYNAMIC(CTrackViewSplitter)
 
-	virtual CWnd* GetActivePane(int* pRow = NULL, int* pCol = NULL)
-	{
-		return GetFocus();
-	}
+    virtual CWnd* GetActivePane(int* pRow = nullptr, int* pCol = nullptr) {
+        return GetFocus();
+    }
 
-	void SetPane( int row,int col,CWnd *pWnd,SIZE sizeInit );
-	// Ovveride this for flat look.
-	void OnDrawSplitter(CDC* pDC, ESplitType nType, const CRect& rectArg);
-	
+    void SetPane(int row, int col, CWnd* pWnd, SIZE sizeInit);
+    // Ovveride this for flat look.
+    void OnDrawSplitter(CDC* pDC, ESplitType nType, const CRect& rectArg);
+
 public:
-	CTrackViewSplitter();
-	virtual ~CTrackViewSplitter();
+    CTrackViewSplitter();
+    virtual ~CTrackViewSplitter();
 
 protected:
-	DECLARE_MESSAGE_MAP()
+    DECLARE_MESSAGE_MAP()
 };
-
 
 #endif // __trackviewsplitter_h__

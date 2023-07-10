@@ -7,7 +7,7 @@
 //  Version:     v1.00
 //  Created:     23/8/2002 by Timur.
 //  Compilers:   Visual Studio.NET
-//  Description: 
+//  Description:
 // -------------------------------------------------------------------------
 //  History:
 //
@@ -23,28 +23,25 @@
 #include "TrackViewKeys.h"
 
 /** List of tracks.
-*/
-class CTrackViewKeyList : public CTrackViewKeys
-{
-	DECLARE_DYNAMIC(CTrackViewKeyList)
+ */
+class CTrackViewKeyList : public CTrackViewKeys {
+    DECLARE_DYNAMIC(CTrackViewKeyList)
 public:
-	// public stuff.
+    // public stuff.
 
-	CTrackViewKeyList();
-	~CTrackViewKeyList();
-
+    CTrackViewKeyList();
+    ~CTrackViewKeyList();
 
 protected:
-	DECLARE_MESSAGE_MAP()
+    DECLARE_MESSAGE_MAP()
 
-	void DrawTrack( int item,CDC *dc,CRect &rcItem );
-	void DrawKeys( IAnimTrack *track,CDC *dc,CRect &rc,Range &timeRange );
+    void DrawTrack(int item, CDC* dc, CRect& rcItem);
+    void DrawKeys(IAnimTrack* track, CDC* dc, CRect& rc, Range& timeRange);
 
-	// Ovverides from CTrackViewKeys.
-	int KeyFromPoint( CPoint point );
-	void SelectKeys( const CRect &rc );
-	int GetItemRect( int item,CRect &rect );
+    // Ovverides from CTrackViewKeys.
+    int KeyFromPoint(CPoint point);
+    void SelectKeys(const CRect& rc);
+    int GetItemRect(int item, CRect& rect);
 };
-
 
 #endif // __trackviewkeylist_h__

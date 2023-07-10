@@ -10,41 +10,39 @@
 /////////////////////////////////////////////////////////////////////////////
 // CSetHeightDlg dialog
 
-class CSetHeightDlg : public CDialog
-{
-// Construction
+class CSetHeightDlg : public CDialog {
+    // Construction
 public:
-	CSetHeightDlg(CWnd* pParent = NULL);   // standard constructor
+    CSetHeightDlg(CWnd* pParent = nullptr); // standard constructor
 
-// Dialog Data
-	//{{AFX_DATA(CSetHeightDlg)
-	enum { IDD = IDD_SET_HEIGHT };
-	int		m_sldHeight;
-		// NOTE: the ClassWizard will add data members here
-	//}}AFX_DATA
+    // Dialog Data
+    //{{AFX_DATA(CSetHeightDlg)
+    enum { IDD = IDD_SET_HEIGHT };
+    int m_sldHeight;
+    // NOTE: the ClassWizard will add data members here
+    //}}AFX_DATA
 
-	void SetHeight( float height );
-	float GetHeight();
+    void SetHeight(float height);
+    float GetHeight();
 
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CSetHeightDlg)
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	//}}AFX_VIRTUAL
-
-// Implementation
+    // Overrides
+    // ClassWizard generated virtual function overrides
+    //{{AFX_VIRTUAL(CSetHeightDlg)
 protected:
+    virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
+    //}}AFX_VIRTUAL
 
-	// Generated message map functions
-	//{{AFX_MSG(CSetHeightDlg)
-		// NOTE: the ClassWizard will add member functions here
-		virtual BOOL OnInitDialog();
-		afx_msg void OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
+    // Implementation
+protected:
+    // Generated message map functions
+    //{{AFX_MSG(CSetHeightDlg)
+    // NOTE: the ClassWizard will add member functions here
+    virtual BOOL OnInitDialog();
+    afx_msg void OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
+    //}}AFX_MSG
+    DECLARE_MESSAGE_MAP()
 
-	float m_height;
+    float m_height;
 };
 
 //{{AFX_INSERT_LOCATION}}

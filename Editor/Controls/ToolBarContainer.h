@@ -10,33 +10,30 @@
 /////////////////////////////////////////////////////////////////////////////
 // CToolBarContainer window
 
-class CToolBarContainer : public CWnd
-{
-// Construction
+class CToolBarContainer : public CWnd {
+    // Construction
 public:
-	CToolBarContainer();
+    CToolBarContainer();
 
-// Attributes
+    // Attributes
 public:
-
-// Operations
+    // Operations
 public:
+    // Overrides
+    // ClassWizard generated virtual function overrides
+    //{{AFX_VIRTUAL(CToolBarContainer)
+    //}}AFX_VIRTUAL
 
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CToolBarContainer)
-	//}}AFX_VIRTUAL
-
-// Implementation
+    // Implementation
 public:
-	virtual ~CToolBarContainer();
+    virtual ~CToolBarContainer();
 
-	// Generated message map functions
+    // Generated message map functions
 protected:
-	//{{AFX_MSG(CToolBarContainer)
-	afx_msg void OnPaint();
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
+    //{{AFX_MSG(CToolBarContainer)
+    afx_msg void OnPaint();
+    //}}AFX_MSG
+    DECLARE_MESSAGE_MAP()
 };
 
 /////////////////////////////////////////////////////////////////////////////

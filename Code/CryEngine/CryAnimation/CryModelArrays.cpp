@@ -1,7 +1,7 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
 //  CryEngine Source code
-//	
+//
 //  File:CryModelArrays.cpp
 //  Description: Implementation of CryModelState class
 //
@@ -28,5 +28,3 @@
 #include "drand.h"
 #include "StringUtils.h"
 #include "MakMatInfoFromMAT_ENTITY.h"
-
-

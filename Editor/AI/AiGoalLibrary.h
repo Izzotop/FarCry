@@ -7,7 +7,7 @@
 //  Version:     v1.00
 //  Created:     21/3/2002 by Timur.
 //  Compilers:   Visual C++ 7.0
-//  Description: 
+//  Description:
 // -------------------------------------------------------------------------
 //  History:
 //
@@ -26,33 +26,32 @@ class CAIBehaviorLibrary;
 /*!
  * CAIGoalLibrary is collection of global AI goals.
  */
-class CAIGoalLibrary
-{
+class CAIGoalLibrary {
 public:
-	CAIGoalLibrary();
-	~CAIGoalLibrary() {};
+    CAIGoalLibrary();
+    ~CAIGoalLibrary(){};
 
-	//! Add new goal to the library.
-	void AddGoal( CAIGoal* goal );
-	//! Remove goal from the library.
-	void RemoveGoal( CAIGoal* goal );
+    //! Add new goal to the library.
+    void AddGoal(CAIGoal* goal);
+    //! Remove goal from the library.
+    void RemoveGoal(CAIGoal* goal);
 
-	CAIGoal* FindGoal( const CString &name ) const;
+    CAIGoal* FindGoal(const CString& name) const;
 
-	//! Clear all goals from library.
-	void ClearGoals();
+    //! Clear all goals from library.
+    void ClearGoals();
 
-	//! Get all stored goals as a vector.
-	void GetGoals( std::vector<CAIGoalPtr> &goals ) const;
+    //! Get all stored goals as a vector.
+    void GetGoals(std::vector<CAIGoalPtr>& goals) const;
 
-	//! Load all goals from givven path and add them to library.
-	void LoadGoals( const CString &path );
+    //! Load all goals from givven path and add them to library.
+    void LoadGoals(const CString& path);
 
-	//! Initialize atomic goals from AI system.
-	void InitAtomicGoals();
+    //! Initialize atomic goals from AI system.
+    void InitAtomicGoals();
 
 private:
-	StdMap<CString,CAIGoalPtr> m_goals;
+    StdMap<CString, CAIGoalPtr> m_goals;
 };
 
 #endif // __aigoallibrary_h__

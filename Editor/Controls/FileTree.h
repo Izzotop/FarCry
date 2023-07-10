@@ -10,54 +10,57 @@
 /////////////////////////////////////////////////////////////////////////////
 // CFileTree window
 
-class CFileTree : public CTreeCtrl
-{
-// Construction
+class CFileTree : public CTreeCtrl {
+    // Construction
 public:
-	CFileTree();
+    CFileTree();
 
-// Attributes
+    // Attributes
 public:
-
-// Operations
+    // Operations
 public:
-
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CFileTree)
-	protected:
-	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
-	//}}AFX_VIRTUAL
-
-// Implementation
-public:
-	CString GetSelectedFile();
-	virtual ~CFileTree();
-
-	// Sets the search pattern that decides which files should be displayed
-	void SetFileSpec(CString strFileSpec) { m_strFileSpec = strFileSpec; };
-
-	// Spezifies the root folder of the search, it is constructed as follows:
-	// X:\%MasterCD%\%SearchFolder%
-	void SetSearchFolder(CString strSearchFolder) { m_strSearchFolder = strSearchFolder; };
-	CString GetSearchFolder() { return m_strSearchFolder; };
-
-	// Generated message map functions
+    // Overrides
+    // ClassWizard generated virtual function overrides
+    //{{AFX_VIRTUAL(CFileTree)
 protected:
-	//{{AFX_MSG(CFileTree)
-	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
-	//}}AFX_MSG
+    virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
+    //}}AFX_VIRTUAL
 
-	CImageList m_cImageList;
+    // Implementation
+public:
+    CString GetSelectedFile();
+    virtual ~CFileTree();
 
-	void RecurseDirectory(char szFolder[_MAX_PATH], HTREEITEM hRoot, PSTR pszFileSpec);
-	typedef std::map<HTREEITEM,CString> Files;
-	Files m_cFileNames;
+    // Sets the search pattern that decides which files should be displayed
+    void SetFileSpec(CString strFileSpec) {
+        m_strFileSpec = strFileSpec;
+    };
 
-	CString m_strFileSpec;
-	CString m_strSearchFolder;
+    // Spezifies the root folder of the search, it is constructed as follows:
+    // X:\%MasterCD%\%SearchFolder%
+    void SetSearchFolder(CString strSearchFolder) {
+        m_strSearchFolder = strSearchFolder;
+    };
+    CString GetSearchFolder() {
+        return m_strSearchFolder;
+    };
 
-	DECLARE_MESSAGE_MAP()
+    // Generated message map functions
+protected:
+    //{{AFX_MSG(CFileTree)
+    afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
+    //}}AFX_MSG
+
+    CImageList m_cImageList;
+
+    void RecurseDirectory(char szFolder[_MAX_PATH], HTREEITEM hRoot, PSTR pszFileSpec);
+    typedef std::map<HTREEITEM, CString> Files;
+    Files m_cFileNames;
+
+    CString m_strFileSpec;
+    CString m_strSearchFolder;
+
+    DECLARE_MESSAGE_MAP()
 };
 
 /////////////////////////////////////////////////////////////////////////////

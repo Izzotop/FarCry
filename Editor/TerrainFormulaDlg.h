@@ -10,36 +10,33 @@
 /////////////////////////////////////////////////////////////////////////////
 // CTerrainFormulaDlg dialog
 
-class CTerrainFormulaDlg : public CDialog
-{
-// Construction
+class CTerrainFormulaDlg : public CDialog {
+    // Construction
 public:
-	CTerrainFormulaDlg(CWnd* pParent = NULL);   // standard constructor
+    CTerrainFormulaDlg(CWnd* pParent = nullptr); // standard constructor
 
-// Dialog Data
-	//{{AFX_DATA(CTerrainFormulaDlg)
-	enum { IDD = IDD_TERRAIN_FORMULA };
-	double	m_dParam1;
-	double	m_dParam2;
-	double	m_dParam3;
-	//}}AFX_DATA
+    // Dialog Data
+    //{{AFX_DATA(CTerrainFormulaDlg)
+    enum { IDD = IDD_TERRAIN_FORMULA };
+    double m_dParam1;
+    double m_dParam2;
+    double m_dParam3;
+    //}}AFX_DATA
 
-
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CTerrainFormulaDlg)
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	//}}AFX_VIRTUAL
-
-// Implementation
+    // Overrides
+    // ClassWizard generated virtual function overrides
+    //{{AFX_VIRTUAL(CTerrainFormulaDlg)
 protected:
+    virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
+    //}}AFX_VIRTUAL
 
-	// Generated message map functions
-	//{{AFX_MSG(CTerrainFormulaDlg)
-		// NOTE: the ClassWizard will add member functions here
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
+    // Implementation
+protected:
+    // Generated message map functions
+    //{{AFX_MSG(CTerrainFormulaDlg)
+    // NOTE: the ClassWizard will add member functions here
+    //}}AFX_MSG
+    DECLARE_MESSAGE_MAP()
 };
 
 //{{AFX_INSERT_LOCATION}}

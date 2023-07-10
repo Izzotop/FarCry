@@ -1,10 +1,10 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 //
-//	Crytek Character Animation source code
-//	
-//	History:
-//	Created by Sergiy Migdalskiy
-//	
+//  Crytek Character Animation source code
+//
+//  History:
+//  Created by Sergiy Migdalskiy
+//
 //  Notes:
 //    CControllerCryBone class declaration
 //    CControllerCryBone is implementation of IController which is compatible with
@@ -17,97 +17,90 @@
 // #include "Controller.h" // must be included for the declaration of IController
 
 // old motion format cry bone controller
-class CControllerCryBone: public IController
-{
+class CControllerCryBone : public IController {
 public:
-	unsigned numKeys()const
-	{
-		return (unsigned)m_arrKeys.size();
-	}
+    unsigned numKeys() const {
+        return (unsigned)m_arrKeys.size();
+    }
 
-	unsigned GetID () const {return m_nControllerId;}
+    unsigned GetID() const {
+        return m_nControllerId;
+    }
 
-  CControllerCryBone();
-  ~CControllerCryBone();
-  
-	// Loads (initializes) controller from the given chunk. The chunk descriptor is followed by the 
-	// chunk data immediately. Returns true if successful
-  bool Load(const CONTROLLER_CHUNK_DESC_0826* pChunk, float scale); 
+    CControllerCryBone();
+    ~CControllerCryBone();
 
-	// Loads (initializes) controller from the given chunk. The chunk descriptor is followed by the 
-	// chunk data immediately. Returns true if successful
-	bool Load (const CONTROLLER_CHUNK_DESC_0827* pChunk, unsigned nSize, float fScale);
+    // Loads (initializes) controller from the given chunk. The chunk descriptor is followed by the
+    // chunk data immediately. Returns true if successful
+    bool Load(const CONTROLLER_CHUNK_DESC_0826* pChunk, float scale);
 
-	// retrieves the position and orientation within one call
-	// may be optimal in some applications
-	void GetValue(float t, CryQuat& q, Vec3 &p)
-	{
-		PQLog pq;
-		GetValue2(t, pq);
+    // Loads (initializes) controller from the given chunk. The chunk descriptor is followed by the
+    // chunk data immediately. Returns true if successful
+    bool Load(const CONTROLLER_CHUNK_DESC_0827* pChunk, unsigned nSize, float fScale);
 
-		q = exp( quaternionf(0,pq.vRotLog) );
+    // retrieves the position and orientation within one call
+    // may be optimal in some applications
+    void GetValue(float t, CryQuat& q, Vec3& p) {
+        PQLog pq;
+        GetValue2(t, pq);
 
-		p = pq.vPos;
-	}
+        q = exp(quaternionf(0, pq.vRotLog));
 
-	// retrieves the position and orientation (in the logarithmic space,
-	// i.e. instead of quaternion, its logarithm is returned)
-	// may be optimal for motion interpolation
-	void GetValue2 (float t, PQLog& pq);
+        p = pq.vPos;
+    }
 
-	void LogKeys(const char* szFileName, const char* szVarName);
+    // retrieves the position and orientation (in the logarithmic space,
+    // i.e. instead of quaternion, its logarithm is returned)
+    // may be optimal for motion interpolation
+    void GetValue2(float t, PQLog& pq);
 
-	CryQuat GetOrientation (float fTime)
-	{
-		PQLog pq;
-		GetValue2(fTime, pq);
-		return exp( quaternionf(0,pq.vRotLog) );
-	}
+    void LogKeys(const char* szFileName, const char* szVarName);
 
-	// returns the orientation of the controller at the given time, in logarithmic space
-	Vec3 GetOrientation2 (float t)
-	{
-		PQLog pq;
-		GetValue2(t, pq);
-		return pq.vRotLog;
-	}
+    CryQuat GetOrientation(float fTime) {
+        PQLog pq;
+        GetValue2(fTime, pq);
+        return exp(quaternionf(0, pq.vRotLog));
+    }
 
-	Vec3 GetPosition (float fTime)
-	{
-		PQLog pq;
-		GetValue2(fTime, pq);
-		return pq.vPos;
-	}
+    // returns the orientation of the controller at the given time, in logarithmic space
+    Vec3 GetOrientation2(float t) {
+        PQLog pq;
+        GetValue2(t, pq);
+        return pq.vRotLog;
+    }
 
-	virtual Vec3 GetScale (float t)
-	{
-		return Vec3(1,1,1);
-	}
+    Vec3 GetPosition(float fTime) {
+        PQLog pq;
+        GetValue2(fTime, pq);
+        return pq.vPos;
+    }
 
-	// returns the start time
-	float GetTimeStart ()
-	{
-		return float(m_arrTimes[0]);
-	}
+    virtual Vec3 GetScale(float t) {
+        return Vec3(1, 1, 1);
+    }
 
-	// returns the end time
-	float GetTimeEnd()
-	{
-		assert (numKeys() > 0);
-		return float(m_arrTimes[numKeys()-1]);
-	}
+    // returns the start time
+    float GetTimeStart() {
+        return float(m_arrTimes[0]);
+    }
 
-	ILog* GetLog() const;
+    // returns the end time
+    float GetTimeEnd() {
+        assert(numKeys() > 0);
+        return float(m_arrTimes[numKeys() - 1]);
+    }
 
-	size_t sizeofThis ()const;
+    ILog* GetLog() const;
+
+    size_t sizeofThis() const;
+
 protected:
-	TFixedArray<PQLog> m_arrKeys;
-	TElementaryArray<int> m_arrTimes;
+    TFixedArray<PQLog> m_arrKeys;
+    TElementaryArray<int> m_arrTimes;
 
-	unsigned m_nControllerId;
+    unsigned m_nControllerId;
 };
 
 TYPEDEF_AUTOPTR(CControllerCryBone);
 
 #endif
-

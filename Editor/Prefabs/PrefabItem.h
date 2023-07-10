@@ -7,7 +7,7 @@
 //  Version:     v1.00
 //  Created:     10/11/2003 by Timur.
 //  Compilers:   Visual Studio.NET 2003
-//  Description: 
+//  Description:
 // -------------------------------------------------------------------------
 //  History:
 //
@@ -21,33 +21,32 @@
 #include <I3dEngine.h>
 
 /*! CPrefabItem contain definition of particle system spawning parameters.
- *	
+ *
  */
-class CRYEDIT_API CPrefabItem : public CBaseLibraryItem
-{
+class CRYEDIT_API CPrefabItem : public CBaseLibraryItem {
 public:
-	CPrefabItem();
-	~CPrefabItem();
+    CPrefabItem();
+    ~CPrefabItem();
 
-	void Serialize( SerializeContext &ctx );
+    void Serialize(SerializeContext& ctx);
 
-	//////////////////////////////////////////////////////////////////////////
-	// Make prefab from selection of objects.
-	void MakeFromSelection( CSelectionGroup &selection );
+    //////////////////////////////////////////////////////////////////////////
+    // Make prefab from selection of objects.
+    void MakeFromSelection(CSelectionGroup& selection);
 
-	//! Called after particle parameters where updated.
-	void Update();
-	//! Returns xml node containing prefab objects.
-	XmlNodeRef GetObjectsNode() { return m_objectsNode; };
+    //! Called after particle parameters where updated.
+    void Update();
+    //! Returns xml node containing prefab objects.
+    XmlNodeRef GetObjectsNode() {
+        return m_objectsNode;
+    };
 
 private:
-	//! Parent of this material (if this is sub material).
-	CPrefabItem *m_pParentParticles;
-	//! Array of sub particle items.
-	std::vector<TSmartPtr<CPrefabItem> > m_childs;
-	XmlNodeRef m_objectsNode;
+    //! Parent of this material (if this is sub material).
+    CPrefabItem* m_pParentParticles;
+    //! Array of sub particle items.
+    std::vector<TSmartPtr<CPrefabItem>> m_childs;
+    XmlNodeRef m_objectsNode;
 };
 
 #endif // __PrefabItem_h__
-
-

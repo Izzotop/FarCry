@@ -25,54 +25,53 @@
 #define SANDBOX_API
 
 //////////////////////////////////////////////////////////////////////////
-// optimize away function call, in favour of inlining asm code 
+// optimize away function call, in favour of inlining asm code
 //////////////////////////////////////////////////////////////////////////
-#pragma intrinsic( memset,memcpy,memcmp )
-#pragma intrinsic( strcat,strcmp,strcpy,strlen,_strset )
-//#pragma intrinsic( abs,fabs,fmod,sin,cos,tan,log,exp,atan,atan2,log10,sqrt,acos,asin )
+#pragma intrinsic(memset, memcpy, memcmp)
+#pragma intrinsic(strcat, strcmp, strcpy, strlen, _strset)
+// #pragma intrinsic( abs,fabs,fmod,sin,cos,tan,log,exp,atan,atan2,log10,sqrt,acos,asin )
 
 // Warnings in STL
-#pragma warning (disable : 4786) // identifier was truncated to 'number' characters in the debug information.
-#pragma warning (disable : 4244) // conversion from 'long' to 'float', possible loss of data
-#pragma warning (disable : 4018) // signed/unsigned mismatch
-#pragma warning (disable : 4800) // BOOL bool conversion
+#pragma warning(disable : 4786) // identifier was truncated to 'number' characters in the debug information.
+#pragma warning(disable : 4244) // conversion from 'long' to 'float', possible loss of data
+#pragma warning(disable : 4018) // signed/unsigned mismatch
+#pragma warning(disable : 4800) // BOOL bool conversion
 
 // Disable warning when a function returns a value inside an __asm block
-#pragma warning (disable : 4035)
+#pragma warning(disable : 4035)
 
 //////////////////////////////////////////////////////////////////////////
 // 64-bits related warnings.
-#pragma warning (disable : 4267) // conversion from 'size_t' to 'int', possible loss of data
+#pragma warning(disable : 4267) // conversion from 'size_t' to 'int', possible loss of data
 
 //////////////////////////////////////////////////////////////////////////
 // Simple type definitions.
 //////////////////////////////////////////////////////////////////////////
-typedef unsigned char		uchar;
-typedef unsigned int		uint;
-typedef unsigned short	ushort;
-typedef unsigned __int64	uint64;
+typedef unsigned char uchar;
+typedef unsigned int uint;
+typedef unsigned short ushort;
+typedef unsigned __int64 uint64;
 
 // Which ini file to use.
-#define EDITOR_INI_FILE	"Editor.ini"
+#define EDITOR_INI_FILE "Editor.ini"
 
 //////////////////////////////////////////////////////////////////////////
 // C runtime lib includes
 //////////////////////////////////////////////////////////////////////////
-#include <assert.h>
-#include <stdlib.h>
+#include <cassert>
+#include <cstdlib>
 #include <memory.h>
 #include <string.h>
-#include <stdio.h>
+#include <cstdio>
 #include <math.h>
 #include <float.h>
-
 
 /////////////////////////////////////////////////////////////////////////////
 // STL
 /////////////////////////////////////////////////////////////////////////////
 #include <vector>
 #include <list>
-#include <map>	
+#include <map>
 #include <set>
 #include <string>
 #include <algorithm>
@@ -90,15 +89,33 @@ typedef unsigned __int64	uint64;
 #define PROC_INTEL
 
 #ifndef SAFE_DELETE
-#define SAFE_DELETE(p)			{ if(p) { delete (p);		(p)=NULL; } }
+#define SAFE_DELETE(p)                                                                                                                                                             \
+    {                                                                                                                                                                              \
+        if (p) {                                                                                                                                                                   \
+            delete (p);                                                                                                                                                            \
+            (p) = nullptr;                                                                                                                                                            \
+        }                                                                                                                                                                          \
+    }
 #endif
 
 #ifndef SAFE_DELETE_ARRAY
-#define SAFE_DELETE_ARRAY(p)	{ if(p) { delete[] (p);		(p)=NULL; } }
+#define SAFE_DELETE_ARRAY(p)                                                                                                                                                       \
+    {                                                                                                                                                                              \
+        if (p) {                                                                                                                                                                   \
+            delete[] (p);                                                                                                                                                          \
+            (p) = nullptr;                                                                                                                                                            \
+        }                                                                                                                                                                          \
+    }
 #endif
 
 #ifndef SAFE_RELEASE
-#define SAFE_RELEASE(p)			{ if(p) { (p)->Release();	(p)=NULL; } }
+#define SAFE_RELEASE(p)                                                                                                                                                            \
+    {                                                                                                                                                                              \
+        if (p) {                                                                                                                                                                   \
+            (p)->Release();                                                                                                                                                        \
+            (p) = nullptr;                                                                                                                                                            \
+        }                                                                                                                                                                          \
+    }
 #endif
 
 /////////////////////////////////////////////////////////////////////////////
@@ -115,7 +132,7 @@ typedef unsigned __int64	uint64;
 #define TSmartPtr _smart_ptr
 #define SMARTPTR_TYPEDEF(Class) typedef _smart_ptr<Class> Class##Ptr
 
-#define TOOLBAR_TRANSPARENT_COLOR RGB(0xC0,0xC0,0xC0)
+#define TOOLBAR_TRANSPARENT_COLOR RGB(0xC0, 0xC0, 0xC0)
 
 /////////////////////////////////////////////////////////////////////////////
 // Interfaces ///////////////////////////////////////////////////////////////
@@ -134,7 +151,7 @@ typedef unsigned __int64	uint64;
 #include "Util\AffineParts.h"
 
 // Xml support.
-//#include "Xml\IXml.h"
+// #include "Xml\IXml.h"
 #include "Xml\xml.h"
 #include "Util\XmlArchive.h"
 #include "Util\XmlTemplate.h"
@@ -164,13 +181,13 @@ typedef unsigned __int64	uint64;
 // Undo support.
 #include "Undo\IUndoObject.h"
 
-//#include "Anim\Range.h"
+// #include "Anim\Range.h"
 
 // Log file access
 #include "LogFile.h"
 
 // Some standart controls to be always accessible.
-//#include "NewMenu.h"
+// #include "NewMenu.h"
 #include "Controls\ColorCtrl.h"
 #include "Controls\NumberCtrl.h"
 #include "Controls\ColorCheckBox.h"

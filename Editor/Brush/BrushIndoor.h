@@ -7,7 +7,7 @@
 //  Version:     v1.00
 //  Created:     4/12/2002 by Timur.
 //  Compilers:   Visual Studio.NET
-//  Description: 
+//  Description:
 // -------------------------------------------------------------------------
 //  History:
 //
@@ -20,42 +20,40 @@
 class CBrushObject;
 
 /** Holds reference to indoor building to which brushes are added.
-*/
-class CBrushIndoor
-{
+ */
+class CBrushIndoor {
 public:
-	CBrushIndoor();
-	~CBrushIndoor();
+    CBrushIndoor();
+    ~CBrushIndoor();
 
-	struct IIndoorBase* GetBuildMgr();
+    struct IIndoorBase* GetBuildMgr();
 
-	//! Add new brush object to indoor.
-	void AddBrush( CBrushObject *brushObj );
-	//! Remove brush object from indoor.
-	void RemoveBrush( CBrushObject *brushObj );
+    //! Add new brush object to indoor.
+    void AddBrush(CBrushObject* brushObj);
+    //! Remove brush object from indoor.
+    void RemoveBrush(CBrushObject* brushObj);
 
-	void MakeIndoor();
-	void ReleaseIndoor();
+    void MakeIndoor();
+    void ReleaseIndoor();
 
-	void AddObject( IStatObj *object );
-	void RemoveObject( IStatObj *object );
-	void UpdateObject( IStatObj *object );
+    void AddObject(IStatObj* object);
+    void RemoveObject(IStatObj* object);
+    void UpdateObject(IStatObj* object);
 
-	//! Sound indoor bounding box in world space.
-	void SetBounds( const BBox &bbox );
+    //! Sound indoor bounding box in world space.
+    void SetBounds(const BBox& bbox);
 
-	//! Recalculate bounding box.
-	void RecalcBounds();
+    //! Recalculate bounding box.
+    void RecalcBounds();
 
-	void GetObjects( std::vector<CBrushObject*> &objects );
+    void GetObjects(std::vector<CBrushObject*>& objects);
 
 private:
-	// Id of building.
-	int m_buildingId;
+    // Id of building.
+    int m_buildingId;
 
-	typedef std::set<CBrushObject*> Brushes;
-	Brushes m_brushes;
+    typedef std::set<CBrushObject*> Brushes;
+    Brushes m_brushes;
 };
-
 
 #endif // __brushindoor_h__

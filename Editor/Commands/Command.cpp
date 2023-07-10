@@ -7,7 +7,7 @@
 //  Version:     v1.00
 //  Created:     4/7/2002 by Timur.
 //  Compilers:   Visual Studio.NET
-//  Description: 
+//  Description:
 // -------------------------------------------------------------------------
 //  History:
 //
@@ -17,9 +17,8 @@
 #include "Command.h"
 
 //////////////////////////////////////////////////////////////////////////
-CCommand::CCommand( const CString &name,int Id,int flags )
-{
-	m_name = name;
-	m_flags = flags;
-	m_id = Id;
+CCommand::CCommand(const CString& name, int Id, int flags) {
+    m_name = name;
+    m_flags = flags;
+    m_id = Id;
 }

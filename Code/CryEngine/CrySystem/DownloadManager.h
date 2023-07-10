@@ -1,27 +1,23 @@
 #pragma once
 
-//#ifndef LINUX
+// #ifndef LINUX
 
 class CHTTPDownloader;
 
-
-class CDownloadManager
-{
+class CDownloadManager {
 public:
-	CDownloadManager();
-	virtual ~CDownloadManager();
+    CDownloadManager();
+    virtual ~CDownloadManager();
 
-	void Create(ISystem *pSystem);
-	CHTTPDownloader *CreateDownload();
-	void RemoveDownload(CHTTPDownloader *pDownload);
-	void Update();
-	void Release();
+    void Create(ISystem* pSystem);
+    CHTTPDownloader* CreateDownload();
+    void RemoveDownload(CHTTPDownloader* pDownload);
+    void Update();
+    void Release();
 
 private:
-
-	ISystem												*m_pSystem;
-	std::list<CHTTPDownloader *>	m_lDownloadList;
+    ISystem* m_pSystem;
+    std::list<CHTTPDownloader*> m_lDownloadList;
 };
 
-
-//#endif //LINUX
+// #endif //LINUX

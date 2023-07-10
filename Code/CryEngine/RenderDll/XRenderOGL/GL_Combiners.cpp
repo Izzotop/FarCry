@@ -4,95 +4,94 @@
 
 #include "NVParse\nvparse.h"
 
-void build_normalize_combiner_dlist()
-{
-glEnable(GL_REGISTER_COMBINERS_NV);
+void build_normalize_combiner_dlist() {
+    glEnable(GL_REGISTER_COMBINERS_NV);
 
-float specular [4]={1,0,0.0,1};
-glCombinerParameterfvNV(GL_CONSTANT_COLOR0_NV,&specular[0]);
+    float specular[4] = {1, 0, 0.0, 1};
+    glCombinerParameterfvNV(GL_CONSTANT_COLOR0_NV, &specular[0]);
 
-//float diffuse [4]={1,1,1,1};
-//glCombinerParameterfvNV(GL_CONSTANT_COLOR1_NV,&diffuse[0]);
+    // float diffuse [4]={1,1,1,1};
+    // glCombinerParameterfvNV(GL_CONSTANT_COLOR1_NV,&diffuse[0]);
 
-nvparse(false,
+    nvparse(false,
 
-"!!RC1.0"
-/*
-"{"
-  "rgb{"
-  "spare0=expand(col1).expand(col1);"
-  "}"
-"}"
+            "!!RC1.0"
+            /*
+            "{"
+              "rgb{"
+              "spare0=expand(col1).expand(col1);"
+              "}"
+            "}"
 
-"{"
-  "rgb{"
-  "discard=expand(col1);"
-  "discard=half_bias(col1)*unsigned_invert(spare0);"
-  "col1=sum();"
-  "}"
-"}"
-*/
-"{"
-  "rgb{"
-  "spare0=expand(tex2).expand(tex1);" // specular
-  "spare1=expand(tex0).expand(tex1);" // diffuse
-  "}"
-"}"
+            "{"
+              "rgb{"
+              "discard=expand(col1);"
+              "discard=half_bias(col1)*unsigned_invert(spare0);"
+              "col1=sum();"
+              "}"
+            "}"
+            */
+            "{"
+            "rgb{"
+            "spare0=expand(tex2).expand(tex1);" // specular
+            "spare1=expand(tex0).expand(tex1);" // diffuse
+            "}"
+            "}"
 
-// specular exp
+            // specular exp
 
-"{"
-  "rgb{"
-  "spare0=spare0*spare0;"
-  "}"
-"}"
+            "{"
+            "rgb{"
+            "spare0=spare0*spare0;"
+            "}"
+            "}"
 
-"{"
-  "rgb{"
-  "spare0=spare0*spare0;"
-  "}"
-"}"
+            "{"
+            "rgb{"
+            "spare0=spare0*spare0;"
+            "}"
+            "}"
 
-"{"
-  "rgb{"
-  "spare0=spare0*spare0;"
-  "}"
-"}"
+            "{"
+            "rgb{"
+            "spare0=spare0*spare0;"
+            "}"
+            "}"
 
-"{"
-  "rgb{"
-  "spare0=spare0*spare0;"
-  "}"
-"}"
+            "{"
+            "rgb{"
+            "spare0=spare0*spare0;"
+            "}"
+            "}"
 
-"{"
-  "rgb{"
-  "spare0=spare0*spare0;"
-  "}"
-"}"
+            "{"
+            "rgb{"
+            "spare0=spare0*spare0;"
+            "}"
+            "}"
 
-// attenuation
-"{"
-  "rgb{"
-  "spare1=spare1*col0.a;"
-  "}"
-"}"
+            // attenuation
+            "{"
+            "rgb{"
+            "spare1=spare1*col0.a;"
+            "}"
+            "}"
 
-"{"
-  "rgb{"
-  "spare0=spare0*col0.a;"
-  "}"
-"}"
+            "{"
+            "rgb{"
+            "spare0=spare0*col0.a;"
+            "}"
+            "}"
 
-// summ result
-"final_product = const0 * spare1;\n"
-"out.rgb=spare0 + final_product;"
-"out.a=unsigned_invert(zero);"
+            // summ result
+            "final_product = const0 * spare1;\n"
+            "out.rgb=spare0 + final_product;"
+            "out.a=unsigned_invert(zero);"
 
-);
-char*const*const szError=nvparse_get_errors();
-if(szError[0])
-  iConsole->Exit(szError[0]);
+    );
+    char* const* const szError = nvparse_get_errors();
+    if (szError[0])
+        iConsole->Exit(szError[0]);
 }
 /*
 void CGLRenderer::EnableBumpCombinersAdditive()
@@ -155,47 +154,42 @@ glFinalCombinerInputNV(GL_VARIABLE_D_NV,
 GL_ZERO,GL_UNSIGNED_IDENTITY_NV,GL_RGB);
 }*/
 
-//extern "C" char * state_to_rc10 ();
+// extern "C" char * state_to_rc10 ();
 
-void CGLRenderer::ConfigCombinersForHardwareShadowPass(int withTexture,float*lightDimColor)
-{
-  static int nList = 0;
+void CGLRenderer::ConfigCombinersForHardwareShadowPass(int withTexture, float* lightDimColor) {
+    static int nList = 0;
 
-  CPShader::m_CurRC = 0;
+    CPShader::m_CurRC = 0;
 
-  if(nList)
-  {
-    glCallList(nList);
-    return;
-  }
+    if (nList) {
+        glCallList(nList);
+        return;
+    }
 
-  nList = glGenLists(1);
-  
-  glNewList(nList, GL_COMPILE);
+    nList = glGenLists(1);
 
-  nvparse(false,
-    "!!RC1.0\n"
-    "{"
-      "rgb{"
-      "spare0=unsigned_invert(zero);"
-      "}"
-      "alpha{"
-      "spare0.a=unsigned_invert(tex0.b)*col0.a;"
-      "}"
-    "}"
-    "out.rgb = unsigned_invert(col0.a) + tex0;\n"
-    "out.a = spare0.a;\n"
-    );
+    glNewList(nList, GL_COMPILE);
 
-  glEnable(GL_REGISTER_COMBINERS_NV);
+    nvparse(false, "!!RC1.0\n"
+                   "{"
+                   "rgb{"
+                   "spare0=unsigned_invert(zero);"
+                   "}"
+                   "alpha{"
+                   "spare0.a=unsigned_invert(tex0.b)*col0.a;"
+                   "}"
+                   "}"
+                   "out.rgb = unsigned_invert(col0.a) + tex0;\n"
+                   "out.a = spare0.a;\n");
 
-  glEndList();
+    glEnable(GL_REGISTER_COMBINERS_NV);
 
-  int n = 0;
+    glEndList();
 
-  for (char * const * errors = nvparse_get_errors(); *errors; errors++)
-  {
-    n++;
-    iLog->Log(*errors);
-  }
+    int n = 0;
+
+    for (char* const* errors = nvparse_get_errors(); *errors; errors++) {
+        n++;
+        iLog->Log(*errors);
+    }
 }

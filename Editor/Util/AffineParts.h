@@ -7,7 +7,7 @@
 //  Version:     v1.00
 //  Created:     19/8/2002 by Timur.
 //  Compilers:   Visual Studio.NET
-//  Description: 
+//  Description:
 // -------------------------------------------------------------------------
 //  History:
 //
@@ -20,22 +20,21 @@
 #pragma once
 #endif
 
-struct AffineParts
-{
-	Vec3 pos;				//!< Translation components
-  Quat rot;				//!< Essential rotation.
-  Quat rotScale;	//!< Stretch rotation.
-  Vec3 scale;			//!< Stretch factors.
-	float fDet;			//!< Sign of determinant.
+struct AffineParts {
+    Vec3 pos;      //!< Translation components
+    Quat rot;      //!< Essential rotation.
+    Quat rotScale; //!< Stretch rotation.
+    Vec3 scale;    //!< Stretch factors.
+    float fDet;    //!< Sign of determinant.
 
-	/** Decompose matrix to its affnie parts.
-	*/
-	void Decompose( const Matrix44 &mat );
-	
-	/** Decompose matrix to its affnie parts.
-			Assume there`s no stretch rotation.
-	*/
-	void SpectralDecompose( const Matrix44 &mat );
+    /** Decompose matrix to its affnie parts.
+     */
+    void Decompose(const Matrix44& mat);
+
+    /** Decompose matrix to its affnie parts.
+            Assume there`s no stretch rotation.
+    */
+    void SpectralDecompose(const Matrix44& mat);
 };
 
 #endif // __affineparts_h__

@@ -7,7 +7,7 @@
 //  Version:     v1.00
 //  Created:     17/6/2003 by Timur.
 //  Compilers:   Visual Studio.NET
-//  Description: 
+//  Description:
 // -------------------------------------------------------------------------
 //  History:
 //
@@ -22,14 +22,14 @@
 #define GLOBAL_PARTICLES_ROOT "Particles"
 
 /** Library of prototypes.
-*/
-class CRYEDIT_API CParticleLibrary : public CBaseLibrary
-{
+ */
+class CRYEDIT_API CParticleLibrary : public CBaseLibrary {
 public:
-	CParticleLibrary( CBaseLibraryManager *pManager ) : CBaseLibrary(pManager) {};
-	virtual bool Save();
-	virtual bool Load( const CString &filename );
-	virtual void Serialize( XmlNodeRef &node,bool bLoading );
+    CParticleLibrary(CBaseLibraryManager* pManager) : CBaseLibrary(pManager){};
+    virtual bool Save();
+    virtual bool Load(const CString& filename);
+    virtual void Serialize(XmlNodeRef& node, bool bLoading);
+
 private:
 };
 

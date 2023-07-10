@@ -6,7 +6,7 @@
 //  Description: ISound interface implementation.
 //
 //  History:
-//	-June 06,2001:Implemented by Marco Corbetta
+//  -June 06,2001:Implemented by Marco Corbetta
 //
 //////////////////////////////////////////////////////////////////////
 
@@ -25,240 +25,252 @@ struct CS_SAMPLE;
 struct IVisArea;
 struct ITimer;
 
-#define SOUND_PRELOAD_DISTANCE	15	// start preloading this amount of meters before the sound is potentially hearable (max_radius)
+#define SOUND_PRELOAD_DISTANCE 15 // start preloading this amount of meters before the sound is potentially hearable (max_radius)
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 // A sound...
-class CSound : public ISound
-{
+class CSound : public ISound {
 protected:
-	virtual ~CSound();
+    virtual ~CSound();
+
 public:
-	CSound(class CSoundSystem *pSSys,const char *szFile);
-		
-	//// ISound //////////////////////////////////////////////////////
-	bool IsPlayingOnChannel();	// returns true if a voice is used to play the sound and have channel allocated.
-	bool IsPlaying();	// returns true if a voice is used to play the sound
-	bool IsPlayingVirtual(); // returns true if the sound is looping and not stopped. it might be too far (clipped) so it will not use a physical voice nor is it audioable
-	void Play(float fVolumeScale=1.0f, bool bForceActiveState=true, bool bSetRatio=true);
-	void PlayFadeUnderwater(float fVolumeScale=1.0f, bool bForceActiveState=true, bool bSetRatio=true);
-	void Stop();
-	//! Frees fmod channel, also stop hearable sound playback
-	void FreeChannel();
-	//void SetName(const char *szName);
+    CSound(class CSoundSystem* pSSys, const char* szFile);
 
-	//! Get name of sound file.
-	const char *GetName();
+    //// ISound //////////////////////////////////////////////////////
+    bool IsPlayingOnChannel(); // returns true if a voice is used to play the sound and have channel allocated.
+    bool IsPlaying();          // returns true if a voice is used to play the sound
+    bool IsPlayingVirtual();   // returns true if the sound is looping and not stopped. it might be too far (clipped) so it will not use a physical voice nor is it audioable
+    void Play(float fVolumeScale = 1.0f, bool bForceActiveState = true, bool bSetRatio = true);
+    void PlayFadeUnderwater(float fVolumeScale = 1.0f, bool bForceActiveState = true, bool bSetRatio = true);
+    void Stop();
+    //! Frees fmod channel, also stop hearable sound playback
+    void FreeChannel();
+    // void SetName(const char *szName);
 
-	//! Get uniq id of sound.
-	const int GetId();
+    //! Get name of sound file.
+    const char* GetName();
 
-	//! Set looping mode of sound.
-	void SetLoopMode(bool bLoop);	
+    //! Get uniq id of sound.
+    const int GetId();
 
-	//! retrieves the currently played sample-pos, in milliseconds or bytes
-	unsigned int GetCurrentSamplePos(bool bMilliSeconds);
-	//! set the currently played sample-pos in bytes or milliseconds
-	void SetCurrentSamplePos(unsigned int nPos,bool bMilliSeconds);	
+    //! Set looping mode of sound.
+    void SetLoopMode(bool bLoop);
 
-	//! sets automatic pitching amount (0-1000)
-	void SetPitching(float fPitching);
+    //! retrieves the currently played sample-pos, in milliseconds or bytes
+    unsigned int GetCurrentSamplePos(bool bMilliSeconds);
+    //! set the currently played sample-pos in bytes or milliseconds
+    void SetCurrentSamplePos(unsigned int nPos, bool bMilliSeconds);
 
-	void SetBaseFrequency(int nFreq);
+    //! sets automatic pitching amount (0-1000)
+    void SetPitching(float fPitching);
 
-	//! Return frequency of sound.
-	int	 GetBaseFrequency(int nFreq);
+    void SetBaseFrequency(int nFreq);
 
-	void SetFrequency(int nFreq);	
-	//! Set Minimal/Maximal distances for sound.
-	//! Sound is not attenuated below minimal distance and not heared outside of max distance.	
-	void SetMinMaxDistance(float fMinDist, float fMaxDist);
-	void SetAttrib(int nVolume, float fRatio, int nPan=127, int nFreq=1000, bool bSetRatio=true);
-	void SetAttrib(const Vec3d &pos, const Vec3d &speed);
-	void SetRatio(float fRatio);
+    //! Return frequency of sound.
+    int GetBaseFrequency(int nFreq);
 
-	//! Update the position (called when directional-attenuation-parameters change)
-	void UpdatePosition();
+    void SetFrequency(int nFreq);
+    //! Set Minimal/Maximal distances for sound.
+    //! Sound is not attenuated below minimal distance and not heared outside of max distance.
+    void SetMinMaxDistance(float fMinDist, float fMaxDist);
+    void SetAttrib(int nVolume, float fRatio, int nPan = 127, int nFreq = 1000, bool bSetRatio = true);
+    void SetAttrib(const Vec3d& pos, const Vec3d& speed);
+    void SetRatio(float fRatio);
 
-	//! Set sound source position.
-	void SetPosition(const Vec3d &pos);
+    //! Update the position (called when directional-attenuation-parameters change)
+    void UpdatePosition();
 
-	//! Get sound source position.
-	//@return false if it is not a 3d sound	
-	const bool GetPosition(Vec3d &vPos);	
+    //! Set sound source position.
+    void SetPosition(const Vec3d& pos);
 
-	void	SetLooping(bool bLooping) {}
-	int		GetFrequency() 
-	{ 
-		if (m_pSound)
-			return (m_pSound->GetBaseFreq());
-		return (0);
-	}
+    //! Get sound source position.
+    //@return false if it is not a 3d sound
+    const bool GetPosition(Vec3d& vPos);
 
-	//! Set sound pitch.
-	//! 1000 is default pitch.	
-	void	SetPitch(int nValue); 	
+    void SetLooping(bool bLooping) {}
+    int GetFrequency() {
+        if (m_pSound)
+            return (m_pSound->GetBaseFreq());
+        return (0);
+    }
 
-	//! Set sound pan
-	void	SetPan(int nPan);
+    //! Set sound pitch.
+    //! 1000 is default pitch.
+    void SetPitch(int nValue);
 
-	//! Define sound code.
-	//! Angles are in degrees, in range 0-360.	
-	void	SetConeAngles(float fInnerAngle,float fOuterAngle);
+    //! Set sound pan
+    void SetPan(int nPan);
 
-	//! Set sound volume.
-	//! Range: 0-100	
-	void	SetVolume(int);
+    //! Define sound code.
+    //! Angles are in degrees, in range 0-360.
+    void SetConeAngles(float fInnerAngle, float fOuterAngle);
 
-	//! Get sound volume.
-	int		GetVolume() { return(m_nVolume); }
+    //! Set sound volume.
+    //! Range: 0-100
+    void SetVolume(int);
 
-	//! Set sound source velocity.
-	void	SetVelocity(const Vec3d &vVel);
+    //! Get sound volume.
+    int GetVolume() {
+        return (m_nVolume);
+    }
 
-	//! Get sound source velocity.
-	Vec3_tpl<float>	GetVelocity( void ) { return (m_speed); }
+    //! Set sound source velocity.
+    void SetVelocity(const Vec3d& vVel);
 
-	//! Set orientation of sound.
-	//! Only relevant when cone angles are specified.	
-	void	SetDirection(const Vec3d &vDir);
-	Vec3_tpl<float>	GetDirection() {return (m_orient);}	
+    //! Get sound source velocity.
+    Vec3_tpl<float> GetVelocity() {
+        return (m_speed);
+    }
 
-	void	SetLoopPoints(const int iLoopStart, const int iLoopEnd);
+    //! Set orientation of sound.
+    //! Only relevant when cone angles are specified.
+    void SetDirection(const Vec3d& vDir);
+    Vec3_tpl<float> GetDirection() {
+        return (m_orient);
+    }
 
-	//! compute fmod flags from crysound-flags
-	int GetFModFlags();
-	//! load the sound only when it is played
-	bool	Preload();
+    void SetLoopPoints(const int iLoopStart, const int iLoopEnd);
 
-	bool IsRelative() const
-	{ 
-		if (m_nFlags & FLAG_SOUND_RELATIVE)
-			return true;
-		else
-			return false;
-	}
+    //! compute fmod flags from crysound-flags
+    int GetFModFlags();
+    //! load the sound only when it is played
+    bool Preload();
 
-	// Sets certain sound properties  
-	void SetSoundProperties(float fFadingValue);	
+    bool IsRelative() const {
+        if (m_nFlags & FLAG_SOUND_RELATIVE)
+            return true;
+        else
+            return false;
+    }
 
-	// Add/remove sounds.
-	int	AddRef() { return ++m_refCount; };
-	int	Release();
+    // Sets certain sound properties
+    void SetSoundProperties(float fFadingValue);
 
-	//! enable fx effects for this sound
-	//! _ust be called after each play
-	void	FXEnable(int nEffectNumber);
+    // Add/remove sounds.
+    int AddRef() {
+        return ++m_refCount;
+    };
+    int Release();
 
-	void	FXSetParamEQ(float fCenter,float fBandwidth,float fGain);	
+    //! enable fx effects for this sound
+    //! _ust be called after each play
+    void FXEnable(int nEffectNumber);
 
-	void	AddToScaleGroup(int nGroup) { m_nSoundScaleGroups|=(1<<nGroup); }
-	void	RemoveFromScaleGroup(int nGroup) { m_nSoundScaleGroups&=~(1<<nGroup); }
-	void	SetScaleGroup(unsigned int nGroupBits) { m_nSoundScaleGroups=nGroupBits; }
+    void FXSetParamEQ(float fCenter, float fBandwidth, float fGain);
 
-	//! set the maximum distance / the sound will be stopped if the
-	//! distance from the listener and this sound is bigger than this max distance
-//	void	SetMaxSoundDistance(float fMaxSoundDistance);
+    void AddToScaleGroup(int nGroup) {
+        m_nSoundScaleGroups |= (1 << nGroup);
+    }
+    void RemoveFromScaleGroup(int nGroup) {
+        m_nSoundScaleGroups &= ~(1 << nGroup);
+    }
+    void SetScaleGroup(unsigned int nGroupBits) {
+        m_nSoundScaleGroups = nGroupBits;
+    }
 
-	//! returns the size of the stream in ms
-	int GetLengthMs();
+    //! set the maximum distance / the sound will be stopped if the
+    //! distance from the listener and this sound is bigger than this max distance
+    //  void  SetMaxSoundDistance(float fMaxSoundDistance);
 
-	//! returns the size of the stream 
-	int GetLength();
+    //! returns the size of the stream in ms
+    int GetLengthMs();
 
-	//! set sound priority (0-255)
-	void	SetSoundPriority(unsigned char nSoundPriority);
+    //! returns the size of the stream
+    int GetLength();
 
-	void	ChangeVolume(int nVolume);
+    //! set sound priority (0-255)
+    void SetSoundPriority(unsigned char nSoundPriority);
 
-	int		CalcSoundVolume(int nSoundValue,float fVolumeScale);
+    void ChangeVolume(int nVolume);
 
-	bool	FadeIn();
-	bool	FadeOut();
+    int CalcSoundVolume(int nSoundValue, float fVolumeScale);
 
-	void AddEventListener( ISoundEventListener *pListener );
-	void RemoveEventListener( ISoundEventListener *pListener );
-	//! Fires event for all listeners to this sound.
-	void OnEvent( ESoundCallbackEvent event );
+    bool FadeIn();
+    bool FadeOut();
 
-	void OnBufferLoaded();
-	void OnBufferLoadFailed();
+    void AddEventListener(ISoundEventListener* pListener);
+    void RemoveEventListener(ISoundEventListener* pListener);
+    //! Fires event for all listeners to this sound.
+    void OnEvent(ESoundCallbackEvent event);
 
-	void	GetMemoryUsage(class ICrySizer* pSizer);
+    void OnBufferLoaded();
+    void OnBufferLoadFailed();
 
-	//! Check if sound now loading (not yet played).
-	bool IsLoading();
-	bool IsLoaded();
-	bool IsUsingChannel();
+    void GetMemoryUsage(class ICrySizer* pSizer);
 
-	bool IsPlayLengthExpired( float fCurrTime  );
-	
+    //! Check if sound now loading (not yet played).
+    bool IsLoading();
+    bool IsLoaded();
+    bool IsUsingChannel();
+
+    bool IsPlayLengthExpired(float fCurrTime);
+
 public:
+    int m_nChannel;
+    int m_nFxChannel;
+    // int    m_nLastId;
+    // int    m_nFadeType;
+    int m_nStartOffset;
 
-	int		m_nChannel;
-	int		m_nFxChannel;	
-	//int		m_nLastId;
-	//int		m_nFadeType;
-	int		m_nStartOffset;
-	
-	CSoundBufferPtr m_pSound;
+    CSoundBufferPtr m_pSound;
 
-	float m_fLastPlayTime;
-	float m_fChannelPlayTime;
-	float m_fSoundLengthSec;
+    float m_fLastPlayTime;
+    float m_fChannelPlayTime;
+    float m_fSoundLengthSec;
 
-	unsigned int m_nSoundScaleGroups;
+    unsigned int m_nSoundScaleGroups;
 
-	ESoundActiveState m_State;
+    ESoundActiveState m_State;
 
-	int		m_nMaxVolume;
-	int		m_nVolume;
-	int		m_nPlayingVolume;
-	int		m_nPan;
-	float	m_fPitching;	// relative random pitching of sound (to avoid flanging if multiple sounds are played simultaneously)
-	int		m_nCurrPitch;
-	//int		m_nBaseFreq;
-	int		m_nRelativeFreq;
-	bool	m_bLoop;	
-	bool	m_bPlaying;
-	float m_fRatio;
-	
-	Vec3_tpl<float>	m_position;
-	Vec3_tpl<float>	m_orient;
-	Vec3_tpl<float>	m_speed;
-	int m_refCount;
-	int   m_nFlags;
-	Vec3_tpl<float>	m_RealPos;	// this is the position the sound is currently at (may differ from m_position, because for example the directional attenuation will virtually "move" the sound)
+    int m_nMaxVolume;
+    int m_nVolume;
+    int m_nPlayingVolume;
+    int m_nPan;
+    float m_fPitching; // relative random pitching of sound (to avoid flanging if multiple sounds are played simultaneously)
+    int m_nCurrPitch;
+    // int    m_nBaseFreq;
+    int m_nRelativeFreq;
+    bool m_bLoop;
+    bool m_bPlaying;
+    float m_fRatio;
 
-	//string m_strName;
-	
-	float	m_fMaxRadius2; //used to skip playing of sounds if using sound's sphere
-	float	m_fMinRadius2; //used to skip playing of sounds if using sound's sphere
-	float	m_fDiffRadius2; //used to calculate volume ratio when inside the sound's sphere
-	float m_fPreloadRadius2;	// used to start preloading
-	float	m_fMinDist,m_fMaxDist;	
-///	float m_fMaxSoundDistance2; //keep it squared
+    Vec3_tpl<float> m_position;
+    Vec3_tpl<float> m_orient;
+    Vec3_tpl<float> m_speed;
+    int m_refCount;
+    int m_nFlags;
+    Vec3_tpl<float>
+        m_RealPos; // this is the position the sound is currently at (may differ from m_position, because for example the directional attenuation will virtually "move" the sound)
 
-	class CSoundSystem* m_pSSys;
-	ITimer *m_pTimer;
+    // string m_strName;
 
-	//short		m_nSectorId,m_nBuildingId;
-	IVisArea	*m_pArea;
-	float			m_fFadingValue,m_fCurrentFade;
+    float m_fMaxRadius2;     // used to skip playing of sounds if using sound's sphere
+    float m_fMinRadius2;     // used to skip playing of sounds if using sound's sphere
+    float m_fDiffRadius2;    // used to calculate volume ratio when inside the sound's sphere
+    float m_fPreloadRadius2; // used to start preloading
+    float m_fMinDist, m_fMaxDist;
+    ///  float m_fMaxSoundDistance2; //keep it squared
 
-	bool			m_bPlayAfterLoad;
-	float			m_fPostLoadRatio;
-	bool			m_bPostLoadForceActiveState;
-	bool			m_bPostLoadSetRatio;
-	bool			m_bAutoStop;
-	bool			m_bAlreadyLoaded;
+    class CSoundSystem* m_pSSys;
+    ITimer* m_pTimer;
 
-	unsigned char m_nSoundPriority;
+    // short    m_nSectorId,m_nBuildingId;
+    IVisArea* m_pArea;
+    float m_fFadingValue, m_fCurrentFade;
 
-	static int m_PlayingChannels;
+    bool m_bPlayAfterLoad;
+    float m_fPostLoadRatio;
+    bool m_bPostLoadForceActiveState;
+    bool m_bPostLoadSetRatio;
+    bool m_bAutoStop;
+    bool m_bAlreadyLoaded;
 
-	typedef std::set<ISoundEventListener*> Listeners;
-	Listeners m_listeners;
+    unsigned char m_nSoundPriority;
+
+    static int m_PlayingChannels;
+
+    typedef std::set<ISoundEventListener*> Listeners;
+    Listeners m_listeners;
 };
 
 #endif // CRYSOUND_SOUND_H

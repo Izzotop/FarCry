@@ -4,6 +4,4 @@
 #ifndef _CAL_CONVERTOR_HDR_
 #define _CAL_CONVERTOR_HDR_
 
-
-
 #endif

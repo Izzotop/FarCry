@@ -10,42 +10,39 @@
 /////////////////////////////////////////////////////////////////////////////
 // CInfoProgressBar dialog
 
-class CInfoProgressBar : public CDialog
-{
-// Construction
+class CInfoProgressBar : public CDialog {
+    // Construction
 public:
-	CInfoProgressBar(CWnd* pParent = NULL);   // standard constructor
+    CInfoProgressBar(CWnd* pParent = nullptr); // standard constructor
 
-// Dialog Data
-	//{{AFX_DATA(CInfoProgressBar)
-	enum { IDD = IDD_INFO_PROGRESS_BAR };
-	CProgressCtrl	m_progress;
-	CStatic	m_info;
-	CCustomButton	m_cancel;
-	//}}AFX_DATA
+    // Dialog Data
+    //{{AFX_DATA(CInfoProgressBar)
+    enum { IDD = IDD_INFO_PROGRESS_BAR };
+    CProgressCtrl m_progress;
+    CStatic m_info;
+    CCustomButton m_cancel;
+    //}}AFX_DATA
 
-	void BeginProgress( const CString &infoText );
-	bool UpdateProgress( int percent );
+    void BeginProgress(const CString& infoText);
+    bool UpdateProgress(int percent);
 
-
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CInfoProgressBar)
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	//}}AFX_VIRTUAL
-
-// Implementation
+    // Overrides
+    // ClassWizard generated virtual function overrides
+    //{{AFX_VIRTUAL(CInfoProgressBar)
 protected:
+    virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
+                                                     //}}AFX_VIRTUAL
 
-	// Generated message map functions
-	//{{AFX_MSG(CInfoProgressBar)
-	afx_msg void OnCancel();
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
+    // Implementation
+protected:
+    // Generated message map functions
+    //{{AFX_MSG(CInfoProgressBar)
+    afx_msg void OnCancel();
+    //}}AFX_MSG
+    DECLARE_MESSAGE_MAP()
 
-	bool m_bCanceled;
-	int m_percent;
+    bool m_bCanceled;
+    int m_percent;
 };
 
 //{{AFX_INSERT_LOCATION}}

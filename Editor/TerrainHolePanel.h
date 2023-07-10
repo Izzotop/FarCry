@@ -12,46 +12,45 @@
 /////////////////////////////////////////////////////////////////////////////
 // CTerrainHolePanel dialog
 
-class CTerrainHolePanel : public CDialog
-{
-// Construction
+class CTerrainHolePanel : public CDialog {
+    // Construction
 public:
-	CTerrainHolePanel(class CTerrainHoleTool *tool,CWnd* pParent = NULL);   // standard constructor
+    CTerrainHolePanel(class CTerrainHoleTool* tool, CWnd* pParent = nullptr); // standard constructor
 
-// Dialog Data
-	//{{AFX_DATA(CTerrainHolePanel)
-	enum { IDD = IDD_PANEL_TERRAIN_HOLE };
-	CSliderCtrl	m_radius;
-	//CColorCheckBox	m_removeHole;
-	//CColorCheckBox	m_makeHole;
-	CColorCheckBox	m_removeHole;
-	CColorCheckBox	m_makeHole;
-	//}}AFX_DATA
+    // Dialog Data
+    //{{AFX_DATA(CTerrainHolePanel)
+    enum { IDD = IDD_PANEL_TERRAIN_HOLE };
+    CSliderCtrl m_radius;
+    // CColorCheckBox    m_removeHole;
+    // CColorCheckBox    m_makeHole;
+    CColorCheckBox m_removeHole;
+    CColorCheckBox m_makeHole;
+    //}}AFX_DATA
 
-	void SetMakeHole( bool bEnable );
+    void SetMakeHole(bool bEnable);
 
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CTerrainHolePanel)
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	//}}AFX_VIRTUAL
-
-// Implementation
+    // Overrides
+    // ClassWizard generated virtual function overrides
+    //{{AFX_VIRTUAL(CTerrainHolePanel)
 protected:
-	virtual void OnOK() {};
-	virtual void OnCancel() {};
+    virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
+    //}}AFX_VIRTUAL
 
-	// Generated message map functions
-	//{{AFX_MSG(CTerrainHolePanel)
-	afx_msg void OnHoleMake();
-	afx_msg void OnHoleRemove();
-	virtual BOOL OnInitDialog();
-	afx_msg void OnReleasedcaptureRadius(NMHDR* pNMHDR, LRESULT* pResult);
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
+    // Implementation
+protected:
+    virtual void OnOK(){};
+    virtual void OnCancel(){};
 
-	CTerrainHoleTool *m_tool;
+    // Generated message map functions
+    //{{AFX_MSG(CTerrainHolePanel)
+    afx_msg void OnHoleMake();
+    afx_msg void OnHoleRemove();
+    virtual BOOL OnInitDialog();
+    afx_msg void OnReleasedcaptureRadius(NMHDR* pNMHDR, LRESULT* pResult);
+    //}}AFX_MSG
+    DECLARE_MESSAGE_MAP()
+
+    CTerrainHoleTool* m_tool;
 };
 
 //{{AFX_INSERT_LOCATION}}

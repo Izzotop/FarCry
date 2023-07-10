@@ -7,7 +7,7 @@
 //  Version:     v1.00
 //  Created:     14/10/2002 by Timur.
 //  Compilers:   Visual Studio.NET
-//  Description: 
+//  Description:
 // -------------------------------------------------------------------------
 //  History:
 //
@@ -25,81 +25,79 @@ class CHeightmap;
 class CTerrainTexGen;
 
 /** Represent single terrain sector.
-*/
-class CTerrainSector
-{
+ */
+class CTerrainSector {
 public:
-	CTerrainSector()
-	{
-		textureId = 0;
-	}
+    CTerrainSector() {
+        textureId = 0;
+    }
 
 public:
-	//! Id of surface texture.
-	unsigned int textureId;
+    //! Id of surface texture.
+    unsigned int textureId;
 };
 
 /** Manages grid of terrain sectors.
-*/
-class CTerrainGrid
-{
+ */
+class CTerrainGrid {
 public:
-	CTerrainGrid( CHeightmap* heightmap );
-	~CTerrainGrid();
+    CTerrainGrid(CHeightmap* heightmap);
+    ~CTerrainGrid();
 
-	//! Initialize grid.
-	void InitSectorGrid( int numSectors );
-	
-	//! Set target texture resolution.
-	void SetResolution( int resolution );
+    //! Initialize grid.
+    void InitSectorGrid(int numSectors);
 
-	//! Clear all sectors.
-	void ReleaseSectorGrid();
+    //! Set target texture resolution.
+    void SetResolution(int resolution);
 
-	//! Get terrain sector.
-	CTerrainSector* GetSector( CPoint sector );
+    //! Clear all sectors.
+    void ReleaseSectorGrid();
 
-	//! Lock texture of sector and return texture id.
-	int LockSectorTexture( CPoint sector,CTerrainTexGen &texGen,int genFlags );
+    //! Get terrain sector.
+    CTerrainSector* GetSector(CPoint sector);
 
-	//////////////////////////////////////////////////////////////////////////
-	// Coordinate conversions.
-	//////////////////////////////////////////////////////////////////////////
-	void GetSectorRect( CPoint sector,CRect &rect );
-	//! Map from sector coordinates to texture coordinates.
-	CPoint SectorToTexture( CPoint sector );
-	//! Map world position to sector space.
-	CPoint WorldToSector( const Vec3 &wp );
-	//! Map sector coordinates to world coordinates.
-	Vec3 SectorToWorld( CPoint sector );
-	//! Map world position to texture space.
-	CPoint WorldToTexture( const Vec3 &wp );
+    //! Lock texture of sector and return texture id.
+    int LockSectorTexture(CPoint sector, CTerrainTexGen& texGen, int genFlags);
 
-	//! Return number of sectors per side.
-	int GetNumSectors() const { return m_numSectors; }
+    //////////////////////////////////////////////////////////////////////////
+    // Coordinate conversions.
+    //////////////////////////////////////////////////////////////////////////
+    void GetSectorRect(CPoint sector, CRect& rect);
+    //! Map from sector coordinates to texture coordinates.
+    CPoint SectorToTexture(CPoint sector);
+    //! Map world position to sector space.
+    CPoint WorldToSector(const Vec3& wp);
+    //! Map sector coordinates to world coordinates.
+    Vec3 SectorToWorld(CPoint sector);
+    //! Map world position to texture space.
+    CPoint WorldToTexture(const Vec3& wp);
 
+    //! Return number of sectors per side.
+    int GetNumSectors() const {
+        return m_numSectors;
+    }
 
 private:
-	//! Heightmap for this terrain.
-	CHeightmap *m_heightmap;
+    //! Heightmap for this terrain.
+    CHeightmap* m_heightmap;
 
-	//! Sector grid.
-	std::vector<CTerrainSector*> m_sectorGrid;
+    //! Sector grid.
+    std::vector<CTerrainSector*> m_sectorGrid;
 
-	//! Number of sectors per side.
-	int m_numSectors;
-	
-	//! Resolution of texture and heightmap.
-	int m_resolution;
+    //! Number of sectors per side.
+    int m_numSectors;
 
-	//! Sector texture size.
-	int m_sectorResolution;
+    //! Resolution of texture and heightmap.
+    int m_resolution;
 
-	//! Size of sector in meters.
-	int m_sectorSize;
+    //! Sector texture size.
+    int m_sectorResolution;
 
-	//! Texture Pixels per meter.
-	float m_pixelsPerMeter;
+    //! Size of sector in meters.
+    int m_sectorSize;
+
+    //! Texture Pixels per meter.
+    float m_pixelsPerMeter;
 };
 
 #endif // __terraingrid_h__

@@ -23,34 +23,40 @@
 #include "EditTool.h"
 
 //////////////////////////////////////////////////////////////////////////
-class CEnvironmentTool : public CEditTool
-{
-	DECLARE_DYNCREATE(CEnvironmentTool)
+class CEnvironmentTool : public CEditTool {
+    DECLARE_DYNCREATE(CEnvironmentTool)
 public:
-	CEnvironmentTool();
-	virtual ~CEnvironmentTool();
+    CEnvironmentTool();
+    virtual ~CEnvironmentTool();
 
-	virtual void BeginEditParams( IEditor *ie,int flags );
-	virtual void EndEditParams();
+    virtual void BeginEditParams(IEditor* ie, int flags);
+    virtual void EndEditParams();
 
-	virtual void Display( DisplayContext &dc ) {};
+    virtual void Display(DisplayContext& dc){};
 
-	// Ovverides from CEditTool
-	bool MouseCallback( CViewport *view,EMouseEvent event,CPoint &point,int flags ) { return true; };
+    // Ovverides from CEditTool
+    bool MouseCallback(CViewport* view, EMouseEvent event, CPoint& point, int flags) {
+        return true;
+    };
 
-	// Key down.
-	bool OnKeyDown( CViewport *view,uint nChar,uint nRepCnt,uint nFlags ) { return true;};
-	bool OnKeyUp( CViewport *view,uint nChar,uint nRepCnt,uint nFlags ) { return true;};
-	
-	// Delete itself.
-	void Release() { delete this; };
+    // Key down.
+    bool OnKeyDown(CViewport* view, uint nChar, uint nRepCnt, uint nFlags) {
+        return true;
+    };
+    bool OnKeyUp(CViewport* view, uint nChar, uint nRepCnt, uint nFlags) {
+        return true;
+    };
+
+    // Delete itself.
+    void Release() {
+        delete this;
+    };
 
 private:
-	IEditor *m_ie;
+    IEditor* m_ie;
 
-	int m_panelId;
-	class CEnvironmentPanel *m_panel;
+    int m_panelId;
+    class CEnvironmentPanel* m_panel;
 };
-
 
 #endif // __EnvironmentTool_h__

@@ -18,7 +18,7 @@
 #include "lualib.h"
 
 
-typedef int sint32;	/* a signed version for size_t */
+typedef int sint32;  /* a signed version for size_t */
 
 
 static int str_len (lua_State *L) {
@@ -124,8 +124,8 @@ static int str_char (lua_State *L) {
 #endif
 
 
-#define CAP_UNFINISHED	(-1)
-#define CAP_POSITION	(-2)
+#define CAP_UNFINISHED  (-1)
+#define CAP_POSITION  (-2)
 
 typedef struct MatchState {
   const l_char *src_init;  /* init of source string */
@@ -139,8 +139,8 @@ typedef struct MatchState {
 } MatchState;
 
 
-#define ESC		l_c('%')
-#define SPECIALS	l_s("^$*+?.([%-")
+#define ESC    l_c('%')
+#define SPECIALS  l_s("^$*+?.([%-")
 
 
 static int check_capture (MatchState *ms, int l) {
@@ -531,9 +531,9 @@ static int str_gsub (lua_State *L) {
 
 
 /* maximum size of each formatted item (> len(format('%99.99f', -1e308))) */
-#define MAX_ITEM	512
+#define MAX_ITEM  512
 /* maximum size of each format specification (such as '%-099.99d') */
-#define MAX_FORMAT	20
+#define MAX_FORMAT  20
 
 
 static void luaI_addquoted (lua_State *L, luaL_Buffer *b, int arg) {

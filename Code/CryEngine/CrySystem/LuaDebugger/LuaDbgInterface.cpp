@@ -4,77 +4,70 @@
 
 bool g_bDone = false;
 
-bool InvokeDebugger(CLUADbg *pDebugger, const char *pszSourceFile, int iLine, const char *pszReason)
-{
-	HACCEL hAccelerators = NULL;
-	MSG msg;
-	IScriptSystem *pIScriptSystem = NULL;
+bool InvokeDebugger(CLUADbg* pDebugger, const char* pszSourceFile, int iLine, const char* pszReason) {
+    HACCEL hAccelerators = nullptr;
+    MSG msg;
+    IScriptSystem* pIScriptSystem = nullptr;
 
-	if (pDebugger == NULL)
-		return false;
+    if (pDebugger == nullptr)
+        return false;
 
-	// TODO: Would be better to handle this with a console variable since this
-	//       would give the user a chance to reactivate it. Or maybe using the 
-	//       m_bsBreakState of the scripting sytem, but I'm not sure how to add it there
-	if (pDebugger->IsUserDisabled())
-		return true;
+    // TODO: Would be better to handle this with a console variable since this
+    //       would give the user a chance to reactivate it. Or maybe using the
+    //       m_bsBreakState of the scripting sytem, but I'm not sure how to add it there
+    if (pDebugger->IsUserDisabled())
+        return true;
 
-	pIScriptSystem = pDebugger->GetScriptSystem();
+    pIScriptSystem = pDebugger->GetScriptSystem();
 
-	// Debugger not inititalized
-	if (pDebugger == NULL)
-		return false;
-	if (!::IsWindow(pDebugger->m_hWnd))
-		return false;
+    // Debugger not inititalized
+    if (pDebugger == nullptr)
+        return false;
+    if (!::IsWindow(pDebugger->m_hWnd))
+        return false;
 
-	if ((hAccelerators = LoadAccelerators(_Tiny_GetResourceInstance(), MAKEINTRESOURCE(IDR_LUADGB_ACCEL))) == NULL)
-	{
-		// No accelerators
-	}
+    if ((hAccelerators = LoadAccelerators(_Tiny_GetResourceInstance(), MAKEINTRESOURCE(IDR_LUADGB_ACCEL))) == nullptr) {
+        // No accelerators
+    }
 
-	// Make sure the debugger is displayed maximized when it was left like that last time
-	// TODO: Maybe serialize this with the other window settings
-	if (::IsZoomed(pDebugger->m_hWnd))
-		::ShowWindow(pDebugger->m_hWnd, SW_MAXIMIZE);
-	else
-		::ShowWindow(pDebugger->m_hWnd, SW_NORMAL);
-	::SetForegroundWindow(pDebugger->m_hWnd);
+    // Make sure the debugger is displayed maximized when it was left like that last time
+    // TODO: Maybe serialize this with the other window settings
+    if (::IsZoomed(pDebugger->m_hWnd))
+        ::ShowWindow(pDebugger->m_hWnd, SW_MAXIMIZE);
+    else
+        ::ShowWindow(pDebugger->m_hWnd, SW_NORMAL);
+    ::SetForegroundWindow(pDebugger->m_hWnd);
 
-	if (pszSourceFile && pszSourceFile[0] == '@')
-	{
-		pDebugger->LoadFile(&pszSourceFile[1]);
-		iLine = __max(0, iLine);
-		pDebugger->PlaceLineMarker(iLine);
-	}
+    if (pszSourceFile && pszSourceFile[0] == '@') {
+        pDebugger->LoadFile(&pszSourceFile[1]);
+        iLine = __max(0, iLine);
+        pDebugger->PlaceLineMarker(iLine);
+    }
 
-	if (pszReason)
-		pDebugger->SetStatusBarText(pszReason);
+    if (pszReason)
+        pDebugger->SetStatusBarText(pszReason);
 
-	pDebugger->GetStackAndLocals();
+    pDebugger->GetStackAndLocals();
 
-	g_bDone = false;
- 	while (GetMessage(&msg, NULL, 0, 0) && !g_bDone) 
-	{
-		if (hAccelerators == NULL || TranslateAccelerator(pDebugger->m_hWnd, hAccelerators, &msg) == 0)
-		{
-			TranslateMessage(&msg);
-			DispatchMessage(&msg);
-		}
-	}
+    g_bDone = false;
+    while (GetMessage(&msg, nullptr, 0, 0) && !g_bDone) {
+        if (hAccelerators == nullptr || TranslateAccelerator(pDebugger->m_hWnd, hAccelerators, &msg) == 0) {
+            TranslateMessage(&msg);
+            DispatchMessage(&msg);
+        }
+    }
 
-	if (!IsWindow(pDebugger->m_hWnd))
-		DebugBreak();
+    if (!IsWindow(pDebugger->m_hWnd))
+        DebugBreak();
 
-	// Don't hide the window when the debugger will be triggered next frame anyway
-	if (pIScriptSystem->GetBreakState() != bsStepNext &&
-		pIScriptSystem->GetBreakState() != bsStepInto)
-	{
-		::ShowWindow(pDebugger->m_hWnd, SW_HIDE);
-	}
+    // Don't hide the window when the debugger will be triggered next frame anyway
+    if (pIScriptSystem->GetBreakState() != bsStepNext && pIScriptSystem->GetBreakState() != bsStepInto) {
+        ::ShowWindow(pDebugger->m_hWnd, SW_HIDE);
+    }
 
-	DestroyAcceleratorTable(hAccelerators);
+    DestroyAcceleratorTable(hAccelerators);
 
-	return (int) msg.wParam == 0;
+    return (int)msg.wParam == 0;
 
-	return true;
+    return true;
 }

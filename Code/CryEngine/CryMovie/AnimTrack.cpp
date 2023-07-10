@@ -7,7 +7,7 @@
 //  Version:     v1.00
 //  Created:     22/4/2002 by Timur.
 //  Compilers:   Visual C++ 7.0
-//  Description: 
+//  Description:
 // -------------------------------------------------------------------------
 //  History:
 //

@@ -21,75 +21,71 @@
 #include "Cry_Math.h"
 #include "Cry_XOptimise.h"
 
-
-#ifndef _XBOX 
+#ifndef _XBOX
 #ifdef WIN32
-#include <windows.h>
+#include <Windows.h>
 #endif
 #else
 #include <xtl.h>
 #endif
 
-//#define USE_MEM_POOL 
+// #define USE_MEM_POOL
 
 #define USE_NEWPOOL
 #include <CryMemoryManager.h>
 
 #include <CrySizer.h>
- 
+
 #include <platform.h>
 
 ////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////
 extern bool g_bProfilerEnabled;
- 
 
 ////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////
 
 #ifdef PS2
 #ifndef DISABLE_VERIFY
-	#define _VERIFY(a)  \
-	{						\
-		if(!(a))			\
-		{					\
-		FORCE_EXIT();		\
-		DEBUG_BREAK; \		
-		}					\
-	}							
+#define _VERIFY(a)                                                                                                                                                                 \
+    {                                                                                                                                                                              \
+        if (!(a)) {                                                                                                                                                                \
+            FORCE_EXIT();                                                                                                                                                          \
+            DEBUG_BREAK;                                                                                                                                                           \
+        }                                                                                                                                                                          \
+    }
 #else
-	#define VERIFY(a) a;
+#define VERIFY(a) a;
 #endif
 
 #else
 #ifndef DISABLE_VERIFY
-	#define _VERIFY(a)  \
-	{						\
-		if(!(a))			\
-		{					\
-		assert (0);		\
-		}					\
-	}						
+#define _VERIFY(a)                                                                                                                                                                 \
+    {                                                                                                                                                                              \
+        if (!(a)) {                                                                                                                                                                \
+            assert(0);                                                                                                                                                             \
+        }                                                                                                                                                                          \
+    }
 #else
-	#define VERIFY(a) a;
+#define VERIFY(a) a;
 #endif
 
-#endif //PS2
+#endif // PS2
 
 // Windows defines
 #if !defined(LINUX)
-typedef unsigned long       DWORD;
-typedef int                 BOOL;
-typedef unsigned char       BYTE;
-typedef unsigned short      WORD;
-typedef float               FLOAT;
-typedef int                 INT;
-typedef unsigned int        UINT;
+typedef unsigned long DWORD;
+typedef int BOOL;
+typedef unsigned char BYTE;
+typedef unsigned short WORD;
+typedef float FLOAT;
+typedef int INT;
+typedef unsigned int UINT;
 
 #ifndef uchar
-typedef unsigned char		uchar;
-typedef unsigned int		uint;
-typedef unsigned short		ushort;
+typedef unsigned char uchar;
+typedef unsigned int uint;
+typedef unsigned short ushort;
 #endif
 #endif
 
@@ -97,14 +93,13 @@ typedef unsigned short		ushort;
 #include <memory.h>
 #endif
 #include <string.h>
-#include <stdlib.h>
-#include <stdio.h>
+#include <cstdlib>
+#include <cstdio>
 #include <stdarg.h>
 #include <math.h>
 #if !defined(LINUX)
-#include <assert.h>
+#include <cassert>
 #endif
-
 
 /*#ifdef USE_MEM_POOL
 #undef malloc
@@ -115,14 +110,12 @@ typedef unsigned short		ushort;
 #define realloc(_ptr,_size) _CryRealloc(g_PoolCtx,_ptr,_size)
 #endif*/
 
-#pragma warning (disable : 4768)
+#pragma warning(disable : 4768)
 #include <vector>
 #include <list>
 #include <iterator>
 #include <algorithm>
 #include <map>
-
-
 
 #include "EntityDesc.h"
 #include <IEntitySystem.h>
@@ -130,33 +123,28 @@ typedef unsigned short		ushort;
 #ifndef ____TRACE
 #define ____TRACE
 
-
 #ifdef PS2
-_inline void ___TRACE(const char *sFormat, ... )
-{
+_inline void ___TRACE(const char* sFormat, ...) {
 
-	va_list vl;
-	static char sTraceString[500];
+    va_list vl;
+    static char sTraceString[500];
 
-	va_start(vl, sFormat);
-	vsprintf(sTraceString, sFormat, vl);
-	va_end(vl);
-	cout << sTraceString << "\n";
-	
+    va_start(vl, sFormat);
+    vsprintf(sTraceString, sFormat, vl);
+    va_end(vl);
+    cout << sTraceString << "\n";
 }
 
 #else
-_inline void __cdecl ___TRACE(const char *sFormat, ... )
-{
+_inline void __cdecl ___TRACE(const char* sFormat, ...) {
 
-	va_list vl;
-	static char sTraceString[500];
+    va_list vl;
+    static char sTraceString[500];
 
-	va_start(vl, sFormat);
-	vsprintf(sTraceString, sFormat, vl);
-	va_end(vl);
-	::OutputDebugString(sTraceString);
-	
+    va_start(vl, sFormat);
+    vsprintf(sTraceString, sFormat, vl);
+    va_end(vl);
+    ::OutputDebugString(sTraceString);
 }
 
 #endif
@@ -165,29 +153,26 @@ _inline void __cdecl ___TRACE(const char *sFormat, ... )
 
 #endif //____TRACE
 
-
 #ifdef _DEBUG
 
 //@FIXME this function should not be inline.
-_inline void __cdecl __CRYTEKDLL_TRACE(const char *sFormat, ... )
-{
-  va_list vl;
-  static char sTraceString[1024];
+_inline void __cdecl __CRYTEKDLL_TRACE(const char* sFormat, ...) {
+    va_list vl;
+    static char sTraceString[1024];
 
-  va_start(vl, sFormat);
-  vsprintf(sTraceString, sFormat, vl);
-  va_end(vl);
+    va_start(vl, sFormat);
+    vsprintf(sTraceString, sFormat, vl);
+    va_end(vl);
 
-  strcat(sTraceString, "\n");
+    strcat(sTraceString, "\n");
 
 #ifdef WIN32
-  ::OutputDebugString(sTraceString);	
+    ::OutputDebugString(sTraceString);
 #endif
 
 #ifdef GAMECUBE
-  OSReport(sTraceString);
+    OSReport(sTraceString);
 #endif
-
 }
 
 #define TRACE __CRYTEKDLL_TRACE

@@ -15,7 +15,7 @@
 #include "lstate.h"
 
 
-#define sizeclosure(n)	((int)sizeof(Closure) + (int)sizeof(TObject)*((n)-1))
+#define sizeclosure(n)  ((int)sizeof(Closure) + (int)sizeof(TObject)*((n)-1))
 
 
 Closure *luaF_newclosure (lua_State *L, int nelems) {

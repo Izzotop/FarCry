@@ -7,7 +7,7 @@
 //  Version:     v1.00
 //  Created:     3/12/2001 by Timur.
 //  Compilers:   Visual C++ 6.0
-//  Description: 
+//  Description:
 // -------------------------------------------------------------------------
 //  History:
 //
@@ -32,62 +32,68 @@ struct ISystem;
 //! DebugCallStack class, capture call stack information from symbol files.
 //!
 //!============================================================================
-class DebugCallStack
-{
+class DebugCallStack {
 public:
-	// Returns single instance of DebugStack
-	static DebugCallStack*	instance();
+    // Returns single instance of DebugStack
+    static DebugCallStack* instance();
 
-	ISystem* GetSystem() { return m_pSystem; };
-	//! Dumps Current Call Stack to log.
-	void LogCallstack();
+    ISystem* GetSystem() {
+        return m_pSystem;
+    };
+    //! Dumps Current Call Stack to log.
+    void LogCallstack();
 
-	void	updateCallStack();
+    void updateCallStack();
 
-	//! Get current call stack information.
-	void getCallStack( std::vector<string> &functions );
+    //! Get current call stack information.
+    void getCallStack(std::vector<string>& functions);
 
-	void installErrorHandler( ISystem *pSystem );
-	int	 handleException( void *exception_pointer );
+    void installErrorHandler(ISystem* pSystem);
+    int handleException(void* exception_pointer);
 
-	void dumpCallStack( std::vector<string> &functions );
+    void dumpCallStack(std::vector<string>& functions);
 
-	//! Return name of module where exception happened.
-	const char* getExceptionModule() { return m_excModule; }
-	const char* getExceptionLine() { return m_excLine; }
+    //! Return name of module where exception happened.
+    const char* getExceptionModule() {
+        return m_excModule;
+    }
+    const char* getExceptionLine() {
+        return m_excLine;
+    }
 
-	typedef void (*ErrorCallback)( const char* description,const char* value );
+    typedef void (*ErrorCallback)(const char* description, const char* value);
 
-	void registerErrorCallback( ErrorCallback call );
-	void unregisterErrorCallback( ErrorCallback call );
+    void registerErrorCallback(ErrorCallback call);
+    void unregisterErrorCallback(ErrorCallback call);
 
-	std::list<ErrorCallback> m_errorCallbacks;
+    std::list<ErrorCallback> m_errorCallbacks;
+
 public:
-	DebugCallStack();
-	virtual ~DebugCallStack();
+    DebugCallStack();
+    virtual ~DebugCallStack();
 
-	bool initSymbols();
-	void doneSymbols();
-	
-	string	LookupFunctionName( void *adderss,bool fileInfo );
-	int			updateCallStack( void *exception_pointer );
-	void		FillStackTrace( DWORD64 eip,DWORD64 esp,DWORD64 ebp,PCONTEXT pContext=NULL );
+    bool initSymbols();
+    void doneSymbols();
 
-	static	int unhandledExceptionHandler( void *exception_pointer );
+    string LookupFunctionName(void* adderss, bool fileInfo);
+    int updateCallStack(void* exception_pointer);
+    void FillStackTrace(DWORD64 eip, DWORD64 esp, DWORD64 ebp, PCONTEXT pContext = nullptr);
 
-	std::vector<string> m_functions;
-	static DebugCallStack* m_instance;
+    static int unhandledExceptionHandler(void* exception_pointer);
 
-	char m_excLine[256];
-	char m_excModule[128];
+    std::vector<string> m_functions;
+    static DebugCallStack* m_instance;
 
-	void *prevExceptionHandler;
+    char m_excLine[256];
+    char m_excModule[128];
 
-	bool	m_symbols;
+    void* prevExceptionHandler;
 
-	ISystem *m_pSystem;
+    bool m_symbols;
+
+    ISystem* m_pSystem;
 };
 
-#endif //WIN32
+#endif // WIN32
 
 #endif // __DebugCallStack_h__

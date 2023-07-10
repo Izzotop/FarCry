@@ -7,7 +7,7 @@
 //  Version:     v1.00
 //  Created:     2/12/2002 by Timur.
 //  Compilers:   Visual Studio.NET
-//  Description: 
+//  Description:
 // -------------------------------------------------------------------------
 //  History:
 //
@@ -24,37 +24,36 @@ class CBrushObject;
 
 // CBrushPanel dialog
 
-class CBrushPanel : public CXTResizeDialog
-{
-	DECLARE_DYNAMIC(CBrushPanel)
+class CBrushPanel : public CXTResizeDialog {
+    DECLARE_DYNAMIC(CBrushPanel)
 
 public:
-	CBrushPanel(CWnd* pParent = NULL);   // standard constructor
-	virtual ~CBrushPanel();
+    CBrushPanel(CWnd* pParent = nullptr); // standard constructor
+    virtual ~CBrushPanel();
 
-	void SetBrush( CBrushObject *obj );
+    void SetBrush(CBrushObject* obj);
 
-// Dialog Data
-	enum { IDD = IDD_PANEL_BRUSH };
+    // Dialog Data
+    enum { IDD = IDD_PANEL_BRUSH };
 
 protected:
-	virtual void OnOK() {};
-	virtual void OnCancel() {};
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	virtual BOOL OnInitDialog();
-	afx_msg void OnCbnSelendokSides();
-	afx_msg void OnBnClickedReload();
+    virtual void OnOK(){};
+    virtual void OnCancel(){};
+    virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
+    virtual BOOL OnInitDialog();
+    afx_msg void OnCbnSelendokSides();
+    afx_msg void OnBnClickedReload();
 
-	DECLARE_MESSAGE_MAP()
+    DECLARE_MESSAGE_MAP()
 
-	CBrushObject *m_brushObj;
+    CBrushObject* m_brushObj;
 
-	// Controls.
-	//CComboBox m_sides;
-	CCustomButton m_resetSizeBtn;
-	CCustomButton m_reloadBtn;
+    // Controls.
+    // CComboBox m_sides;
+    CCustomButton m_resetSizeBtn;
+    CCustomButton m_reloadBtn;
 
-	afx_msg void OnBnClickedResetsize();
+    afx_msg void OnBnClickedResetsize();
 };
 
 #endif // __BrushPanel_h__

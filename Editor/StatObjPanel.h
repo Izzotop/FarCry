@@ -12,50 +12,53 @@
 /////////////////////////////////////////////////////////////////////////////
 // CStatObjPanel dialog
 
-class CStatObjPanel : public CDialog
-{
-// Construction
+class CStatObjPanel : public CDialog {
+    // Construction
 public:
-	CStatObjPanel(CWnd* pParent = NULL);   // standard constructor
+    CStatObjPanel(CWnd* pParent = nullptr); // standard constructor
 
-// Dialog Data
-	//{{AFX_DATA(CStatObjPanel)
-	enum { IDD = IDD_PANEL_STATICOBJ };
-	//}}AFX_DATA
+    // Dialog Data
+    //{{AFX_DATA(CStatObjPanel)
+    enum { IDD = IDD_PANEL_STATICOBJ };
+    //}}AFX_DATA
 
-	void SetObject( class CStaticObject *obj );
-	CStaticObject* GetObject() const { return m_object; }
-	void UpdateObject();
-	void SetMultiSelect( bool bEnable );
-	bool IsMultiSelect() const { return m_multiSelect; };
+    void SetObject(class CStaticObject* obj);
+    CStaticObject* GetObject() const {
+        return m_object;
+    }
+    void UpdateObject();
+    void SetMultiSelect(bool bEnable);
+    bool IsMultiSelect() const {
+        return m_multiSelect;
+    };
 
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CStatObjPanel)
-	protected:
-	virtual BOOL OnInitDialog();
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	//}}AFX_VIRTUAL
-
-// Implementation
+    // Overrides
+    // ClassWizard generated virtual function overrides
+    //{{AFX_VIRTUAL(CStatObjPanel)
 protected:
-	virtual void OnOK() {};
-	virtual void OnCancel() {};
+    virtual BOOL OnInitDialog();
+    virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
+    //}}AFX_VIRTUAL
 
-	// Generated message map functions
-	//{{AFX_MSG(CStatObjPanel)
-	afx_msg void OnStatobjReload();
-	afx_msg void OnReload();
-	afx_msg void OnMassChanged();
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
+    // Implementation
+protected:
+    virtual void OnOK(){};
+    virtual void OnCancel(){};
 
-	CStaticObject* m_object;
+    // Generated message map functions
+    //{{AFX_MSG(CStatObjPanel)
+    afx_msg void OnStatobjReload();
+    afx_msg void OnReload();
+    afx_msg void OnMassChanged();
+    //}}AFX_MSG
+    DECLARE_MESSAGE_MAP()
 
-	bool m_multiSelect;
-	CCustomButton	m_loadBtn;
-	CCustomButton	m_reloadBtn;
-	CEdit	m_objectName;
+    CStaticObject* m_object;
+
+    bool m_multiSelect;
+    CCustomButton m_loadBtn;
+    CCustomButton m_reloadBtn;
+    CEdit m_objectName;
 };
 
 //{{AFX_INSERT_LOCATION}}

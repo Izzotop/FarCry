@@ -11,49 +11,46 @@
 /////////////////////////////////////////////////////////////////////////////
 // CToolButton window
 
-class CToolButton : public CColorCheckBox
-{
-DECLARE_DYNAMIC(CToolButton)
-// Construction
+class CToolButton : public CColorCheckBox {
+    DECLARE_DYNAMIC(CToolButton)
+    // Construction
 public:
-	CToolButton();
+    CToolButton();
 
-	void SetToolClass( CRuntimeClass *toolClass,void *userData=0 );
+    void SetToolClass(CRuntimeClass* toolClass, void* userData = 0);
 
-// Attributes
+    // Attributes
 public:
-
-// Operations
+    // Operations
 public:
-
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CToolButton)
-	protected:
-	//}}AFX_VIRTUAL
-
-// Implementation
-public:
-	virtual ~CToolButton();
-
-	// Generated message map functions
+    // Overrides
+    // ClassWizard generated virtual function overrides
+    //{{AFX_VIRTUAL(CToolButton)
 protected:
-	//{{AFX_MSG(CToolButton)
-	afx_msg void OnTimer(UINT_PTR nIDEvent);
-	afx_msg void OnDestroy();
-	afx_msg void OnClicked();
-	afx_msg void OnPaint();
-	//}}AFX_MSG
+    //}}AFX_VIRTUAL
 
-	DECLARE_MESSAGE_MAP()
+    // Implementation
+public:
+    virtual ~CToolButton();
 
-	void StartTimer();
-	void StopTimer();
+    // Generated message map functions
+protected:
+    //{{AFX_MSG(CToolButton)
+    afx_msg void OnTimer(UINT_PTR nIDEvent);
+    afx_msg void OnDestroy();
+    afx_msg void OnClicked();
+    afx_msg void OnPaint();
+    //}}AFX_MSG
 
-	//! Tool associated with this button.
-	CRuntimeClass *m_toolClass;
-	void *m_userData;
-	int m_nTimer;
+    DECLARE_MESSAGE_MAP()
+
+    void StartTimer();
+    void StopTimer();
+
+    //! Tool associated with this button.
+    CRuntimeClass* m_toolClass;
+    void* m_userData;
+    int m_nTimer;
 };
 
 /////////////////////////////////////////////////////////////////////////////

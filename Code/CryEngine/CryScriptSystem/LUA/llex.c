@@ -128,12 +128,12 @@ void luaX_setinput (lua_State *L, LexState *LS, ZIO *z, TString *source) {
 
 /* use Mbuffer to store names, literal strings and numbers */
 
-#define EXTRABUFF	128
-#define checkbuffer(L, n, len)	\
+#define EXTRABUFF  128
+#define checkbuffer(L, n, len)  \
     if (((len)+(n))*sizeof(l_char) > G(L)->Mbuffsize) \
       luaO_openspace(L, (len)+(n)+EXTRABUFF, l_char)
 
-#define save(L, c, l)	(((l_char *)G(L)->Mbuffer)[l++] = (l_char)c)
+#define save(L, c, l)  (((l_char *)G(L)->Mbuffer)[l++] = (l_char)c)
 #define save_and_next(L, LS, l)  (save(L, LS->current, l), next(LS))
 
 

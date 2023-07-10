@@ -3,27 +3,27 @@ CryGame.dll:
 
 
 possible cleanups:
-	* remove IGame::Run()
-	* remove IGame::SetTerrainSurface()
-	* remove IGame::CreateTagPoint()
-	* remove IGame::CreateTagPoint()
-	* remove IGame::CreateTagPoint(), GetTagPoint(), RemoveTagPoint()
-	* remove IGame::CreateArea()
-	* remove IGame::DeleteArea()
-	* remove IGame::GetArea()
-	* remove weapons from IGame
-	* remove equipacks from IGame
-	* remove respawn points from IGame
-	* remove keycards from XPlayer (not used at all - simple)
+  * remove IGame::Run()
+  * remove IGame::SetTerrainSurface()
+  * remove IGame::CreateTagPoint()
+  * remove IGame::CreateTagPoint()
+  * remove IGame::CreateTagPoint(), GetTagPoint(), RemoveTagPoint()
+  * remove IGame::CreateArea()
+  * remove IGame::DeleteArea()
+  * remove IGame::GetArea()
+  * remove weapons from IGame
+  * remove equipacks from IGame
+  * remove respawn points from IGame
+  * remove keycards from XPlayer (not used at all - simple)
 
 
 AIHandler.cpp
 AIHandler.h
 
 * CryGame.cpp CryGame.h
-	CXGame implements the IGame interface
-	CXGame::Run() run the main loop until another subsystem force the exit
-	CXGame::Update() handles the updates per frame 
+  CXGame implements the IGame interface
+  CXGame::Run() run the main loop until another subsystem force the exit
+  CXGame::Update() handles the updates per frame
 
 
 EntityClassRegistry.cpp
@@ -50,7 +50,7 @@ MenuSystem.h
 NetEntityInfo.cpp
 NetEntityInfo.h
 PlayerSystem.h
-ReadMe.txt						this readme file
+ReadMe.txt this readme file
 ScriptObjectAI.cpp
 ScriptObjectAI.h
 ScriptObjectAnimation.cpp

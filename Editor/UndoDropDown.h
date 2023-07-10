@@ -10,47 +10,44 @@
 /////////////////////////////////////////////////////////////////////////////
 // CUndoDropDown dialog
 
-class CUndoDropDown : public CDialog
-{
-// Construction
+class CUndoDropDown : public CDialog {
+    // Construction
 public:
-	//! If bUndo is false then its Redo dialog.
-	CUndoDropDown( const CPoint &pos,bool bUndo,CWnd* pParent = NULL);   // standard constructor
+    //! If bUndo is false then its Redo dialog.
+    CUndoDropDown(const CPoint& pos, bool bUndo, CWnd* pParent = nullptr); // standard constructor
 
-// Dialog Data
-	//{{AFX_DATA(CUndoDropDown)
-	enum { IDD = IDD_UNDO_DROPDOWN };
-	CCustomButton	m_undoClear;
-	CCustomButton	m_undoButton;
-	CListBox	m_undo;
-	//}}AFX_DATA
+    // Dialog Data
+    //{{AFX_DATA(CUndoDropDown)
+    enum { IDD = IDD_UNDO_DROPDOWN };
+    CCustomButton m_undoClear;
+    CCustomButton m_undoButton;
+    CListBox m_undo;
+    //}}AFX_DATA
 
-
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CUndoDropDown)
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam);
-	//}}AFX_VIRTUAL
-
-// Implementation
+    // Overrides
+    // ClassWizard generated virtual function overrides
+    //{{AFX_VIRTUAL(CUndoDropDown)
 protected:
+    virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
+    virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam);
+    //}}AFX_VIRTUAL
 
-	// Generated message map functions
-	//{{AFX_MSG(CUndoDropDown)
-	virtual BOOL OnInitDialog();
-	afx_msg void OnSelchangeUndo();
-	afx_msg void OnUndoButton();
-	afx_msg void OnRButtonDown(UINT nFlags, CPoint point);
-	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
-	afx_msg void OnUndoClear();
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
+    // Implementation
+protected:
+    // Generated message map functions
+    //{{AFX_MSG(CUndoDropDown)
+    virtual BOOL OnInitDialog();
+    afx_msg void OnSelchangeUndo();
+    afx_msg void OnUndoButton();
+    afx_msg void OnRButtonDown(UINT nFlags, CPoint point);
+    afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
+    afx_msg void OnUndoClear();
+    //}}AFX_MSG
+    DECLARE_MESSAGE_MAP()
 
-	//! True if undo, false if Redo.
-	bool m_bUndo;
-	CPoint m_pos;
+    //! True if undo, false if Redo.
+    bool m_bUndo;
+    CPoint m_pos;
 };
 
 //{{AFX_INSERT_LOCATION}}

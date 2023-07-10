@@ -7,7 +7,7 @@
 //  Version:     v1.00
 //  Created:     5/6/2002 by Timur.
 //  Compilers:   Visual Studio.NET
-//  Description: 
+//  Description:
 // -------------------------------------------------------------------------
 //  History:
 //
@@ -20,38 +20,37 @@
 #pragma once
 #endif
 
-class CInPlaceEdit : public CEdit
-{
+class CInPlaceEdit : public CEdit {
 public:
-	typedef Functor0 OnChange;
+    typedef Functor0 OnChange;
 
-	CInPlaceEdit( const CString& srtInitText,OnChange onchange );
-	virtual ~CInPlaceEdit();
+    CInPlaceEdit(const CString& srtInitText, OnChange onchange);
+    virtual ~CInPlaceEdit();
 
-	// Attributes
-	void SetText(const CString& strText);
+    // Attributes
+    void SetText(const CString& strText);
 
-	// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CInPlaceEdit)
-	public:
-	virtual BOOL PreTranslateMessage(MSG* pMsg);
-	//}}AFX_VIRTUAL
+    // Overrides
+    // ClassWizard generated virtual function overrides
+    //{{AFX_VIRTUAL(CInPlaceEdit)
+public:
+    virtual BOOL PreTranslateMessage(MSG* pMsg);
+    //}}AFX_VIRTUAL
 
-	// Generated message map functions
+    // Generated message map functions
 protected:
-	//{{AFX_MSG(CInPlaceEdit)
-	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
-	afx_msg void OnKillFocus(CWnd* pNewWnd);
-	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
-	//}}AFX_MSG
+    //{{AFX_MSG(CInPlaceEdit)
+    afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
+    afx_msg void OnKillFocus(CWnd* pNewWnd);
+    afx_msg BOOL OnEraseBkgnd(CDC* pDC);
+    //}}AFX_MSG
 
-	DECLARE_MESSAGE_MAP()
+    DECLARE_MESSAGE_MAP()
 
-	// Data
+    // Data
 protected:
-	CString m_strInitText;
-	OnChange m_onChange;
+    CString m_strInitText;
+    OnChange m_onChange;
 };
 
 #endif // __inplaceedit_h__

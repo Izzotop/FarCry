@@ -7,7 +7,7 @@
 //  Version:     v1.00
 //  Created:     15/11/2002 by Timur.
 //  Compilers:   Visual Studio.NET
-//  Description: 
+//  Description:
 // -------------------------------------------------------------------------
 //  History:
 //
@@ -23,32 +23,31 @@
 //////////////////////////////////////////////////////////////////////////
 // Monitors directory for any changed files.
 //////////////////////////////////////////////////////////////////////////
-class CFileChangeMonitor
-{
+class CFileChangeMonitor {
 public:
-	CFileChangeMonitor();
-	~CFileChangeMonitor();
+    CFileChangeMonitor();
+    ~CFileChangeMonitor();
 
-	void MonitorDirectories( const std::vector<CString> &dirs );
-	void StopMonitor();
-	
-	//! Check if any files where modified.
-	//! This is a polling function, call it every frame or so.
-	bool HaveModifiedFiles() const;
-	//! Get next modified file, this file will be delete from list after calling this function.
-	//! Call it until HaveModifiedFiles return true.
-	CString GetModifiedFile();
+    void MonitorDirectories(const std::vector<CString>& dirs);
+    void StopMonitor();
 
-	struct SFileEnumInfo
-	{
-		CString filename;
-		FILETIME ftLastWriteTime;
-	};
+    //! Check if any files where modified.
+    //! This is a polling function, call it every frame or so.
+    bool HaveModifiedFiles() const;
+    //! Get next modified file, this file will be delete from list after calling this function.
+    //! Call it until HaveModifiedFiles return true.
+    CString GetModifiedFile();
+
+    struct SFileEnumInfo {
+        CString filename;
+        FILETIME ftLastWriteTime;
+    };
+
 private:
-	bool IsDirectory(const char* sFileName);
+    bool IsDirectory(const char* sFileName);
 
-	//! Pointer to implementation class.
-	struct CFileChangeMonitorThread *m_thread;
+    //! Pointer to implementation class.
+    struct CFileChangeMonitorThread* m_thread;
 };
 
 #endif // __filechangemonitor_h__

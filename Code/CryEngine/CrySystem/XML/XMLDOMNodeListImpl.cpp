@@ -4,28 +4,21 @@
 
 #include "stdafx.h"
 #include "XMLDOMNodeListImpl.h"
-//////////////////////////////////////////////////////////////////////
-// Construction/Destruction
-//////////////////////////////////////////////////////////////////////
-
-XDOM::IXMLDOMNode *CXMLDOMNodeListImpl::getNamedItem(const XMLCHAR *sName)
-{
-	XDOM::IXMLDOMNode *pNode=NULL;
-	DOMNodeListItor itor=m_lstNodes.begin();
-	while(itor!=m_lstNodes.end())
-	{
-		pNode=(*itor);
+XDOM::IXMLDOMNode* CXMLDOMNodeListImpl::getNamedItem(const XMLCHAR* sName) {
+    XDOM::IXMLDOMNode* pNode = nullptr;
+    DOMNodeListItor itor = m_lstNodes.begin();
+    while (itor != m_lstNodes.end()) {
+        pNode = (*itor);
 #if defined(LINUX)
-		if(compareTextFileStrings(pNode->getName(),sName)==0)
+        if (compareTextFileStrings(pNode->getName(), sName) == 0)
 #else
-		if(strcmp(pNode->getName(),sName)==0)
+        if (strcmp(pNode->getName(), sName) == 0)
 #endif
-		{
-			return pNode;
-		}
+        {
+            return pNode;
+        }
 
-		++itor;
-	}
-	return NULL;
+        ++itor;
+    }
+    return nullptr;
 }
-

@@ -1,109 +1,103 @@
 #include "StdAfx.h"
 #include "SourceSafeHelper.h"
 
+#undef WIN32 // todo (Izzotop): Temp
 
-#if defined(WIN32) && !defined(WIN64)			// windows specific implementation
+#if defined(WIN32) && !defined(WIN64) // windows specific implementation
 
 #include <objbase.h>
 #include <comdef.h>
-#include "TCHAR.h"					// _T()
-
-
+#include "TCHAR.h" // _T()
 
 #import "SSAPI.DLL" no_namespace
 
-#pragma comment (lib, "ole32.lib")
+#pragma comment(lib, "ole32.lib")
 
+#endif // WIN32
 
-#endif	// WIN32
+bool _GetSSFileInfo(const char* inszSourceSafePath, const char* inszSSProject, const char* inszDirProject, const char* inszFileName, char* outszName, char* outszComment,
+                    char* outszDate, const unsigned int innBufferSize) {
+    assert(innBufferSize > 0);
 
-// 
-bool _GetSSFileInfo( const char *inszSourceSafePath, const char *inszSSProject, const char *inszDirProject, const char *inszFileName, 
-	char *outszName, char *outszComment, char *outszDate, const unsigned int innBufferSize )
-{
-	assert(innBufferSize>0);
+    // to make sure the result is empty if this function failes
+    outszName[0] = 0;
+    outszComment[0] = 0;
+    outszDate[0] = 0;
 
-	// to make sure the result is empty if this function failes
-	outszName[0]=0;outszComment[0]=0;outszDate[0]=0;
+#if !(defined(WIN32) && !defined(WIN64)) // non windows specific implementation
+    return false;                        // this plattform is not supporting SourceSafeInfo
+#endif                                   // WIN32
 
+#if defined(WIN32) && !defined(WIN64) // windows specific implementation
 
-#if !(defined(WIN32) && !defined(WIN64))			// non windows specific implementation
-	return false;		// this plattform is not supporting SourceSafeInfo
-#endif	// WIN32
+    char sSSFilePath[_MAX_PATH]; // max SS path size (_MAX_PATH might be not right here)
 
-#if defined(WIN32) && !defined(WIN64)			// windows specific implementation
+    sprintf(sSSFilePath, "%s/%s", inszSSProject, inszFileName);
 
+    // if path is absolute, remove leading part
+    if (_strnicmp(inszDirProject, inszFileName, strlen(inszDirProject)) == 0) {
+        char cSeperator = inszFileName[strlen(inszDirProject)];
 
-	char sSSFilePath[_MAX_PATH];		// max SS path size (_MAX_PATH might be not right here)
+        if (cSeperator == '/' || cSeperator == '\\')
+            sprintf(sSSFilePath, "%s/%s", inszSSProject, &inszFileName[strlen(inszDirProject) + 1]);
+    }
 
-	sprintf(sSSFilePath,"%s/%s",inszSSProject,inszFileName);
+    // replace '\' by '/'
+    {
+        char* p = sSSFilePath;
 
-	// if path is absolute, remove leading part
-	if(_strnicmp(inszDirProject,inszFileName,strlen(inszDirProject))==0)
-	{
-		char cSeperator=inszFileName[strlen(inszDirProject)];
+        while (*p) {
+            if (*p == '\\')
+                *p = '/';
+            p++;
+        }
+    }
 
-		if(cSeperator=='/' || cSeperator=='\\')
-			sprintf(sSSFilePath,"%s/%s",inszSSProject,&inszFileName[strlen(inszDirProject)+1]);
-	}
+    try {
+        IVSSDatabasePtr pDatabase;
+        IVSSItemPtr pIRootItem;
 
-	// replace '\' by '/'
-	{
-		char *p=sSSFilePath;
+        pDatabase.CreateInstance(_T("SourceSafe"));
+        pDatabase->Open(inszSourceSafePath, _T(""), _T(""));            // open ( sourcesafe, username, password )
+        pIRootItem = pDatabase->GetVSSItem(sSSFilePath, VARIANT_FALSE); // specify file
+        IVSSVersionsPtr pVersions = pIRootItem->GetVersions(0);
+        IEnumVARIANTPtr pEnum = pVersions->_NewEnum();
+        _variant_t var;
+        pEnum->Next(1, &var, nullptr);
+        IVSSVersionPtr pVer = var;
 
-		while(*p)
-		{
-			if(*p=='\\') *p='/';
-			p++;
-		}
-	}
+        _bstr_t name = pVer->GetUsername();
+        _bstr_t comment = pVer->GetComment();
+        DATE date = pVer->GetDate();
 
-	try
-	{
-		IVSSDatabasePtr pDatabase;
-		IVSSItemPtr pIRootItem;
+        BSTR wdatestring;
 
-		pDatabase.CreateInstance(_T("SourceSafe"));
-		pDatabase->Open(inszSourceSafePath, _T(""), _T(""));								// open ( sourcesafe, username, password )
-		pIRootItem = pDatabase->GetVSSItem(sSSFilePath, VARIANT_FALSE);		// specify file
-		IVSSVersionsPtr pVersions=pIRootItem->GetVersions(0);
-		IEnumVARIANTPtr pEnum=pVersions->_NewEnum();
-		_variant_t var;
-		pEnum->Next(1,&var,NULL);
-		IVSSVersionPtr pVer=var;
-		
-		_bstr_t name=pVer->GetUsername();
-		_bstr_t comment=pVer->GetComment();
-		DATE date=pVer->GetDate();
+        _bstr_t t;
 
-		BSTR wdatestring;
+        // this may cause a problem:
+        // LOCALE_SYSTEM_DEFAULT or LOCALE_USER_DEFAULT is used (output varies from windows settings)
+        VarBstrFromDate(date, 0, VAR_FOURDIGITYEARS | VAR_CALENDAR_GREGORIAN | VAR_DATEVALUEONLY, &wdatestring);
+        t.Attach(wdatestring);
+        char datestring[256];
+        strcpy(datestring, (TCHAR*)t);
 
-		_bstr_t t;
+        // if(WideCharToMultiByte(CP_ACP,WC_NO_BEST_FIT_CHARS,(LPCWSTR)wdatestring,-1,datestring,256,nullptr,nullptr)==0)
+        // return false;
 
-		// this may cause a problem:
-		// LOCALE_SYSTEM_DEFAULT or LOCALE_USER_DEFAULT is used (output varies from windows settings)
-		VarBstrFromDate(date,0,VAR_FOURDIGITYEARS|VAR_CALENDAR_GREGORIAN|VAR_DATEVALUEONLY,&wdatestring);
-		t.Attach(wdatestring);		
-		char datestring[256];
-		strcpy(datestring,(TCHAR *)t);
-		
-		//if(WideCharToMultiByte(CP_ACP,WC_NO_BEST_FIT_CHARS,(LPCWSTR)wdatestring,-1,datestring,256,NULL,NULL)==0)
-			//return false;
+        if (strncpy(outszName, (TCHAR*)name, innBufferSize) == nullptr)
+            return false;
+        if (strncpy(outszComment, (TCHAR*)comment, innBufferSize) == nullptr)
+            return false;
+        if (strncpy(outszDate, (TCHAR*)datestring, innBufferSize) == nullptr)
+            return false;
+        //::SysFreeString(wdatestring);
+    } catch (_com_error& e) {
+        // error handling (return false
+        _bstr_t error = e.Description();
+        return false;
+    }
 
-		if(strncpy(outszName,(TCHAR *)name,innBufferSize)==0)return false;
-		if(strncpy(outszComment,(TCHAR *)comment,innBufferSize)==0)return false;
-		if(strncpy(outszDate,(TCHAR *)datestring,innBufferSize)==0)return false;
-		//::SysFreeString(wdatestring);
-	}
-	catch(_com_error &e)
-	{
-		// error handling (return false
-		_bstr_t error=e.Description();
-		return false;
-	}
+#endif // WIN32
 
-#endif	// WIN32
-
-	return true;
+    return true;
 }
-

@@ -16,91 +16,91 @@ class CHeightmap;
 /////////////////////////////////////////////////////////////////////////////
 // CTerrainDialog dialog
 
-class CTerrainDialog : public CToolbarDialog
-{
-// Construction
+class CTerrainDialog : public CToolbarDialog {
+    // Construction
 public:
-	CTerrainDialog(CWnd* pParent = NULL);   // standard constructor
-	~CTerrainDialog();
-	SNoiseParams* GetLastParam() { return m_sLastParam; };
+    CTerrainDialog(CWnd* pParent = nullptr); // standard constructor
+    ~CTerrainDialog();
+    SNoiseParams* GetLastParam() {
+        return m_sLastParam;
+    };
 
-// Dialog Data
-	//{{AFX_DATA(CTerrainDialog)
-	enum { IDD = IDD_TERRAIN };
-		// NOTE: the ClassWizard will add data members here
-	//}}AFX_DATA
+    // Dialog Data
+    //{{AFX_DATA(CTerrainDialog)
+    enum { IDD = IDD_TERRAIN };
+    // NOTE: the ClassWizard will add data members here
+    //}}AFX_DATA
 
-
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CTerrainDialog)
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	//}}AFX_VIRTUAL
-
-// Implementation
+    // Overrides
+    // ClassWizard generated virtual function overrides
+    //{{AFX_VIRTUAL(CTerrainDialog)
 protected:
-	void Flatten(float fFactor);
-	void UpdateBorderCaption();
-	float ExpCurve(float v, unsigned int iCover, float fSharpness);
-	void Refresh();
+    virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
+    //}}AFX_VIRTUAL
 
-	// Generated message map functions
-	//{{AFX_MSG(CTerrainDialog)
-	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
-	afx_msg void OnTerrainLower();
-	afx_msg void OnTerrainRaise();
-	virtual BOOL OnInitDialog();
-	afx_msg void OnTerrainLoad();
-	afx_msg void OnTerrainErase();
-	afx_msg void OnBrush1();
-	afx_msg void OnBrush2();
-	afx_msg void OnBrush3();
-	afx_msg void OnBrush4();
-	afx_msg void OnBrush5();
-	afx_msg void OnTerrainResize();
-	afx_msg void OnTerrainLight();
-	afx_msg void OnTerrainSurface();
-	afx_msg void OnTerrainGenerate();
-	afx_msg void OnTerrainInvert();
-	afx_msg void OnExportHeightmap();
-	afx_msg void OnModifyMakeisle();
-	afx_msg void OnModifyFlattenLight();
-	afx_msg void OnModifyFlattenHeavy();
-	afx_msg void OnModifySmooth();
-	afx_msg void OnModifyRemovewater();
-	afx_msg void OnModifySmoothSlope();
-	afx_msg void OnHeightmapShowLargePreview();
-	afx_msg void OnModifySmoothBeachesOrCoast();
-	afx_msg void OnModifyNoise();
-	afx_msg void OnModifyNormalize();
-	afx_msg void OnModifyReduceRange();
-	afx_msg void OnModifyReduceRangeLight();
-	afx_msg void OnModifyRandomize();
-	afx_msg void OnLowOpacity();
-	afx_msg void OnMediumOpacity();
-	afx_msg void OnHighOpacity();
-	afx_msg BOOL OnMouseWheel(UINT nFlags, short zDelta, CPoint pt);
-	afx_msg void OnHold();
-	afx_msg void OnFetch();
-	afx_msg void OnOptionsShowMapObjects();
-	afx_msg void OnOptionsShowWater();
-	afx_msg void OnSetToHeight();
-	afx_msg void OnNoiseBrush();
-	afx_msg void OnNormalBrush();
-	afx_msg void OnExportTerrainAsGeometrie();
-	afx_msg void OnOptionsEditTerrainCurve();
-	afx_msg void OnSetWaterLevel();
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
+    // Implementation
+protected:
+    void Flatten(float fFactor);
+    void UpdateBorderCaption();
+    float ExpCurve(float v, unsigned int iCover, float fSharpness);
+    void Refresh();
 
-	CDlgToolBar m_cDlgToolBar;
-	CDlgToolBar m_cDlgBrushToolBar;
-	CDrawWnd m_cDrawHeightmap;
+    // Generated message map functions
+    //{{AFX_MSG(CTerrainDialog)
+    afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
+    afx_msg void OnTerrainLower();
+    afx_msg void OnTerrainRaise();
+    virtual BOOL OnInitDialog();
+    afx_msg void OnTerrainLoad();
+    afx_msg void OnTerrainErase();
+    afx_msg void OnBrush1();
+    afx_msg void OnBrush2();
+    afx_msg void OnBrush3();
+    afx_msg void OnBrush4();
+    afx_msg void OnBrush5();
+    afx_msg void OnTerrainResize();
+    afx_msg void OnTerrainLight();
+    afx_msg void OnTerrainSurface();
+    afx_msg void OnTerrainGenerate();
+    afx_msg void OnTerrainInvert();
+    afx_msg void OnExportHeightmap();
+    afx_msg void OnModifyMakeisle();
+    afx_msg void OnModifyFlattenLight();
+    afx_msg void OnModifyFlattenHeavy();
+    afx_msg void OnModifySmooth();
+    afx_msg void OnModifyRemovewater();
+    afx_msg void OnModifySmoothSlope();
+    afx_msg void OnHeightmapShowLargePreview();
+    afx_msg void OnModifySmoothBeachesOrCoast();
+    afx_msg void OnModifyNoise();
+    afx_msg void OnModifyNormalize();
+    afx_msg void OnModifyReduceRange();
+    afx_msg void OnModifyReduceRangeLight();
+    afx_msg void OnModifyRandomize();
+    afx_msg void OnLowOpacity();
+    afx_msg void OnMediumOpacity();
+    afx_msg void OnHighOpacity();
+    afx_msg BOOL OnMouseWheel(UINT nFlags, short zDelta, CPoint pt);
+    afx_msg void OnHold();
+    afx_msg void OnFetch();
+    afx_msg void OnOptionsShowMapObjects();
+    afx_msg void OnOptionsShowWater();
+    afx_msg void OnSetToHeight();
+    afx_msg void OnNoiseBrush();
+    afx_msg void OnNormalBrush();
+    afx_msg void OnExportTerrainAsGeometrie();
+    afx_msg void OnOptionsEditTerrainCurve();
+    afx_msg void OnSetWaterLevel();
+    //}}AFX_MSG
+    DECLARE_MESSAGE_MAP()
 
-	SNoiseParams* m_sLastParam;
+    CDlgToolBar m_cDlgToolBar;
+    CDlgToolBar m_cDlgBrushToolBar;
+    CDrawWnd m_cDrawHeightmap;
 
-	CHeightmap *m_heightmap;
+    SNoiseParams* m_sLastParam;
+
+    CHeightmap* m_heightmap;
 };
 
 //{{AFX_INSERT_LOCATION}}

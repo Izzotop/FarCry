@@ -7,7 +7,7 @@
 //  Version:     v1.00
 //  Created:     11/4/2002 by Timur.
 //  Compilers:   Visual C++ 7.0
-//  Description: 
+//  Description:
 // -------------------------------------------------------------------------
 //  History:
 //
@@ -24,38 +24,43 @@
 
 // CLayersSelectDialog dialog
 
-class CLayersSelectDialog : public CDialog
-{
-	DECLARE_DYNAMIC(CLayersSelectDialog)
+class CLayersSelectDialog : public CDialog {
+    DECLARE_DYNAMIC(CLayersSelectDialog)
 
 public:
-	CLayersSelectDialog( CPoint point,CWnd* pParent = NULL);   // standard constructor
-	virtual ~CLayersSelectDialog();
+    CLayersSelectDialog(CPoint point, CWnd* pParent = nullptr); // standard constructor
+    virtual ~CLayersSelectDialog();
 
-// Dialog Data
-	enum { IDD = IDD_LAYERS_SELECT };
+    // Dialog Data
+    enum { IDD = IDD_LAYERS_SELECT };
 
-	void SetSelectedLayer( const CString &sel ) { m_selectedLayer = sel; };
-	CString GetSelectedLayer() { return m_selectedLayer; };
+    void SetSelectedLayer(const CString& sel) {
+        m_selectedLayer = sel;
+    };
+    CString GetSelectedLayer() {
+        return m_selectedLayer;
+    };
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam);
+    virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
+    virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam);
 
-	void ReloadLayers();
+    void ReloadLayers();
 
-	DECLARE_MESSAGE_MAP()
+    DECLARE_MESSAGE_MAP()
 
-	virtual void OnOK() { EndDialog(IDCANCEL);};
-	//virtual void OnCancel() {};
+    virtual void OnOK() {
+        EndDialog(IDCANCEL);
+    };
+    // virtual void OnCancel() {};
 
-	CColorCtrl<CLayersListBox> m_layers;
-	afx_msg void OnLbnSelchangeLayers();
-	virtual BOOL OnInitDialog();
+    CColorCtrl<CLayersListBox> m_layers;
+    afx_msg void OnLbnSelchangeLayers();
+    virtual BOOL OnInitDialog();
 
-	CString m_selectedLayer;
-	CPoint m_origin;
-	afx_msg void OnLbnSelcancelLayers();
+    CString m_selectedLayer;
+    CPoint m_origin;
+    afx_msg void OnLbnSelcancelLayers();
 };
 
 #endif // __layersselectdialog_h__

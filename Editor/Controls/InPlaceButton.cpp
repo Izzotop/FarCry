@@ -7,7 +7,7 @@
 //  Version:     v1.00
 //  Created:     6/6/2002 by Timur.
 //  Compilers:   Visual Studio.NET
-//  Description: 
+//  Description:
 // -------------------------------------------------------------------------
 //  History: Based on Stefan Belopotocan code.
 //
@@ -20,29 +20,22 @@
 
 IMPLEMENT_DYNAMIC(CInPlaceButton, CXTButton)
 
-CInPlaceButton::CInPlaceButton( OnClick onClickFunctor )
-{
-	m_onClick = onClickFunctor;
+CInPlaceButton::CInPlaceButton(OnClick onClickFunctor) {
+    m_onClick = onClickFunctor;
 }
 
-CInPlaceButton::~CInPlaceButton()
-{
-}
-
+CInPlaceButton::~CInPlaceButton() {}
 
 BEGIN_MESSAGE_MAP(CInPlaceButton, CXTButton)
-	ON_CONTROL_REFLECT(BN_CLICKED, OnBnClicked)
+ON_CONTROL_REFLECT(BN_CLICKED, OnBnClicked)
 END_MESSAGE_MAP()
 
-
 // CInPlaceButton message handlers
-void CInPlaceButton::OnBnClicked()
-{
-	if (m_onClick)
-		m_onClick();
+void CInPlaceButton::OnBnClicked() {
+    if (m_onClick)
+        m_onClick();
 }
 
-void CInPlaceButton::Click()
-{
-	OnBnClicked();
+void CInPlaceButton::Click() {
+    OnBnClicked();
 }

@@ -258,7 +258,7 @@ static void adjust_assign (LexState *ls, int nvars, int nexps, expdesc *e) {
   else {
     if (e->k != VVOID) luaK_exp2nextreg(fs, e);  /* close last expression */
     if (extra > 0) {
-      int reg = fs->freereg; 
+      int reg = fs->freereg;
       luaK_reserveregs(fs, extra);
       luaK_nil(fs, reg, extra);
     }
@@ -740,7 +740,7 @@ static const struct {
    {1, 1}, {1, 1}                   /* logical */
 };
 
-#define UNARY_PRIORITY	7  /* priority for unary operators */
+#define UNARY_PRIORITY  7  /* priority for unary operators */
 
 
 /*
@@ -1245,7 +1245,7 @@ static void chunk (LexState *ls) {
 
 #include "platform.h"
 
-void implicit_local(char *s, char *source, int line, int cur)  
+void implicit_local(char *s, char *source, int line, int cur)
 {
 #if !defined(LINUX)
     char buf[256];
@@ -1254,5 +1254,5 @@ void implicit_local(char *s, char *source, int line, int cur)
     OutputDebugString(buf);
 #endif
 };
-  
-  
+
+

@@ -7,7 +7,7 @@
 //  Version:     v1.00
 //  Created:     22/5/2002 by Timur.
 //  Compilers:   Visual Studio.NET
-//  Description: 
+//  Description:
 // -------------------------------------------------------------------------
 //  History:
 //
@@ -26,32 +26,31 @@ struct IAnimBlock;
 class CPakFile;
 
 /** Used by Editor to serialize animation data.
-*/
-class CAnimationSerializer
-{
+ */
+class CAnimationSerializer {
 public:
-	CAnimationSerializer();
-	~CAnimationSerializer();
+    CAnimationSerializer();
+    ~CAnimationSerializer();
 
-	/** Save all animation sequences to files in givven directory.
-	*/
-	void SerializeSequences( XmlNodeRef &xmlNode,bool bLoading );
+    /** Save all animation sequences to files in givven directory.
+     */
+    void SerializeSequences(XmlNodeRef& xmlNode, bool bLoading);
 
-	/** Saves single animation sequence to file in givven directory.
-	*/
-	void SaveSequence( IAnimSequence *seq,const char *szFilePath, bool bSaveEmpty=true );
+    /** Saves single animation sequence to file in givven directory.
+     */
+    void SaveSequence(IAnimSequence* seq, const char* szFilePath, bool bSaveEmpty = true);
 
-	/** Load sequence from file.
-	*/
-	IAnimSequence* LoadSequence( const char *szFilePath );
+    /** Load sequence from file.
+     */
+    IAnimSequence* LoadSequence(const char* szFilePath);
 
-	/** Save all animation sequences to files in givven directory.
-	*/
-	void SaveAllSequences( const char *szPath,CPakFile &pakFile );
+    /** Save all animation sequences to files in givven directory.
+     */
+    void SaveAllSequences(const char* szPath, CPakFile& pakFile);
 
-	/** Load all animation sequences from givven directory.
-	*/
-	void LoadAllSequences( const char *szPath );
+    /** Load all animation sequences from givven directory.
+     */
+    void LoadAllSequences(const char* szPath);
 };
 
 #endif // __animationserializer_h__

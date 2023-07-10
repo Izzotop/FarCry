@@ -1,8 +1,7 @@
 //! Include standard headers.
 #if !defined(LINUX)
-#include <assert.h>
+#include <cassert>
 #endif
-
 
 //////////////////////////////////////////////////////////////////////////
 // THIS MUST BE AT THE VERY BEGINING OF STDAFX.H FILE.
@@ -24,16 +23,15 @@
 // buffer waiting can be optimized: cycle thru 4-8 vertex buffers (for all models)
 #define UNIQUE_VERT_BUFF_PER_INSTANCE
 
-
 #ifdef _XBOX
 
 //! Include standard headers.
-#include <assert.h>
+#include <cassert>
 #include <math.h>
-#include <stdlib.h>
-#include <stdio.h>
+#include <cstdlib>
+#include <cstdio>
 #include <string.h>
-#include <assert.h>
+#include <cassert>
 #include <memory.h>
 #include <memory.h>
 #include <time.h>
@@ -53,62 +51,57 @@ typedef unsigned char BYTE;
 #endif
 
 #ifdef GAMECUBE
-//#include <assert.h>
-//#include <math.h>
-#include <stdlib.h>
-#include <stdio.h>
+// #include <cassert>
+// #include <math.h>
+#include <cstdlib>
+#include <cstdio>
 #include <ctype.h>
-//#include <string.h>
-//#include <assert.h>
-//#include <time.h>
+// #include <string.h>
+// #include <cassert>
+// #include <time.h>
 #include <dolphin.h>
 #include <stdarg.h>
 #endif
 
 #include <platform.h>
 
-#include <stdlib.h>
+#include <cstdlib>
 
 #ifndef GAMECUBE
-#	include <stdio.h>
-#	if defined(LINUX)
-#		include <sys/io.h>
-#	else
-#		include <io.h>
-#	endif
+#include <cstdio>
+#if defined(LINUX)
+#include <sys/io.h>
+#else
+#include <io.h>
 #endif
-
+#endif
 
 // enable memory pool usage
 #define USE_NEWPOOL
 #include <CryMemoryManager.h>
 
-
 /////////////////////////////////////////////////////////////////////////////
 // STL //////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////
 #include <vector>
-#include <map>	
+#include <map>
 #include <set>
 #include <stack>
 #include <string>
 #include <algorithm>
 
-
-
-
 #ifdef _DEBUG
 #ifdef WIN32
 #include <crtdbg.h>
-#define DEBUG_NEW_NORMAL_CLIENTBLOCK(file, line) new(_NORMAL_BLOCK, file, line)
-#define new DEBUG_NEW_NORMAL_CLIENTBLOCK( __FILE__, __LINE__)
-#define   calloc(s,t)       _calloc_dbg(s, t, _NORMAL_BLOCK, __FILE__, __LINE__)
-#define   malloc(s)         _malloc_dbg(s, _NORMAL_BLOCK, __FILE__, __LINE__)
-#define   realloc(p, s)     _realloc_dbg(p, s, _NORMAL_BLOCK, __FILE__, __LINE__)
-#endif //WIN32
+#define DEBUG_NEW_NORMAL_CLIENTBLOCK(file, line) new (_NORMAL_BLOCK, file, line)
+#define new DEBUG_NEW_NORMAL_CLIENTBLOCK(__FILE__, __LINE__)
+#define calloc(s, t) _calloc_dbg(s, t, _NORMAL_BLOCK, __FILE__, __LINE__)
+#define malloc(s) _malloc_dbg(s, _NORMAL_BLOCK, __FILE__, __LINE__)
+#define realloc(p, s) _realloc_dbg(p, s, _NORMAL_BLOCK, __FILE__, __LINE__)
+#endif // WIN32
 #endif //_DEBUG
 
-//#include <StlDbgAlloc.h>
+// #include <StlDbgAlloc.h>
 
 #include "TArrays.h"
 
@@ -118,15 +111,7 @@ typedef unsigned char BYTE;
 #endif
 #endif
 
-
-
-
-
-
-
-
-typedef const char*			cstr;
-
+typedef const char* cstr;
 
 #include "TArray.h"
 //! Include main interfaces.
@@ -147,8 +132,8 @@ typedef const char*			cstr;
 #include "colordefs.h"
 
 #if !defined(LINUX)
-#define max(a,b)    (((a) > (b)) ? (a) : (b))
-#define min(a,b)    (((a) < (b)) ? (a) : (b))
+#define max(a, b) (((a) > (b)) ? (a) : (b))
+#define min(a, b) (((a) < (b)) ? (a) : (b))
 #endif
 // <<TO-DO>> Get rid of this
 #include <list2.h>
@@ -158,56 +143,63 @@ typedef const char*			cstr;
 #include <CryHeaders.h>
 #include "CrySizer.h"
 
-#define SIZEOF_ARRAY(arr) (sizeof(arr)/sizeof((arr)[0]))
+#define SIZEOF_ARRAY(arr) (sizeof(arr) / sizeof((arr)[0]))
 // sets the memory for the given vector, compatible with the STL vector by value_type, size() and &[0]
-#define MEMSET_VECTOR(arr,value) memset (&((arr)[0]),value,sizeof(arr[0])*arr.size())
-#define MEMZERO_VECTOR(arr) MEMSET_ARRAY(arr,0)
+#define MEMSET_VECTOR(arr, value) memset(&((arr)[0]), value, sizeof(arr[0]) * arr.size())
+#define MEMZERO_VECTOR(arr) MEMSET_ARRAY(arr, 0)
 
 const double gPi = 3.1415926535897932384626433832795;
 
 #include "CryAnimationBase.h"
-//#include "CryAnimation.h"
+// #include "CryAnimation.h"
 
-inline double DLength( Vec3 &v ) { 
-	double dx=v.x*v.x;	
-	double dy=v.y*v.y;	
-	double dz=v.z*v.z;	
-	return sqrt( dx + dy + dz );
+inline double DLength(Vec3& v) {
+    double dx = v.x * v.x;
+    double dy = v.y * v.y;
+    double dz = v.z * v.z;
+    return sqrt(dx + dy + dz);
 }
 
 // maximum number of LODs per one geometric model (CryGeometry)
-enum {g_nMaxGeomLodLevels = 3};
+enum { g_nMaxGeomLodLevels = 3 };
 
-#define DECLARE_VECTOR_GETTER_METHODS(Type, Singular, Plural, member) \
-	Type* get##Plural() {return member.empty()?NULL:&member[0];}												\
-	const Type* get##Plural()const {return member.empty()?NULL:&member[0];}							\
-	Type& get##Singular(unsigned i) {assert (i < num##Plural()); return member[i];}             \
-	const Type& get##Singular(unsigned i)const {assert (i < num##Plural()); return member[i];}	\
-	void set##Singular (unsigned i, const Type& newValue) {assert (i < num##Plural()); member[i] = newValue;} \
-	unsigned num##Plural() const{return (unsigned)member.size();}
+#define DECLARE_VECTOR_GETTER_METHODS(Type, Singular, Plural, member)                                                                                                              \
+    Type* get##Plural() { return member.empty() ? nullptr : &member[0]; }                                                                                                             \
+    const Type* get##Plural() const { return member.empty() ? nullptr : &member[0]; }                                                                                                 \
+    Type& get##Singular(unsigned i) {                                                                                                                                              \
+        assert(i < num##Plural());                                                                                                                                                 \
+        return member[i];                                                                                                                                                          \
+    }                                                                                                                                                                              \
+    const Type& get##Singular(unsigned i) const {                                                                                                                                  \
+        assert(i < num##Plural());                                                                                                                                                 \
+        return member[i];                                                                                                                                                          \
+    }                                                                                                                                                                              \
+    void set##Singular(unsigned i, const Type& newValue) {                                                                                                                         \
+        assert(i < num##Plural());                                                                                                                                                 \
+        member[i] = newValue;                                                                                                                                                      \
+    }                                                                                                                                                                              \
+    unsigned num##Plural() const { return (unsigned)member.size(); }
 
 #ifdef _DEBUG
 
 //@FIXME this function should not be inline.
-_inline void __cdecl __CRYTEKDLL_TRACE(const char *sFormat, ... )
-{
-  va_list vl;
-  static char sTraceString[1024];
+_inline void __cdecl __CRYTEKDLL_TRACE(const char* sFormat, ...) {
+    va_list vl;
+    static char sTraceString[1024];
 
-  va_start(vl, sFormat);
-  vsprintf(sTraceString, sFormat, vl);
-  va_end(vl);
+    va_start(vl, sFormat);
+    vsprintf(sTraceString, sFormat, vl);
+    va_end(vl);
 
-  strcat(sTraceString, "\n");
+    strcat(sTraceString, "\n");
 
 #ifdef WIN32
-  ::OutputDebugString(sTraceString);	
+    ::OutputDebugString(sTraceString);
 #endif
 
 #ifdef GAMECUBE
-  OSReport(sTraceString);
+    OSReport(sTraceString);
 #endif
-
 }
 
 #define TRACE __CRYTEKDLL_TRACE
@@ -215,4 +207,3 @@ _inline void __cdecl __CRYTEKDLL_TRACE(const char *sFormat, ... )
 #else
 #define TRACE(str) ;
 #endif
-

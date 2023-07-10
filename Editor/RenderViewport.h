@@ -15,126 +15,129 @@ class CBaseObject;
 /////////////////////////////////////////////////////////////////////////////
 // CRenderViewport window
 
-class CRenderViewport : public CViewport
-{
-	DECLARE_DYNCREATE(CRenderViewport)
-// Construction
+class CRenderViewport : public CViewport {
+    DECLARE_DYNCREATE(CRenderViewport)
+    // Construction
 public:
-	CRenderViewport();
+    CRenderViewport();
 
-	/** Get type of this viewport.
-	*/
-	virtual EViewportType GetType() { return ET_ViewportCamera; }
-	virtual void SetType( EViewportType type ) { assert(type == ET_ViewportCamera); };
+    /** Get type of this viewport.
+     */
+    virtual EViewportType GetType() {
+        return ET_ViewportCamera;
+    }
+    virtual void SetType(EViewportType type) {
+        assert(type == ET_ViewportCamera);
+    };
 
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CRenderViewport)
-	//}}AFX_VIRTUAL
+    // Overrides
+    // ClassWizard generated virtual function overrides
+    //{{AFX_VIRTUAL(CRenderViewport)
+    //}}AFX_VIRTUAL
 
-// Implementation
+    // Implementation
 public:
-	virtual ~CRenderViewport();
+    virtual ~CRenderViewport();
 
-	virtual void Update();
+    virtual void Update();
 
-	virtual void OnTitleMenu( CMenu &menu );
-	virtual void OnTitleMenuCommand( int id );
+    virtual void OnTitleMenu(CMenu& menu);
+    virtual void OnTitleMenuCommand(int id);
 
-	void	SetCamera( const CCamera &camera );
+    void SetCamera(const CCamera& camera);
 
-	//! Map world space position to viewport position.
-	virtual CPoint	WorldToView( Vec3 wp );
-	//! Map viewport position to world space position.
-	virtual Vec3		ViewToWorld( CPoint vp,bool *collideWithTerrain=0,bool onlyTerrain=false );
-	virtual void		ViewToWorldRay( CPoint vp,Vec3 &raySrc,Vec3 &rayDir );
-	virtual float		GetScreenScaleFactor( const Vec3 &worldPoint );
+    //! Map world space position to viewport position.
+    virtual CPoint WorldToView(Vec3 wp);
+    //! Map viewport position to world space position.
+    virtual Vec3 ViewToWorld(CPoint vp, bool* collideWithTerrain = 0, bool onlyTerrain = false);
+    virtual void ViewToWorldRay(CPoint vp, Vec3& raySrc, Vec3& rayDir);
+    virtual float GetScreenScaleFactor(const Vec3& worldPoint);
 
-	virtual void DrawTextLabel( DisplayContext &dc,const Vec3& pos,float size,const CFColor& color,const char *text );
-	virtual bool HitTest( CPoint point,ObjectHitInfo &hitInfo,int flags=0 );
-	virtual bool IsBoundsVisible( const BBox &box ) const;
-	virtual void CenterOnSelection();
+    virtual void DrawTextLabel(DisplayContext& dc, const Vec3& pos, float size, const CFColor& color, const char* text);
+    virtual bool HitTest(CPoint point, ObjectHitInfo& hitInfo, int flags = 0);
+    virtual bool IsBoundsVisible(const BBox& box) const;
+    virtual void CenterOnSelection();
 
 protected:
-	// Called to render stuff.
-	virtual void OnRender();
-	
-	virtual void SetViewerPos( const Vec3 &pos );
-	virtual void SetViewerAngles( const Vec3 &angles );
-	virtual Vec3 GetViewerPos() const;
-	virtual Vec3 GetViewerAngles() const;
+    // Called to render stuff.
+    virtual void OnRender();
 
-	//! Get currently active camera object.
-	CBaseObject* GetCameraObject() const;
-	void SetCameraObject( CBaseObject *cameraObject );
+    virtual void SetViewerPos(const Vec3& pos);
+    virtual void SetViewerAngles(const Vec3& angles);
+    virtual Vec3 GetViewerPos() const;
+    virtual Vec3 GetViewerAngles() const;
 
-	void RenderTerrainGrid( float x1,float y1,float x2,float y2 );
-	void RenderMarker();
-	void RenderCursorString();
-	void RenderSafeFrame();
-	void ProcessKeys();
+    //! Get currently active camera object.
+    CBaseObject* GetCameraObject() const;
+    void SetCameraObject(CBaseObject* cameraObject);
+
+    void RenderTerrainGrid(float x1, float y1, float x2, float y2);
+    void RenderMarker();
+    void RenderCursorString();
+    void RenderSafeFrame();
+    void ProcessKeys();
 
 protected:
-	void RenderAll();
-	void DrawAxis();
+    void RenderAll();
+    void DrawAxis();
 
-	virtual bool CreateRenderContext();
-	virtual void DestroyRenderContext();
+    virtual bool CreateRenderContext();
+    virtual void DestroyRenderContext();
 
-	//! Assigned renderer.
-	IRenderer*	m_renderer;
-	I3DEngine*	m_engine;
-	ICryCharManager* m_pAnimationSystem;
-	bool m_bRenderContextCreated;
-	bool m_bInRotateMode;
-	bool m_bInMoveMode;
-	CPoint m_mousePos;
+    //! Assigned renderer.
+    IRenderer* m_renderer;
+    I3DEngine* m_engine;
+    ICryCharManager* m_pAnimationSystem;
+    bool m_bRenderContextCreated;
+    bool m_bInRotateMode;
+    bool m_bInMoveMode;
+    CPoint m_mousePos;
 
-	float m_moveSpeed;
+    float m_moveSpeed;
 
-	// Camera field of view.
-	//float m_cameraFov;
-	CCamera m_camera;
+    // Camera field of view.
+    // float m_cameraFov;
+    CCamera m_camera;
 
-	// Render options.
-	bool m_bWireframe;
-	bool m_bDisplayLabels;
-	bool m_bShowSafeFrame;
+    // Render options.
+    bool m_bWireframe;
+    bool m_bDisplayLabels;
+    bool m_bShowSafeFrame;
 
-	CSize m_viewSize;
-	CRect m_rcClient;
+    CSize m_viewSize;
+    CRect m_rcClient;
 
-	// Index of camera objects.
-	mutable GUID m_cameraObjectId;
-	bool m_bSequenceCamera;
-	bool m_bUpdating;
+    // Index of camera objects.
+    mutable GUID m_cameraObjectId;
+    bool m_bSequenceCamera;
+    bool m_bUpdating;
 
-  int m_nPresedKeyState;
+    int m_nPresedKeyState;
 
-	// Generated message map functions
+    // Generated message map functions
 protected:
-	//{{AFX_MSG(CRenderViewport)
-	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
-	afx_msg void OnSize(UINT nType, int cx, int cy);
-	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
-	afx_msg void OnPaint();
-	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
-	afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
-	afx_msg void OnMButtonDown(UINT nFlags, CPoint point);
-	afx_msg void OnMButtonUp(UINT nFlags, CPoint point);
-	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
-	afx_msg void OnRButtonDown(UINT nFlags, CPoint point);
-	afx_msg void OnRButtonUp(UINT nFlags, CPoint point);
-	afx_msg BOOL OnMouseWheel(UINT nFlags, short zDelta, CPoint pt);
-	afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
+    //{{AFX_MSG(CRenderViewport)
+    afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
+    afx_msg void OnSize(UINT nType, int cx, int cy);
+    afx_msg BOOL OnEraseBkgnd(CDC* pDC);
+    afx_msg void OnPaint();
+    afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
+    afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
+    afx_msg void OnMButtonDown(UINT nFlags, CPoint point);
+    afx_msg void OnMButtonUp(UINT nFlags, CPoint point);
+    afx_msg void OnMouseMove(UINT nFlags, CPoint point);
+    afx_msg void OnRButtonDown(UINT nFlags, CPoint point);
+    afx_msg void OnRButtonUp(UINT nFlags, CPoint point);
+    afx_msg BOOL OnMouseWheel(UINT nFlags, short zDelta, CPoint pt);
+    afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
+    //}}AFX_MSG
+    DECLARE_MESSAGE_MAP()
 public:
-	afx_msg BOOL OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message);
-	afx_msg void OnDestroy();
-	afx_msg void OnSwitchcameraDefaultcamera();
-	afx_msg void OnSwitchcameraSequencecamera();
-	afx_msg void OnSwitchcameraSelectedcamera();
+    afx_msg BOOL OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message);
+    afx_msg void OnDestroy();
+    afx_msg void OnSwitchcameraDefaultcamera();
+    afx_msg void OnSwitchcameraSequencecamera();
+    afx_msg void OnSwitchcameraSelectedcamera();
 };
 
 /////////////////////////////////////////////////////////////////////////////

@@ -10,40 +10,39 @@
 /////////////////////////////////////////////////////////////////////////////
 // CDimensionsDialog dialog
 
-class CDimensionsDialog : public CDialog
-{
-// Construction
+class CDimensionsDialog : public CDialog {
+    // Construction
 public:
-	UINT GetDimensions();
-	void SetDimensions(UINT iWidth);
-	CDimensionsDialog(CWnd* pParent = NULL);   // standard constructor
+    UINT GetDimensions();
+    void SetDimensions(UINT iWidth);
+    CDimensionsDialog(CWnd* pParent = nullptr); // standard constructor
 
-	bool GetCompressionQuality() const { return m_bQuality; };
+    bool GetCompressionQuality() const {
+        return m_bQuality;
+    };
 
-// Dialog Data
-	//{{AFX_DATA(CDimensionsDialog)
-	enum { IDD = IDD_DIMENSIONS };
-	int m_iSelection;
-	BOOL m_bQuality;
-	// NOTE: the ClassWizard will add data members here
-	//}}AFX_DATA
+    // Dialog Data
+    //{{AFX_DATA(CDimensionsDialog)
+    enum { IDD = IDD_DIMENSIONS };
+    int m_iSelection;
+    BOOL m_bQuality;
+    // NOTE: the ClassWizard will add data members here
+    //}}AFX_DATA
 
-
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CDimensionsDialog)
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	//}}AFX_VIRTUAL
-
-// Implementation
+    // Overrides
+    // ClassWizard generated virtual function overrides
+    //{{AFX_VIRTUAL(CDimensionsDialog)
 protected:
+    virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
+                                                     //}}AFX_VIRTUAL
 
-	// Generated message map functions
-	//{{AFX_MSG(CDimensionsDialog)
-		// NOTE: the ClassWizard will add member functions here
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
+    // Implementation
+protected:
+    // Generated message map functions
+    //{{AFX_MSG(CDimensionsDialog)
+    // NOTE: the ClassWizard will add member functions here
+    //}}AFX_MSG
+    DECLARE_MESSAGE_MAP()
 };
 
 //{{AFX_INSERT_LOCATION}}

@@ -6,44 +6,51 @@
 
 class CryModelAnimationContainer;
 
-class CryModEffMorph
-{
+class CryModEffMorph {
 public:
-	CryModEffMorph(/*CryModelAnimationContainer* pAnimations*/);
+    CryModEffMorph(/*CryModelAnimationContainer* pAnimations*/);
 
-	// advances the current time of the played animation and returns the blending factor by which this animation affects the bone pose
-	void Tick (float fDeltaTime);
+    // advances the current time of the played animation and returns the blending factor by which this animation affects the bone pose
+    void Tick(float fDeltaTime);
 
-	// starts the morphing sequence
-	void StartMorph (int nMorphTargetId, const CryCharMorphParams& rParams);
+    // starts the morphing sequence
+    void StartMorph(int nMorphTargetId, const CryCharMorphParams& rParams);
 
-	// returns false when this morph target is inactive
-	bool isActive()const ;
+    // returns false when this morph target is inactive
+    bool isActive() const;
 
-	// returns the blending factor for this morph target
-	float getBlending()const;
+    // returns the blending factor for this morph target
+    float getBlending() const;
 
-	// returns the morph target
-	int getMorphTargetId () const;
+    // returns the morph target
+    int getMorphTargetId() const;
 
-	void setTime(float fTime) {m_fTime = fTime;}
-	void setSpeed (float fSpeed) {m_Params.fSpeed = fSpeed;}
-	void stop();
+    void setTime(float fTime) {
+        m_fTime = fTime;
+    }
+    void setSpeed(float fSpeed) {
+        m_Params.fSpeed = fSpeed;
+    }
+    void stop();
 
-	float getTime() const {return m_fTime;}
-	void freeze() {m_nFlags |= m_Params.FLAGS_FREEZE;}
+    float getTime() const {
+        return m_fTime;
+    }
+    void freeze() {
+        m_nFlags |= m_Params.FLAGS_FREEZE;
+    }
+
 protected:
-	
-	// the animation container that will answer all questions regarding the morph target
-	//CryModelAnimationContainer* m_pAnimations;
+    // the animation container that will answer all questions regarding the morph target
+    // CryModelAnimationContainer* m_pAnimations;
 
-	// the blend time
-	CryCharMorphParams m_Params;
-	// time of morphing
-	float m_fTime;
-	// morph target id
-	int m_nMorphTargetId;
-	unsigned m_nFlags; // the copy of the flags from m_Params
+    // the blend time
+    CryCharMorphParams m_Params;
+    // time of morphing
+    float m_fTime;
+    // morph target id
+    int m_nMorphTargetId;
+    unsigned m_nFlags; // the copy of the flags from m_Params
 };
 
 #endif

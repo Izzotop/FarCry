@@ -54,7 +54,7 @@ static void type_error (lua_State *L, int narg, const l_char *tname) {
 
 
 static void tag_error (lua_State *L, int narg, int tag) {
-  type_error(L, narg, lua_typename(L, tag)); 
+  type_error(L, narg, lua_typename(L, tag));
 }
 
 
@@ -140,11 +140,11 @@ LUALIB_API void luaL_verror (lua_State *L, const l_char *fmt, ...) {
 */
 
 
-#define buffempty(B)	((B)->p == (B)->buffer)
-#define bufflen(B)	((B)->p - (B)->buffer)
-#define bufffree(B)	((size_t)(LUAL_BUFFERSIZE - bufflen(B)))
+#define buffempty(B)  ((B)->p == (B)->buffer)
+#define bufflen(B)  ((B)->p - (B)->buffer)
+#define bufffree(B)  ((size_t)(LUAL_BUFFERSIZE - bufflen(B)))
 
-#define LIMIT	(LUA_MINSTACK/2)
+#define LIMIT  (LUA_MINSTACK/2)
 
 
 static int emptybuffer (luaL_Buffer *B) {

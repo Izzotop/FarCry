@@ -29,7 +29,7 @@
 #include "platform.h"
 
 #include "../LuaCryPakIO.h"
- 
+
 /* space to handle stack overflow errors */
 #define EXTRA_STACK   (2*LUA_MINSTACK)
 
@@ -77,7 +77,7 @@ void luaD_adjusttop (lua_State *L, StkId newtop) {
 ** Open a hole inside the stack at `pos'
 */
 static void luaD_openstack (lua_State *L, StkId pos) {
-  int i = L->top-pos; 
+  int i = L->top-pos;
   while (i--) setobj(pos+i+1, pos+i);
   incr_top;
 }
@@ -137,7 +137,7 @@ static StkId callCclosure (lua_State *L, const struct Closure *cl) {
 ** The arguments are on the stack, right after the function.
 ** When returns, all the results are on the stack, starting at the original
 ** function position.
-*/ 
+*/
 void luaD_call (lua_State *L, StkId func) {
   lua_Hook callhook;
   StkId firstResult;
@@ -285,33 +285,33 @@ static void _ConvertNameForXBox(char *dst, const char *src)
 FILE * fxopen(const char *file, const char *mode)
 {
 //  SetFileAttributes(file,FILE_ATTRIBUTE_ARCHIVE);
-	
+
 #ifdef _XBOX
   char name[256];
   _ConvertNameForXBox(name, file);
-	#ifdef USE_CRYPAK
-		return CryPakOpen(name,mode); 
-	#else
-		return (fopen(name,mode));
-	#endif
-	
+  #ifdef USE_CRYPAK
+    return CryPakOpen(name,mode);
+  #else
+    return (fopen(name,mode));
+  #endif
+
 #else
-	#ifdef USE_CRYPAK
-		return CryPakOpen(file,mode);  	
-	#else
-		return (fopen(file,mode));
-	#endif
-	
+  #ifdef USE_CRYPAK
+    return CryPakOpen(file,mode);
+  #else
+    return (fopen(file,mode));
+  #endif
+
 #endif
 }
 
 void fxclose(FILE *f)
 {
 #ifdef USE_CRYPAK
-	CryPakClose(f); 
+  CryPakClose(f);
 #else
-	fclose(f);
-#endif	
+  fclose(f);
+#endif
 }
 
 LUA_API int lua_loadfile (lua_State *L, const l_char *filename) {
@@ -321,16 +321,16 @@ LUA_API int lua_loadfile (lua_State *L, const l_char *filename) {
   int nlevel;  /* level on the stack of filename */
 #ifdef PS2
   FILE *f;
-  if (filename != NULL) 
+  if (filename != NULL)
       f = fxopen(filename, l_s("r"));
-#else  
+#else
   FILE *f = (filename == NULL) ? stdin : fxopen(filename, l_s("r"));
 #endif
   if (f == NULL) return LUA_ERRFILE;  /* unable to open file */
   bin = (CryPakUngetc(CryPakGetc(f), f) == LUA_SIGNATURE[0]);
 #ifndef PS2
-  if (bin && f != stdin) {    
-		fxclose(f);
+  if (bin && f != stdin) {
+    fxclose(f);
     f = fxopen(filename, l_s("rb"));  /* reopen in binary mode */
     if (f == NULL) return LUA_ERRFILE;  /* unable to reopen file */
   }
@@ -346,7 +346,7 @@ LUA_API int lua_loadfile (lua_State *L, const l_char *filename) {
 #ifndef PS2
   if (f != stdin)
 #endif
-	fxclose(f);   
+  fxclose(f);
   return status;
 }
 
@@ -411,13 +411,13 @@ void luaD_breakrun (lua_State *L, int errcode) {
       OutputDebugString("Something wrong here");
       FORCE_EXIT();
 #else
-		//FORCE_EXIT();		
+    //FORCE_EXIT();
 #if defined(WIN64) || defined(LINUX64)
-		abort();
+    abort();
 #else
-		DEBUG_BREAK;
+    DEBUG_BREAK;
 #endif
-#endif        
+#endif
   }
 }
 

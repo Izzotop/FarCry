@@ -7,7 +7,7 @@
 //  Version:     v1.00
 //  Created:     11/5/2004 by Timur.
 //  Compilers:   Visual Studio.NET 2003
-//  Description: 
+//  Description:
 // -------------------------------------------------------------------------
 //  History:
 //
@@ -19,27 +19,28 @@
 
 #include "AnimNode.h"
 
-class CAnimScriptVarNode : public CAnimNode
-{
+class CAnimScriptVarNode : public CAnimNode {
 public:
-	CAnimScriptVarNode( IMovieSystem *sys );
+    CAnimScriptVarNode(IMovieSystem* sys);
 
-	virtual EAnimNodeType GetType() const { return ANODE_SCRIPTVAR; }
+    virtual EAnimNodeType GetType() const {
+        return ANODE_SCRIPTVAR;
+    }
 
-	//////////////////////////////////////////////////////////////////////////
-	// Overrides from CAnimNode
-	//////////////////////////////////////////////////////////////////////////
-	void Animate( SAnimContext &ec );
-	void CreateDefaultTracks();
+    //////////////////////////////////////////////////////////////////////////
+    // Overrides from CAnimNode
+    //////////////////////////////////////////////////////////////////////////
+    void Animate(SAnimContext& ec);
+    void CreateDefaultTracks();
 
-	//////////////////////////////////////////////////////////////////////////
-	virtual int GetParamCount() const;
-	virtual bool GetParamInfo( int nIndex, SParamInfo &info ) const;
-	virtual bool GetParamInfoFromId( int paramId, SParamInfo &info ) const;
+    //////////////////////////////////////////////////////////////////////////
+    virtual int GetParamCount() const;
+    virtual bool GetParamInfo(int nIndex, SParamInfo& info) const;
+    virtual bool GetParamInfoFromId(int paramId, SParamInfo& info) const;
 
 private:
-	void SetScriptValue();
-	float m_value;
+    void SetScriptValue();
+    float m_value;
 };
 
 #endif // __ScriptVarNode_h__

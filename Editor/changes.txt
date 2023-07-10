@@ -537,7 +537,7 @@ TODO
 * Commands implementation (Partially done)
 * Cleanup IEditorImpl class, remove tool/axis handling to separate class.
 * Brush Editor.
-*	Texture Browser.
-*	Texture Align tool
-*	Stretch/Skew brush tool.
-*	Generating Geometry for brush.
+*  Texture Browser.
+*  Texture Align tool
+*  Stretch/Skew brush tool.
+*  Generating Geometry for brush.

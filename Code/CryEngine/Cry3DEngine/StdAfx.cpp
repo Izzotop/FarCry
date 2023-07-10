@@ -8,8 +8,8 @@
 //  Created:     28/5/2001 by Vladimir Kajalin
 //  Compilers:   Visual Studio.NET
 //  Description: Description: source file that includes just the standard includes
-//	             Cry3DEngine.pch will be the pre-compiled header
-//	             stdafx.obj will contain the pre-compiled type information
+//                 Cry3DEngine.pch will be the pre-compiled header
+//                 stdafx.obj will contain the pre-compiled type information
 
 // -------------------------------------------------------------------------
 //  History:

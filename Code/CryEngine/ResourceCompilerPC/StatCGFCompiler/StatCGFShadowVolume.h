@@ -1,8 +1,7 @@
 #pragma once
 
-class StatCGFShadowVolume
-{
+class StatCGFShadowVolume {
 public:
-  StatCGFShadowVolume(void);
-  ~StatCGFShadowVolume(void);
+    StatCGFShadowVolume();
+    ~StatCGFShadowVolume();
 };

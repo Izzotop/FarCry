@@ -23,8 +23,8 @@
 #include "IEditor.h"
 #include "MainFrm.h"
 
-#define GET_PLUGIN_ID_FROM_MENU_ID(ID) (((ID) & 0x000000FF))
-#define GET_UI_ELEMENT_ID_FROM_MENU_ID(ID) ((((ID) & 0x0000FF00) >> 8))
+#define GET_PLUGIN_ID_FROM_MENU_ID(ID) (((ID)&0x000000FF))
+#define GET_UI_ELEMENT_ID_FROM_MENU_ID(ID) ((((ID)&0x0000FF00) >> 8))
 
 class CObjectManager;
 class CUndoManager;
@@ -34,435 +34,476 @@ class CSoundPresetMgr;
 class CEAXPresetMgr;
 
 /*!
- *  CEditorImpl implements IEditor interface.	
+ *  CEditorImpl implements IEditor interface.
  */
-class CEditorImpl : public IEditor
-{
+class CEditorImpl : public IEditor {
 public:
-	//////////////////////////////////////////////////////////////////////////
-	CEditorImpl();
-	virtual ~CEditorImpl();
+    //////////////////////////////////////////////////////////////////////////
+    CEditorImpl();
+    virtual ~CEditorImpl();
 
-	void SetGameEngine( CGameEngine *ge );
+    void SetGameEngine(CGameEngine* ge);
 
-	void DeleteThis() { delete this; };
+    void DeleteThis() {
+        delete this;
+    };
 
-	CClassFactory* GetClassFactory();
-	CCommandManager* GetCommandManager() { return m_pCommandManager; };
+    CClassFactory* GetClassFactory();
+    CCommandManager* GetCommandManager() {
+        return m_pCommandManager;
+    };
 
-	void SetDocument( CCryEditDoc *pDoc );
-	//! Get active document
-	CCryEditDoc* GetDocument();
-	void SetModifiedFlag( bool modified = true );
-	bool IsModified();
-	bool SaveDocument();
+    void SetDocument(CCryEditDoc* pDoc);
+    //! Get active document
+    CCryEditDoc* GetDocument();
+    void SetModifiedFlag(bool modified = true);
+    bool IsModified();
+    bool SaveDocument();
 
-	//////////////////////////////////////////////////////////////////////////
-	// Generic
-	//////////////////////////////////////////////////////////////////////////
-	ISystem*	GetSystem();
-	IGame*		GetGame();
-	I3DEngine*	Get3DEngine();
-	IRenderer*	GetRenderer();
+    //////////////////////////////////////////////////////////////////////////
+    // Generic
+    //////////////////////////////////////////////////////////////////////////
+    ISystem* GetSystem();
+    IGame* GetGame();
+    I3DEngine* Get3DEngine();
+    IRenderer* GetRenderer();
 
+    void WriteToConsole(const char* pszString) {
+        CLogFile::WriteLine(pszString);
+    };
 
-	void WriteToConsole(const char * pszString) { CLogFile::WriteLine(pszString); };
+    // Change the message in the status bar
+    void SetStatusText(const char* pszString) {
+        if (AfxGetMainWnd())
+            ((CMainFrame*)(AfxGetMainWnd()))->SetStatusText(pszString);
+    };
 
-	// Change the message in the status bar
-	void SetStatusText(const char * pszString) 
-	{
-		if (AfxGetMainWnd())
-			((CMainFrame *) (AfxGetMainWnd()))->SetStatusText(pszString);
-	};
+    bool ShowConsole(bool show) {
+        if (AfxGetMainWnd())
+            return ((CMainFrame*)(AfxGetMainWnd()))->ShowConsole(show);
+        return false;
+    }
 
-	bool ShowConsole( bool show ) {
-		if (AfxGetMainWnd())
-			return ((CMainFrame *) (AfxGetMainWnd()))->ShowConsole(show);
-		return false;
-	}
-	
-	void SetConsoleVar( const char *var,float value );
-	float GetConsoleVar( const char *var );
+    void SetConsoleVar(const char* var, float value);
+    float GetConsoleVar(const char* var);
 
-	// Query main window of the editor
-	HWND GetEditorMainWnd()
-	{
-		if (AfxGetMainWnd())
-			return AfxGetMainWnd()->m_hWnd;
-		return 0;
-	};
+    // Query main window of the editor
+    HWND GetEditorMainWnd() {
+        if (AfxGetMainWnd())
+            return AfxGetMainWnd()->m_hWnd;
+        return 0;
+    };
 
-	//////////////////////////////////////////////////////////////////////////
-	// Paths.
-	//////////////////////////////////////////////////////////////////////////
-	// Returns the path of the editors Master CD folder
-	const char * GetMasterCDFolder();
-	CString GetRelativePath( const CString &fullPath );
-	CString GetLevelFolder();
-	//////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////
+    // Paths.
+    //////////////////////////////////////////////////////////////////////////
+    // Returns the path of the editors Master CD folder
+    const char* GetMasterCDFolder();
+    CString GetRelativePath(const CString& fullPath);
+    CString GetLevelFolder();
+    //////////////////////////////////////////////////////////////////////////
 
-	bool ExecuteConsoleApp( const CString &CommandLine, CString &OutputText );
+    bool ExecuteConsoleApp(const CString& CommandLine, CString& OutputText);
 
-	//! Check if editor running in gaming mode.
-	bool IsInGameMode();
-	//! Set game mode of editor.
-	void SetInGameMode( bool inGame );
+    //! Check if editor running in gaming mode.
+    bool IsInGameMode();
+    //! Set game mode of editor.
+    void SetInGameMode(bool inGame);
 
-	bool IsInTestMode();
+    bool IsInTestMode();
 
-	bool IsInPreviewMode();
+    bool IsInPreviewMode();
 
-	//! Enables/Disable updates of editor.
-	virtual void EnableUpdate( bool enable ) { m_bUpdates = enable; };
+    //! Enables/Disable updates of editor.
+    virtual void EnableUpdate(bool enable) {
+        m_bUpdates = enable;
+    };
 
-	//! Enable/Disable accelerator table, (Enabled by default).
-	virtual void EnableAcceleratos( bool bEnable );
+    //! Enable/Disable accelerator table, (Enabled by default).
+    virtual void EnableAcceleratos(bool bEnable);
 
-	//////////////////////////////////////////////////////////////////////////
-	// Game Engine.
-	//////////////////////////////////////////////////////////////////////////
-	/** Retrieve pointer to game engine instance.
-	*/
-	CGameEngine* GetGameEngine() { return m_gameEngine; };
+    //////////////////////////////////////////////////////////////////////////
+    // Game Engine.
+    //////////////////////////////////////////////////////////////////////////
+    /** Retrieve pointer to game engine instance.
+     */
+    CGameEngine* GetGameEngine() {
+        return m_gameEngine;
+    };
 
-	//////////////////////////////////////////////////////////////////////////
-	//! Display Settings.
-	//////////////////////////////////////////////////////////////////////////
-	CDisplaySettings*	GetDisplaySettings() { return m_displaySettings; };
-	
-	//////////////////////////////////////////////////////////////////////////
-	// Objects management.
-	//////////////////////////////////////////////////////////////////////////
-	CBaseObject* NewObject( const CString &typeName,const CString &file="" );
-  void DeleteObject( CBaseObject *obj );
-	CBaseObject* CloneObject( CBaseObject *obj );
-	void StartObjectCreation( const CString &type,const CString &file="" );
+    //////////////////////////////////////////////////////////////////////////
+    //! Display Settings.
+    //////////////////////////////////////////////////////////////////////////
+    CDisplaySettings* GetDisplaySettings() {
+        return m_displaySettings;
+    };
 
-	IObjectManager* GetObjectManager();
-	CSelectionGroup*	GetSelection();
-	int ClearSelection();
-	CBaseObject* GetSelectedObject();
-	void SelectObject( CBaseObject *obj );
+    //////////////////////////////////////////////////////////////////////////
+    // Objects management.
+    //////////////////////////////////////////////////////////////////////////
+    CBaseObject* NewObject(const CString& typeName, const CString& file = "");
+    void DeleteObject(CBaseObject* obj);
+    CBaseObject* CloneObject(CBaseObject* obj);
+    void StartObjectCreation(const CString& type, const CString& file = "");
 
-	void LockSelection( bool bLock );
-	bool IsSelectionLocked();
+    IObjectManager* GetObjectManager();
+    CSelectionGroup* GetSelection();
+    int ClearSelection();
+    CBaseObject* GetSelectedObject();
+    void SelectObject(CBaseObject* obj);
 
-	void PickObject( IPickObjectCallback *callback,CRuntimeClass *targetClass=0,const char *statusText=0,bool bMultipick=false );
-	void CancelPick();
-	bool IsPicking();
+    void LockSelection(bool bLock);
+    bool IsSelectionLocked();
 
-	//////////////////////////////////////////////////////////////////////////
-	// Get DataBase Managers.
-	//////////////////////////////////////////////////////////////////////////
-	virtual CEntityPrototypeManager* GetEntityProtManager() { return m_entityManager; };
-	virtual CMaterialManager* GetMaterialManager() { return m_materialManager; };
-	virtual CParticleManager* GetParticleManager() { return m_particleManager; };
-	virtual CMusicManager* GetMusicManager() { return m_pMusicManager; };
-	virtual CPrefabManager* GetPrefabManager() { return m_pPrefabManager; };
+    void PickObject(IPickObjectCallback* callback, CRuntimeClass* targetClass = 0, const char* statusText = 0, bool bMultipick = false);
+    void CancelPick();
+    bool IsPicking();
 
-	//////////////////////////////////////////////////////////////////////////
-	// Icon manager.
-	//////////////////////////////////////////////////////////////////////////
-	CIconManager* GetIconManager() { return m_iconManager; };
+    //////////////////////////////////////////////////////////////////////////
+    // Get DataBase Managers.
+    //////////////////////////////////////////////////////////////////////////
+    virtual CEntityPrototypeManager* GetEntityProtManager() {
+        return m_entityManager;
+    };
+    virtual CMaterialManager* GetMaterialManager() {
+        return m_materialManager;
+    };
+    virtual CParticleManager* GetParticleManager() {
+        return m_particleManager;
+    };
+    virtual CMusicManager* GetMusicManager() {
+        return m_pMusicManager;
+    };
+    virtual CPrefabManager* GetPrefabManager() {
+        return m_pPrefabManager;
+    };
 
-	//////////////////////////////////////////////////////////////////////////
-	// Terrain related.
-	//////////////////////////////////////////////////////////////////////////
-	float GetTerrainElevation( float x,float y );
-	CHeightmap* GetHeightmap();
-	CVegetationMap* GetVegetationMap();
+    //////////////////////////////////////////////////////////////////////////
+    // Icon manager.
+    //////////////////////////////////////////////////////////////////////////
+    CIconManager* GetIconManager() {
+        return m_iconManager;
+    };
 
-	//////////////////////////////////////////////////////////////////////////
-	// AI
-	//////////////////////////////////////////////////////////////////////////
-	CAIManager*	GetAI();
+    //////////////////////////////////////////////////////////////////////////
+    // Terrain related.
+    //////////////////////////////////////////////////////////////////////////
+    float GetTerrainElevation(float x, float y);
+    CHeightmap* GetHeightmap();
+    CVegetationMap* GetVegetationMap();
 
-	//////////////////////////////////////////////////////////////////////////
-	// Access to IMovieSystem.
-	//////////////////////////////////////////////////////////////////////////
-	IMovieSystem* GetMovieSystem() {
-		if (m_system)
-			return m_system->GetIMovieSystem();
-		return NULL; };
+    //////////////////////////////////////////////////////////////////////////
+    // AI
+    //////////////////////////////////////////////////////////////////////////
+    CAIManager* GetAI();
 
-	//////////////////////////////////////////////////////////////////////////
-	// EquipPackLib
-	//////////////////////////////////////////////////////////////////////////
-	CEquipPackLib* GetEquipPackLib() { return m_pEquipPackLib; }
+    //////////////////////////////////////////////////////////////////////////
+    // Access to IMovieSystem.
+    //////////////////////////////////////////////////////////////////////////
+    IMovieSystem* GetMovieSystem() {
+        if (m_system)
+            return m_system->GetIMovieSystem();
+        return nullptr;
+    };
 
-	//////////////////////////////////////////////////////////////////////////
-	// Plugins
-	//////////////////////////////////////////////////////////////////////////
-	CPluginManager* GetPluginManager() { return m_pluginMan; };
+    //////////////////////////////////////////////////////////////////////////
+    // EquipPackLib
+    //////////////////////////////////////////////////////////////////////////
+    CEquipPackLib* GetEquipPackLib() {
+        return m_pEquipPackLib;
+    }
 
-	//////////////////////////////////////////////////////////////////////////
-	// Sound/EAX-Presets
-	//////////////////////////////////////////////////////////////////////////
-	CSoundPresetMgr* GetSoundPresetMgr() { return m_pSoundPresetMgr; }
-	CEAXPresetMgr* GetEAXPresetMgr() { return m_pEAXPresetMgr; }
+    //////////////////////////////////////////////////////////////////////////
+    // Plugins
+    //////////////////////////////////////////////////////////////////////////
+    CPluginManager* GetPluginManager() {
+        return m_pluginMan;
+    };
 
-	//////////////////////////////////////////////////////////////////////////
-	// Views related methods.
-	//////////////////////////////////////////////////////////////////////////
-	CViewManager* GetViewManager();
+    //////////////////////////////////////////////////////////////////////////
+    // Sound/EAX-Presets
+    //////////////////////////////////////////////////////////////////////////
+    CSoundPresetMgr* GetSoundPresetMgr() {
+        return m_pSoundPresetMgr;
+    }
+    CEAXPresetMgr* GetEAXPresetMgr() {
+        return m_pEAXPresetMgr;
+    }
 
-	CViewport* GetActiveView();
+    //////////////////////////////////////////////////////////////////////////
+    // Views related methods.
+    //////////////////////////////////////////////////////////////////////////
+    CViewManager* GetViewManager();
 
-	void UpdateViews( int flags,BBox *updateRegion );
-	void ResetViews();
+    CViewport* GetActiveView();
 
-	void UpdateTrackView( bool bOnlyKeys=false );
+    void UpdateViews(int flags, BBox* updateRegion);
+    void ResetViews();
 
-	// Current position marker
-	Vec3d GetMarkerPosition() { return m_marker; };
-	void SetMarkerPosition( const Vec3d &pos ) { m_marker = pos; };
+    void UpdateTrackView(bool bOnlyKeys = false);
 
-	void	SetSelectedRegion( const BBox &box );
-	void	GetSelectedRegion( BBox &box );
+    // Current position marker
+    Vec3d GetMarkerPosition() {
+        return m_marker;
+    };
+    void SetMarkerPosition(const Vec3d& pos) {
+        m_marker = pos;
+    };
 
-//	void	MoveViewer( const Vec3d &dir );
-	void	SetViewerPos( const Vec3d &pos );
-	void	SetViewerAngles( const Vec3d &angles );
-	Vec3d	GetViewerPos();
-	Vec3d	GetViewerAngles();
+    void SetSelectedRegion(const BBox& box);
+    void GetSelectedRegion(BBox& box);
 
-	//////////////////////////////////////////////////////////////////////////
-	// UI Interface
-	//////////////////////////////////////////////////////////////////////////
-	bool AddMenuItem(uint8 iId, bool bIsSeparator, eMenuInsertLocation eParent, IUIEvent *pIHandler);
-	bool AddToolbarItem(uint8 iId, IUIEvent *pIHandler);
+    //  void  MoveViewer( const Vec3d &dir );
+    void SetViewerPos(const Vec3d& pos);
+    void SetViewerAngles(const Vec3d& angles);
+    Vec3d GetViewerPos();
+    Vec3d GetViewerAngles();
 
-	bool CreateRootMenuItem(const char *pszName);
+    //////////////////////////////////////////////////////////////////////////
+    // UI Interface
+    //////////////////////////////////////////////////////////////////////////
+    bool AddMenuItem(uint8 iId, bool bIsSeparator, eMenuInsertLocation eParent, IUIEvent* pIHandler);
+    bool AddToolbarItem(uint8 iId, IUIEvent* pIHandler);
 
-	// Serializatation state
-	void SetDataModified();
+    bool CreateRootMenuItem(const char* pszName);
 
-	// Name of the current editor document
-	const char * GetEditorDocumentName();
+    // Serializatation state
+    void SetDataModified();
 
-	// Roll up bar interface	
-	
-	int SelectRollUpBar( int rollupBarId );
+    // Name of the current editor document
+    const char* GetEditorDocumentName();
 
-	// Insert a new dialog page into the roll up bar
-	int AddRollUpPage(int rollbarId,LPCTSTR pszCaption, class CDialog *pwndTemplate, 
-		bool bAutoDestroyTpl = true, int iIndex = -1);
+    // Roll up bar interface
 
-	// Remove a dialog page from the roll up bar
-	void RemoveRollUpPage(int rollbarId,int iIndex);
+    int SelectRollUpBar(int rollupBarId);
 
-	// Expand one of the rollup pages
-	void ExpandRollUpPage(int rollbarId,int iIndex, BOOL bExpand = true);
+    // Insert a new dialog page into the roll up bar
+    int AddRollUpPage(int rollbarId, LPCTSTR pszCaption, class CDialog* pwndTemplate, bool bAutoDestroyTpl = true, int iIndex = -1);
 
-	// Enable or disable one of the rollup pages
-	void EnableRollUpPage(int rollbarId,int iIndex, BOOL bEnable = true);
-	
-	// Get the window handle of the roll up page container. All CDialog classes
-	// which are passed to InsertRollUpPage() need to have this handle as
-	// the parent window
-	HWND GetRollUpContainerWnd(int rollbarId);
+    // Remove a dialog page from the roll up bar
+    void RemoveRollUpPage(int rollbarId, int iIndex);
 
-	//////////////////////////////////////////////////////////////////////////
-	// Editing modes.
-	//////////////////////////////////////////////////////////////////////////
-	void SetEditMode( int editMode );
-	int GetEditMode();
+    // Expand one of the rollup pages
+    void ExpandRollUpPage(int rollbarId, int iIndex, BOOL bExpand = true);
 
-	//////////////////////////////////////////////////////////////////////////
-	// Edit tools.
-	//////////////////////////////////////////////////////////////////////////
-	virtual void SetEditTool( CEditTool *tool );
-	//! Returns current edit tool.
-	virtual CEditTool* GetEditTool();
+    // Enable or disable one of the rollup pages
+    void EnableRollUpPage(int rollbarId, int iIndex, BOOL bEnable = true);
 
-	//////////////////////////////////////////////////////////////////////////
-	// Transformation methods.
-	//////////////////////////////////////////////////////////////////////////
-	void SetAxisConstrains( AxisConstrains axis );
-	AxisConstrains GetAxisConstrains();
+    // Get the window handle of the roll up page container. All CDialog classes
+    // which are passed to InsertRollUpPage() need to have this handle as
+    // the parent window
+    HWND GetRollUpContainerWnd(int rollbarId);
 
-	void SetTerrainAxisIgnoreObjects( bool bIgnore );
-	bool IsTerrainAxisIgnoreObjects();
+    //////////////////////////////////////////////////////////////////////////
+    // Editing modes.
+    //////////////////////////////////////////////////////////////////////////
+    void SetEditMode(int editMode);
+    int GetEditMode();
 
-	void SetReferenceCoordSys( RefCoordSys refCoords );
-	RefCoordSys GetReferenceCoordSys();
+    //////////////////////////////////////////////////////////////////////////
+    // Edit tools.
+    //////////////////////////////////////////////////////////////////////////
+    virtual void SetEditTool(CEditTool* tool);
+    //! Returns current edit tool.
+    virtual CEditTool* GetEditTool();
 
-	//////////////////////////////////////////////////////////////////////////
-	// XmlTemplates
-	//////////////////////////////////////////////////////////////////////////
-	XmlNodeRef FindTemplate( const CString &templateName );
-	void AddTemplate( const CString &templateName,XmlNodeRef &tmpl );
+    //////////////////////////////////////////////////////////////////////////
+    // Transformation methods.
+    //////////////////////////////////////////////////////////////////////////
+    void SetAxisConstrains(AxisConstrains axis);
+    AxisConstrains GetAxisConstrains();
 
-	//////////////////////////////////////////////////////////////////////////
-	// Standart Dialogs.
-	//////////////////////////////////////////////////////////////////////////
-	CBaseLibraryDialog* OpenDataBaseLibrary( EDataBaseLibraries dbLib,CBaseLibraryItem *pItem=NULL );
-	bool SelectColor( COLORREF &color,CWnd *parent=0 );
+    void SetTerrainAxisIgnoreObjects(bool bIgnore);
+    bool IsTerrainAxisIgnoreObjects();
 
-	// Own methods.
-	void Update();
+    void SetReferenceCoordSys(RefCoordSys refCoords);
+    RefCoordSys GetReferenceCoordSys();
 
-	Version GetFileVersion() { return m_fileVersion; };
-	Version GetProductVersion() { return m_productVersion; };
+    //////////////////////////////////////////////////////////////////////////
+    // XmlTemplates
+    //////////////////////////////////////////////////////////////////////////
+    XmlNodeRef FindTemplate(const CString& templateName);
+    void AddTemplate(const CString& templateName, XmlNodeRef& tmpl);
 
-	//////////////////////////////////////////////////////////////////////////
-	// Installed Shaders enumerations.
-	//////////////////////////////////////////////////////////////////////////
-	//! Get shader enumerator.
-	virtual CShaderEnum* GetShaderEnum();
+    //////////////////////////////////////////////////////////////////////////
+    // Standart Dialogs.
+    //////////////////////////////////////////////////////////////////////////
+    CBaseLibraryDialog* OpenDataBaseLibrary(EDataBaseLibraries dbLib, CBaseLibraryItem* pItem = nullptr);
+    bool SelectColor(COLORREF& color, CWnd* parent = 0);
 
-	//////////////////////////////////////////////////////////////////////////
-	// Undo
-	//////////////////////////////////////////////////////////////////////////
-	virtual CUndoManager* GetUndoManager() { return m_undoManager; };
-	//! Begin operataion requiering Undo.
-	virtual void BeginUndo();
-	virtual void RestoreUndo( bool undo );
-	virtual void AcceptUndo( const CString &name );
-	virtual void CancelUndo();
-	virtual void SuperBeginUndo();
-	virtual void SuperAcceptUndo( const CString &name );
-	virtual void SuperCancelUndo();
-	virtual void SuspendUndo();
-	virtual void ResumeUndo();
-	virtual void Undo();
-	virtual void Redo();
-	virtual bool IsUndoRecording();
-	virtual void RecordUndo( IUndoObject *obj );
-	virtual void FlushUndo();
+    // Own methods.
+    void Update();
 
-	//////////////////////////////////////////////////////////////////////////
-	// Animation related.
-	//////////////////////////////////////////////////////////////////////////
-	//! Retrieve current animation context.
-	CAnimationContext* GetAnimation();
+    Version GetFileVersion() {
+        return m_fileVersion;
+    };
+    Version GetProductVersion() {
+        return m_productVersion;
+    };
 
-	CExternalToolsManager* GetExternalToolsManager() { return m_externalToolsManager; };
+    //////////////////////////////////////////////////////////////////////////
+    // Installed Shaders enumerations.
+    //////////////////////////////////////////////////////////////////////////
+    //! Get shader enumerator.
+    virtual CShaderEnum* GetShaderEnum();
 
-	virtual CErrorReport* GetErrorReport() { return m_pErrorReport; }
+    //////////////////////////////////////////////////////////////////////////
+    // Undo
+    //////////////////////////////////////////////////////////////////////////
+    virtual CUndoManager* GetUndoManager() {
+        return m_undoManager;
+    };
+    //! Begin operataion requiering Undo.
+    virtual void BeginUndo();
+    virtual void RestoreUndo(bool undo);
+    virtual void AcceptUndo(const CString& name);
+    virtual void CancelUndo();
+    virtual void SuperBeginUndo();
+    virtual void SuperAcceptUndo(const CString& name);
+    virtual void SuperCancelUndo();
+    virtual void SuspendUndo();
+    virtual void ResumeUndo();
+    virtual void Undo();
+    virtual void Redo();
+    virtual bool IsUndoRecording();
+    virtual void RecordUndo(IUndoObject* obj);
+    virtual void FlushUndo();
 
-	//////////////////////////////////////////////////////////////////////////
-	// Listeners.
-	//////////////////////////////////////////////////////////////////////////
-	//! Register document notifications listener.
-	void RegisterDocListener( IDocListener *listener );
-	//! Unregister document notifications listener.
-	void UnregisterDocListener( IDocListener *listener );
-		
+    //////////////////////////////////////////////////////////////////////////
+    // Animation related.
+    //////////////////////////////////////////////////////////////////////////
+    //! Retrieve current animation context.
+    CAnimationContext* GetAnimation();
+
+    CExternalToolsManager* GetExternalToolsManager() {
+        return m_externalToolsManager;
+    };
+
+    virtual CErrorReport* GetErrorReport() {
+        return m_pErrorReport;
+    }
+
+    //////////////////////////////////////////////////////////////////////////
+    // Listeners.
+    //////////////////////////////////////////////////////////////////////////
+    //! Register document notifications listener.
+    void RegisterDocListener(IDocListener* listener);
+    //! Unregister document notifications listener.
+    void UnregisterDocListener(IDocListener* listener);
+
 protected:
-	///int FindMenuItem(CMenu *pMenu, LPCTSTR pszMenuString);
-	void DetectVersion();
-	void RegisterTools();
-	void SetMasterCDFolder();
+    /// int FindMenuItem(CMenu *pMenu, LPCTSTR pszMenuString);
+    void DetectVersion();
+    void RegisterTools();
+    void SetMasterCDFolder();
 
-	CRollupCtrl *GetRollUpControl( int rollupId )
-	{
-		CMainFrame *wnd = (CMainFrame*)AfxGetMainWnd();
-		if (wnd)
-			return wnd->GetRollUpControl(rollupId);
-		return 0;
-	};
-	
-	eEditMode m_currEditMode;
-	eEditMode m_prevEditMode;
+    CRollupCtrl* GetRollUpControl(int rollupId) {
+        CMainFrame* wnd = (CMainFrame*)AfxGetMainWnd();
+        if (wnd)
+            return wnd->GetRollUpControl(rollupId);
+        return 0;
+    };
 
-	ISystem *m_system;
+    eEditMode m_currEditMode;
+    eEditMode m_prevEditMode;
 
-	CClassFactory* m_classFactory;
+    ISystem* m_system;
 
-	//! Command manager.
-	CCommandManager* m_pCommandManager;
+    CClassFactory* m_classFactory;
 
-	//! Manager of objects.
-	CObjectManager* m_objectMan;
-	
-	//! Manager of plugins.
-	CPluginManager* m_pluginMan;
+    //! Command manager.
+    CCommandManager* m_pCommandManager;
 
-	//! Manager of viewport.
-	CViewManager*	m_viewMan;
+    //! Manager of objects.
+    CObjectManager* m_objectMan;
 
-	CUndoManager* m_undoManager;
+    //! Manager of plugins.
+    CPluginManager* m_pluginMan;
 
-	CSoundPresetMgr *m_pSoundPresetMgr;
+    //! Manager of viewport.
+    CViewManager* m_viewMan;
 
-	CEAXPresetMgr *m_pEAXPresetMgr;
+    CUndoManager* m_undoManager;
 
-	//! Current position marker.
-	Vec3d m_marker;
+    CSoundPresetMgr* m_pSoundPresetMgr;
 
-	//! Currently selected region.
-	BBox m_selectedRegion;
+    CEAXPresetMgr* m_pEAXPresetMgr;
 
-	//! Selected axis flags.
-	AxisConstrains m_selectedAxis;
-	RefCoordSys m_refCoordsSys;
+    //! Current position marker.
+    Vec3d m_marker;
 
-	// Axis constrains for all edit modes.
-	AxisConstrains m_lastAxis[16];
-	RefCoordSys m_lastCoordSys[16];
+    //! Currently selected region.
+    BBox m_selectedRegion;
 
-	bool m_bUpdates;
-	bool m_bTerrainAxisIgnoreObjects;
+    //! Selected axis flags.
+    AxisConstrains m_selectedAxis;
+    RefCoordSys m_refCoordsSys;
 
-	Vec3d m_viewerPos;
-	Vec3d m_viewerAngles;
+    // Axis constrains for all edit modes.
+    AxisConstrains m_lastAxis[16];
+    RefCoordSys m_lastCoordSys[16];
 
-	Version m_fileVersion;
-	Version m_productVersion;
+    bool m_bUpdates;
+    bool m_bTerrainAxisIgnoreObjects;
 
-	CXmlTemplateRegistry m_templateRegistry;
+    Vec3d m_viewerPos;
+    Vec3d m_viewerAngles;
 
-	//! Current display settins.
-	CDisplaySettings* m_displaySettings;
-	
-	//! Current shader enumerator.
-	CShaderEnum *m_shaderEnum;
+    Version m_fileVersion;
+    Version m_productVersion;
 
-	//! Currently enabled Edit Tool.
-	CEditTool* m_editTool;
+    CXmlTemplateRegistry m_templateRegistry;
 
-	class CIconManager *m_iconManager;
+    //! Current display settins.
+    CDisplaySettings* m_displaySettings;
 
-	CString m_masterCDFolder;
+    //! Current shader enumerator.
+    CShaderEnum* m_shaderEnum;
 
-	//! True when selection is locked.
-	bool m_bSelectionLocked;
+    //! Currently enabled Edit Tool.
+    CEditTool* m_editTool;
 
-	CEditTool *m_pickTool;
+    class CIconManager* m_iconManager;
 
-	CAIManager *m_AI;
+    CString m_masterCDFolder;
 
-	CEquipPackLib *m_pEquipPackLib;
+    //! True when selection is locked.
+    bool m_bSelectionLocked;
 
-//	IMovieSystem* m_movieSystem;
+    CEditTool* m_pickTool;
 
-	//! Pointer to game engine class.
-	CGameEngine *m_gameEngine;
+    CAIManager* m_AI;
 
-	//! Animation context.
-	CAnimationContext* m_animationContext;
+    CEquipPackLib* m_pEquipPackLib;
 
-	//! External tools manager.
-	CExternalToolsManager* m_externalToolsManager;
+    //  IMovieSystem* m_movieSystem;
 
-	//! Entity prototype manager.
-	CEntityPrototypeManager* m_entityManager;
+    //! Pointer to game engine class.
+    CGameEngine* m_gameEngine;
 
-	//! Materials Manager.
-	CMaterialManager* m_materialManager;
+    //! Animation context.
+    CAnimationContext* m_animationContext;
 
-	//! Particles manager.
-	CParticleManager* m_particleManager;
+    //! External tools manager.
+    CExternalToolsManager* m_externalToolsManager;
 
-	//! Music Manager.
-	CMusicManager* m_pMusicManager;
+    //! Entity prototype manager.
+    CEntityPrototypeManager* m_entityManager;
 
-	//! Prefabs Manager.
-	CPrefabManager* m_pPrefabManager;
+    //! Materials Manager.
+    CMaterialManager* m_materialManager;
 
-	//! Global instance of error report class.
-	CErrorReport *m_pErrorReport;
+    //! Particles manager.
+    CParticleManager* m_particleManager;
+
+    //! Music Manager.
+    CMusicManager* m_pMusicManager;
+
+    //! Prefabs Manager.
+    CPrefabManager* m_pPrefabManager;
+
+    //! Global instance of error report class.
+    CErrorReport* m_pErrorReport;
 };
 
 #endif // __IEditorImpl_h__

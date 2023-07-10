@@ -1,11 +1,10 @@
- 
 #ifndef __CRESHADOWMAP_H__
 #define __CRESHADOWMAP_H__
 
 //=============================================================
 
-//struct CLeafBuffer;
-//struct IEntity;
+// struct CLeafBuffer;
+// struct IEntity;
 /*
 class CREShadowMap : public CRendElement
 {
@@ -52,4 +51,4 @@ public:
   virtual bool mfDraw(SShader *ef, SShaderPass *sfm);
 };
 */
-#endif  // __CRESHADOWMAP_H__
+#endif // __CRESHADOWMAP_H__

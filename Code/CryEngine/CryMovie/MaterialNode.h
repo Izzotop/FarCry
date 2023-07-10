@@ -7,7 +7,7 @@
 //  Version:     v1.00
 //  Created:     11/5/2004 by Timur.
 //  Compilers:   Visual Studio.NET 2003
-//  Description: 
+//  Description:
 // -------------------------------------------------------------------------
 //  History:
 //
@@ -19,27 +19,28 @@
 
 #include "AnimNode.h"
 
-class CAnimMaterialNode : public CAnimNode
-{
+class CAnimMaterialNode : public CAnimNode {
 public:
-	CAnimMaterialNode( IMovieSystem *sys );
+    CAnimMaterialNode(IMovieSystem* sys);
 
-	virtual EAnimNodeType GetType() const { return ANODE_MATERIAL; }
+    virtual EAnimNodeType GetType() const {
+        return ANODE_MATERIAL;
+    }
 
-	//////////////////////////////////////////////////////////////////////////
-	// Overrides from CAnimNode
-	//////////////////////////////////////////////////////////////////////////
-	void Animate( SAnimContext &ec );
+    //////////////////////////////////////////////////////////////////////////
+    // Overrides from CAnimNode
+    //////////////////////////////////////////////////////////////////////////
+    void Animate(SAnimContext& ec);
 
-	//////////////////////////////////////////////////////////////////////////
-	// Supported tracks description.
-	//////////////////////////////////////////////////////////////////////////
-	virtual int GetParamCount() const;
-	virtual bool GetParamInfo( int nIndex, SParamInfo &info ) const;
-	virtual bool GetParamInfoFromId( int paramId, SParamInfo &info ) const;
+    //////////////////////////////////////////////////////////////////////////
+    // Supported tracks description.
+    //////////////////////////////////////////////////////////////////////////
+    virtual int GetParamCount() const;
+    virtual bool GetParamInfo(int nIndex, SParamInfo& info) const;
+    virtual bool GetParamInfoFromId(int paramId, SParamInfo& info) const;
 
 private:
-	void SetScriptValue();
+    void SetScriptValue();
 };
 
 #endif // __MaterialNode_h__

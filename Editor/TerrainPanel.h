@@ -12,42 +12,42 @@
 /////////////////////////////////////////////////////////////////////////////
 // CTerrainPanel dialog
 
-class CTerrainPanel : public CDialog
-{
-// Construction
+class CTerrainPanel : public CDialog {
+    // Construction
 public:
-	CTerrainPanel(CWnd* pParent = NULL);   // standard constructor
+    CTerrainPanel(CWnd* pParent = nullptr); // standard constructor
 
-// Dialog Data
-	//{{AFX_DATA(CTerrainPanel)
-	enum { IDD = IDD_TERRAIN_PANEL };
-	CToolButton	m_textureBtn;
-	CToolButton	m_shaderBtn;
-	CToolButton	m_environmentBtn;
-	CToolButton	m_vegetationBtn;
-	CToolButton	m_modifyBtn;
-	CToolButton	m_holeBtn;
-	CToolButton	m_moveBtn;
-	//}}AFX_DATA
+    // Dialog Data
+    //{{AFX_DATA(CTerrainPanel)
+    enum { IDD = IDD_TERRAIN_PANEL };
+    CToolButton m_textureBtn;
+    CToolButton m_shaderBtn;
+    CToolButton m_environmentBtn;
+    CToolButton m_vegetationBtn;
+    CToolButton m_modifyBtn;
+    CToolButton m_holeBtn;
+    CToolButton m_moveBtn;
+    //}}AFX_DATA
 
-	void OnIdleUpdate();
+    void OnIdleUpdate();
 
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CTerrainPanel)
-	public:
-	virtual BOOL OnCmdMsg(UINT nID, int nCode, void* pExtra, AFX_CMDHANDLERINFO* pHandlerInfo);
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	//}}AFX_VIRTUAL
+    // Overrides
+    // ClassWizard generated virtual function overrides
+    //{{AFX_VIRTUAL(CTerrainPanel)
+public:
+    virtual BOOL OnCmdMsg(UINT nID, int nCode, void* pExtra, AFX_CMDHANDLERINFO* pHandlerInfo);
 
-// Implementation
 protected:
-	// Generated message map functions
-	//{{AFX_MSG(CTerrainPanel)
-	virtual BOOL OnInitDialog();
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
+    virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
+    //}}AFX_VIRTUAL
+
+    // Implementation
+protected:
+    // Generated message map functions
+    //{{AFX_MSG(CTerrainPanel)
+    virtual BOOL OnInitDialog();
+    //}}AFX_MSG
+    DECLARE_MESSAGE_MAP()
 };
 
 //{{AFX_INSERT_LOCATION}}

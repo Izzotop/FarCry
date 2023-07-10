@@ -12,45 +12,41 @@
 
 #include "HiColorToolBar.h"
 
-class CToolBarTab : public CTabCtrl
-{
-// Construction
+class CToolBarTab : public CTabCtrl {
+    // Construction
 public:
-	CToolBarTab();
+    CToolBarTab();
 
-// Attributes
+    // Attributes
 public:
-
-// Operations
+    // Operations
 public:
-
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CToolBarTab)
-	public:
-	virtual BOOL OnCmdMsg(UINT nID, int nCode, void* pExtra, AFX_CMDHANDLERINFO* pHandlerInfo);
-	//}}AFX_VIRTUAL
-
-// Implementation
+    // Overrides
+    // ClassWizard generated virtual function overrides
+    //{{AFX_VIRTUAL(CToolBarTab)
 public:
-	virtual ~CToolBarTab();
+    virtual BOOL OnCmdMsg(UINT nID, int nCode, void* pExtra, AFX_CMDHANDLERINFO* pHandlerInfo);
+    //}}AFX_VIRTUAL
 
-	void ResizeAllContainers();
+    // Implementation
+public:
+    virtual ~CToolBarTab();
 
-	// Generated message map functions
+    void ResizeAllContainers();
+
+    // Generated message map functions
 protected:
+    CScrollBar m_cScrollBar;
 
-	CScrollBar m_cScrollBar;
+    //{{AFX_MSG(CToolBarTab)
+    afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
+    afx_msg void OnSize(UINT nType, int cx, int cy);
+    afx_msg void OnSelchange(NMHDR* pNMHDR, LRESULT* pResult);
+    afx_msg void OnSelchanging(NMHDR* pNMHDR, LRESULT* pResult);
+    afx_msg void OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
+    //}}AFX_MSG
 
-	//{{AFX_MSG(CToolBarTab)
-	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
-	afx_msg void OnSize(UINT nType, int cx, int cy);
-	afx_msg void OnSelchange(NMHDR* pNMHDR, LRESULT* pResult);
-	afx_msg void OnSelchanging(NMHDR* pNMHDR, LRESULT* pResult);
-	afx_msg void OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
-	//}}AFX_MSG
-
-	DECLARE_MESSAGE_MAP()
+    DECLARE_MESSAGE_MAP()
 };
 
 /////////////////////////////////////////////////////////////////////////////

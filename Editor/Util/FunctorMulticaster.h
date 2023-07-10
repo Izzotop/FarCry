@@ -21,35 +21,30 @@
 #endif
 
 //////////////////////////////////////////////////////////////////////////
-template <class _event>
-class FunctorMulticaster
-{
+template <class _event> class FunctorMulticaster {
 public:
-	typedef Functor1<_event> callback;
+    typedef Functor1<_event> callback;
 
-	FunctorMulticaster() {}
-	virtual ~FunctorMulticaster() {}
+    FunctorMulticaster() {}
+    virtual ~FunctorMulticaster() {}
 
-	void AddListener( const callback &func )
-	{
-		m_listeners.push_back( func );
-	}
+    void AddListener(const callback& func) {
+        m_listeners.push_back(func);
+    }
 
-	void RemoveListener( const callback &func )
-	{
-		m_listeners.remove( func );
-	}
+    void RemoveListener(const callback& func) {
+        m_listeners.remove(func);
+    }
 
-	void Call( _event evt )
-	{
-		std::list<callback>::iterator iter;
-		for (iter = m_listeners.begin(); iter != m_listeners.end(); ++iter) {
-			(*iter)( evt );
-		}
-	}
+    void Call(_event evt) {
+        std::list<callback>::iterator iter;
+        for (iter = m_listeners.begin(); iter != m_listeners.end(); ++iter) {
+            (*iter)(evt);
+        }
+    }
 
 private:
-	std::list<callback> m_listeners;
+    std::list<callback> m_listeners;
 };
 
 #endif // __FunctorMulticaster_h__

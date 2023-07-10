@@ -1,13 +1,13 @@
 
 //////////////////////////////////////////////////////////////////////
 //
-//	Crytek CryENGINE Source code
-//	
-//	File:EntitySystem.h
+//  Crytek CryENGINE Source code
 //
-//	History: 
-//	-March 07,2001:Originally created by Marco Corbetta
-//	-: modified by everyone
+//  File:EntitySystem.h
+//
+//  History:
+//  -March 07,2001:Originally created by Marco Corbetta
+//  -: modified by everyone
 //
 //
 //////////////////////////////////////////////////////////////////////
@@ -16,7 +16,7 @@
 #define ENTITYSYSTEM_H
 
 #if _MSC_VER > 1000
-# pragma once
+#pragma once
 #endif
 
 #include <map>
@@ -27,7 +27,7 @@
 #include "EntityCamera.h"
 #include "IDGenerator.h"
 #include <ISystem.h>
-//#include "EntityIt.h"
+// #include "EntityIt.h"
 
 class CEntity;
 class CStaticObject;
@@ -37,7 +37,7 @@ class CEntityClonesMgr;
 #ifdef WIN64
 // workaround for Amd64 compiler
 #include <map>
-#define hash_map map 
+#define hash_map map
 #else
 #if defined(LINUX)
 #include <ext/hash_map>
@@ -48,11 +48,11 @@ class CEntityClonesMgr;
 #endif
 
 #if defined(LINUX)
-	typedef __gnu_cxx::hash_map<EntityId,CEntity*> EntityMap;
-	typedef __gnu_cxx::hash_map<EntityId,CEntity*>::iterator EntityMapItor;
+typedef __gnu_cxx::hash_map<EntityId, CEntity*> EntityMap;
+typedef __gnu_cxx::hash_map<EntityId, CEntity*>::iterator EntityMapItor;
 #else
-	typedef std::hash_map<EntityId,CEntity*> EntityMap;
-	typedef EntityMap::iterator EntityMapItor;
+typedef std::hash_map<EntityId, CEntity*> EntityMap;
+typedef EntityMap::iterator EntityMapItor;
 #endif
 
 typedef std::vector<CEntity*> EntityVector;
@@ -62,188 +62,196 @@ typedef std::set<int> EntityIdSet;
 typedef EntityIdSet::iterator EntityIdSetItor;
 
 typedef std::list<CEntityObject*> EntityObjectList;
-typedef std::list<IEntitySystemSink *> SinkList;
+typedef std::list<IEntitySystemSink*> SinkList;
 
-//typedef std::set<CEntityClonesMgr *> EntityClonesMgrSet;
-//typedef EntityClonesMgrSet::iterator EntityClonesMgrSetItor;
+// typedef std::set<CEntityClonesMgr *> EntityClonesMgrSet;
+// typedef EntityClonesMgrSet::iterator EntityClonesMgrSetItor;
 /*
 struct near_info_struct
 {
 
-	near_info_struct() {model=0;}
-	ICryCharInstance * model;
-	Vec3d pos, angles;
-	list2<CStaticObject> * _stat_objects;
-	list2<CStaticObject> * _stat_shadows;
-	list2<CStaticObject> * _stat_shadows_plus;
-	IEntity * o;
-	float ent_distance;
+        near_info_struct() {model=0;}
+        ICryCharInstance * model;
+        Vec3d pos, angles;
+        list2<CStaticObject> * _stat_objects;
+        list2<CStaticObject> * _stat_shadows;
+        list2<CStaticObject> * _stat_shadows_plus;
+        IEntity * o;
+        float ent_distance;
 };*/
 
 //////////////////////////////////////////////////////////////////////////
-struct SEntityTimerEvent
-{
-	int entityId;
-	int timerId;
+struct SEntityTimerEvent {
+    int entityId;
+    int timerId;
 };
 
 //////////////////////////////////////////////////////////////////////
-class CEntitySystem : public IEntitySystem
-{
-	void InsertEntity( EntityId id,CEntity *pEntity );
-//	void GenerateUniqId( CEntityDesc &ed ) { ed.id = m_LastId++; }
-	void DeleteEntity( IEntity *entity );
-//	void GarbageCollectorCycle();
+class CEntitySystem : public IEntitySystem {
+    void InsertEntity(EntityId id, CEntity* pEntity);
+    //  void GenerateUniqId( CEntityDesc &ed ) { ed.id = m_LastId++; }
+    void DeleteEntity(IEntity* entity);
+    //  void GarbageCollectorCycle();
 public:
-	CEntitySystem(ISystem *pSystem);
-	~CEntitySystem();
+    CEntitySystem(ISystem* pSystem);
+    ~CEntitySystem();
 
-	bool Init(ISystem *pSystem);
-	void Release();	// Close entity system, free resources.
-	void Reset();	// Reset whole entity system, and destroy all entities.
-	
-	void SetSink( IEntitySystemSink *pSink );
-	void RemoveSink( IEntitySystemSink *pSink );
+    bool Init(ISystem* pSystem);
+    void Release(); // Close entity system, free resources.
+    void Reset();   // Reset whole entity system, and destroy all entities.
 
-	void OnBind(EntityId id,EntityId child,unsigned char param);
-	void OnUnbind(EntityId id,EntityId child,unsigned char param);
+    void SetSink(IEntitySystemSink* pSink);
+    void RemoveSink(IEntitySystemSink* pSink);
 
-	//void SetMyPlayer(unsigned short id ){ m_wPlayerID = id;}
-	//unsigned short GetMyPlayer() const {return m_wPlayerID;}
-	
-	IScriptSystem *GetScriptSystem() { return m_pScriptSystem;	}
-	
-	IEntity* SpawnEntity( CEntityDesc &ed,bool bAutoInit=true );
-	bool InitEntity( IEntity* pEntity,CEntityDesc &ed );
+    void OnBind(EntityId id, EntityId child, unsigned char param);
+    void OnUnbind(EntityId id, EntityId child, unsigned char param);
 
-	// Safely remove entity; Call to this function will not immediatly remove entity;
-	// Entity will only be removed after update call unless bRemoveNow set.
-	void	RemoveEntity( EntityId entity,bool bRemoveNow );
+    // void SetMyPlayer(unsigned short id ){ m_wPlayerID = id;}
+    // unsigned short GetMyPlayer() const {return m_wPlayerID;}
 
-	IEntityCamera * CreateEntityCamera();
+    IScriptSystem* GetScriptSystem() {
+        return m_pScriptSystem;
+    }
 
-//	near_info_struct * GetWeaponInfo() { return &m_WeaponInfo; };
+    IEntity* SpawnEntity(CEntityDesc& ed, bool bAutoInit = true);
+    bool InitEntity(IEntity* pEntity, CEntityDesc& ed);
 
-  IEntity* GetEntity( EntityId id );	// Get entity from id.
-	IEntity* GetEntity(const char *sEntityName);
-	EntityId FindEntity( const char *name ) const;	// Find first entity with given name.
-	int GetNumEntities() const;
-	//void GetEntities( std::vector<IEntity*> &entities ) const;
+    // Safely remove entity; Call to this function will not immediatly remove entity;
+    // Entity will only be removed after update call unless bRemoveNow set.
+    void RemoveEntity(EntityId entity, bool bRemoveNow);
 
-	IEntityIt * GetEntityIterator();
-	IEntityIt * GetEntityInFrustrumIterator( bool bFromPrevFrame=false );
+    IEntityCamera* CreateEntityCamera();
 
-	void GetEntitiesInRadius( const Vec3d &origin,float radius,std::vector<IEntity*> &entities,int physFlags ) const;
+    //  near_info_struct * GetWeaponInfo() { return &m_WeaponInfo; };
 
-	void Update();
-	void UpdateTimers();
+    IEntity* GetEntity(EntityId id); // Get entity from id.
+    IEntity* GetEntity(const char* sEntityName);
+    EntityId FindEntity(const char* name) const; // Find first entity with given name.
+    int GetNumEntities() const;
+    // void GetEntities( std::vector<IEntity*> &entities ) const;
 
-	// Sets new entity timer event.
-	void	PauseTimers(bool bPause,bool bResume=false);
-	void	RemoveTimerEvent( EntityId id );
-	void	AddTimerEvent( int delayTimeMillis,SEntityTimerEvent &event );
+    IEntityIt* GetEntityIterator();
+    IEntityIt* GetEntityInFrustrumIterator(bool bFromPrevFrame = false);
 
-	void EnableClient(bool bEnable)
-	{
-		m_bClient=bEnable;
-	}
-	void EnableServer(bool bEnable)
-	{
-		m_bServer=bEnable;
-	}
+    void GetEntitiesInRadius(const Vec3d& origin, float radius, std::vector<IEntity*>& entities, int physFlags) const;
 
-	inline bool ClientEnabled(){return m_bClient;}
-	inline bool ServerEnabled(){return m_bServer;}
-	void GetMemoryStatistics(ICrySizer *pSizer);
-	
-	virtual bool IsIDUsed(EntityId nID);
+    void Update();
+    void UpdateTimers();
 
-	void ReleaseMark(unsigned int id);
-	void ResetEntities(void);
+    // Sets new entity timer event.
+    void PauseTimers(bool bPause, bool bResume = false);
+    void RemoveTimerEvent(EntityId id);
+    void AddTimerEvent(int delayTimeMillis, SEntityTimerEvent& event);
 
-	virtual void SetDynamicEntityIdMode( const bool bActivate );	
+    void EnableClient(bool bEnable) {
+        m_bClient = bEnable;
+    }
+    void EnableServer(bool bEnable) {
+        m_bServer = bEnable;
+    }
 
-	void SetDefaultEntityUpdateLevel( EEntityUpdateVisLevel eDefault) { m_eDefaultUpdateLevel = eDefault;}
-//	near_info_struct m_WeaponInfo;
+    inline bool ClientEnabled() {
+        return m_bClient;
+    }
+    inline bool ServerEnabled() {
+        return m_bServer;
+    }
+    void GetMemoryStatistics(ICrySizer* pSizer);
 
-	void SetPrecacheResourcesMode( bool bPrecaching );
+    virtual bool IsIDUsed(EntityId nID);
 
-//	CIDGenerator* GetIDGenerator() { return &m_EntityIDGenerator; }
-	bool	IsDynamicEntityId( EntityId id )  { return m_EntityIDGenerator.IsDynamicEntityId( id ); }
-	void	MarkId( EntityId id )		{ m_EntityIDGenerator.Mark( id ); }
-	void	ClearId( EntityId id )		{ m_EntityIDGenerator.Remove( id ); }
+    void ReleaseMark(unsigned int id);
+    void ResetEntities();
 
+    virtual void SetDynamicEntityIdMode(const bool bActivate);
+
+    void SetDefaultEntityUpdateLevel(EEntityUpdateVisLevel eDefault) {
+        m_eDefaultUpdateLevel = eDefault;
+    }
+    //  near_info_struct m_WeaponInfo;
+
+    void SetPrecacheResourcesMode(bool bPrecaching);
+
+    //  CIDGenerator* GetIDGenerator() { return &m_EntityIDGenerator; }
+    bool IsDynamicEntityId(EntityId id) {
+        return m_EntityIDGenerator.IsDynamicEntityId(id);
+    }
+    void MarkId(EntityId id) {
+        m_EntityIDGenerator.Mark(id);
+    }
+    void ClearId(EntityId id) {
+        m_EntityIDGenerator.Remove(id);
+    }
 
 private:
-	// Return true if updated.
-	void UpdateEntity(CEntity *ce,SEntityUpdateContext &ctx);
+    // Return true if updated.
+    void UpdateEntity(CEntity* ce, SEntityUpdateContext& ctx);
 
-	//////////////////////////////////////////////////////////////////////////
-	// Variables.
-	//////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////
+    // Variables.
+    //////////////////////////////////////////////////////////////////////////
 
-	bool										m_bDynamicEntityIdMode;		//!< default=false (editor), true=game mode
-	CIDGenerator						m_EntityIDGenerator;
-	ISystem *								m_pISystem;
-	EEntityUpdateVisLevel		m_eDefaultUpdateLevel;
+    bool m_bDynamicEntityIdMode; //!< default=false (editor), true=game mode
+    CIDGenerator m_EntityIDGenerator;
+    ISystem* m_pISystem;
+    EEntityUpdateVisLevel m_eDefaultUpdateLevel;
 
-	SinkList								m_lstSinks;
-	EntityMap								m_mapEntities;
-	EntityVector						m_vEntitiesInFrustrum;
-	//[kirill] - need this one to get visible entities on update of some entity - so we don't depend on update's order 
-	EntityVector						m_vEntitiesInFrustrumPrevFrame;
+    SinkList m_lstSinks;
+    EntityMap m_mapEntities;
+    EntityVector m_vEntitiesInFrustrum;
+    //[kirill] - need this one to get visible entities on update of some entity - so we don't depend on update's order
+    EntityVector m_vEntitiesInFrustrumPrevFrame;
 
-	//	unsigned short	m_wPlayerID;
-	IScriptSystem *					m_pScriptSystem;
+    //  unsigned short  m_wPlayerID;
+    IScriptSystem* m_pScriptSystem;
 
-	//////////////////////////////////////////////////////////////////////////
-	// Entity timers.
-	//////////////////////////////////////////////////////////////////////////
-	typedef std::multimap<int,SEntityTimerEvent> EntityTimersMap;
-	EntityTimersMap m_timersMap;
-	std::vector<SEntityTimerEvent> m_currentTriggers;
-	bool	m_bTimersPause;
-	int		m_nStartPause;
-	//////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////
+    // Entity timers.
+    //////////////////////////////////////////////////////////////////////////
+    typedef std::multimap<int, SEntityTimerEvent> EntityTimersMap;
+    EntityTimersMap m_timersMap;
+    std::vector<SEntityTimerEvent> m_currentTriggers;
+    bool m_bTimersPause;
+    int m_nStartPause;
+    //////////////////////////////////////////////////////////////////////////
 
 public:
-	struct ITimer *m_pTimer;
-	ICVar *m_pCharacterIK;
-	ICVar *m_pShowEntityBBox;
-	ICVar *m_pShowHelpers;
-	ICVar *m_pProfileEntities;
-	ICVar *m_pUpdateInvisibleCharacter;
-	ICVar *m_pUpdateBonePositions;
-	ICVar *m_pUpdateScript;
-	ICVar *m_pUpdateTimer;
-	ICVar *m_pDebugTimer;
-	ICVar *m_pUpdateCamera;
-	ICVar *m_pUpdatePhysics;
-	ICVar *m_pUpdateAI;
-	ICVar *m_pUpdateEntities;
-	ICVar *m_pUpdateCollision;
-	ICVar *m_pUpdateCollisionScript;
-	ICVar *m_pUpdateContainer;
-	ICVar *m_pUpdateCoocooEgg;
-	ICVar *m_pPiercingCamera;
-	ICVar *m_pVisCheckForUpdate;
-	ICVar *m_pEntityBBoxes;
-	ICVar *m_pEntityHelpers;
-	ICVar *m_pOnDemandPhysics;
-	ICVar *m_pMinImpulseVel;
-	ICVar *m_pImpulseScale;
-	ICVar *m_pMaxImpulseAdjMass;
-	ICVar *m_pSplashThreshold;
-	ICVar *m_pSplashTimeout;
-	ICVar *m_pHitCharacters;
-	ICVar *m_pHitDeadBodies;
-	ICVar *m_pEnableCloth;
-	ICVar *m_pCharZOffsetSpeed;
-	bool m_bClient;
-	bool m_bServer;
-	int m_nGetEntityCounter;
-//	EntityClonesMgrSet m_setEntityClonesMgrs;
-
+    struct ITimer* m_pTimer;
+    ICVar* m_pCharacterIK;
+    ICVar* m_pShowEntityBBox;
+    ICVar* m_pShowHelpers;
+    ICVar* m_pProfileEntities;
+    ICVar* m_pUpdateInvisibleCharacter;
+    ICVar* m_pUpdateBonePositions;
+    ICVar* m_pUpdateScript;
+    ICVar* m_pUpdateTimer;
+    ICVar* m_pDebugTimer;
+    ICVar* m_pUpdateCamera;
+    ICVar* m_pUpdatePhysics;
+    ICVar* m_pUpdateAI;
+    ICVar* m_pUpdateEntities;
+    ICVar* m_pUpdateCollision;
+    ICVar* m_pUpdateCollisionScript;
+    ICVar* m_pUpdateContainer;
+    ICVar* m_pUpdateCoocooEgg;
+    ICVar* m_pPiercingCamera;
+    ICVar* m_pVisCheckForUpdate;
+    ICVar* m_pEntityBBoxes;
+    ICVar* m_pEntityHelpers;
+    ICVar* m_pOnDemandPhysics;
+    ICVar* m_pMinImpulseVel;
+    ICVar* m_pImpulseScale;
+    ICVar* m_pMaxImpulseAdjMass;
+    ICVar* m_pSplashThreshold;
+    ICVar* m_pSplashTimeout;
+    ICVar* m_pHitCharacters;
+    ICVar* m_pHitDeadBodies;
+    ICVar* m_pEnableCloth;
+    ICVar* m_pCharZOffsetSpeed;
+    bool m_bClient;
+    bool m_bServer;
+    int m_nGetEntityCounter;
+    //  EntityClonesMgrSet m_setEntityClonesMgrs;
 };
 
 //////////////////////////////////////////////////////////////////////////
@@ -251,4 +259,4 @@ public:
 //////////////////////////////////////////////////////////////////////////
 extern bool gPrecacheResourcesMode;
 
-#endif //Entitysystem.h
+#endif // Entitysystem.h

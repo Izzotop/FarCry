@@ -14,42 +14,40 @@ struct ISystem;
 struct ICryCharManager;
 /*! This class implements all animation-related (currently only test) script functions.
 
-	REMARKS:
-	After initialization of the script-object it will be globally accessable through scripts using the namespace "Animation".
-	
-	Example:
-		Animation:DumpAnims();
+        REMARKS:
+        After initialization of the script-object it will be globally accessable through scripts using the namespace "Animation".
 
-	IMPLEMENTATIONS NOTES:
-	These function will never be called from C-Code. They're script-exclusive.
+        Example:
+                Animation:DumpAnims();
+
+        IMPLEMENTATIONS NOTES:
+        These function will never be called from C-Code. They're script-exclusive.
 */
 
-class CScriptObjectAnimation:
-	public _ScriptableEx<CScriptObjectAnimation>
-{
+class CScriptObjectAnimation : public _ScriptableEx<CScriptObjectAnimation> {
 public:
-	CScriptObjectAnimation(void);
-	virtual ~CScriptObjectAnimation(void);
-	void Init(IScriptSystem *pScriptSystem, ISystem *pSystem);
-	static void InitializeTemplate(IScriptSystem *pSS);
+    CScriptObjectAnimation();
+    virtual ~CScriptObjectAnimation();
+    void Init(IScriptSystem* pScriptSystem, ISystem* pSystem);
+    static void InitializeTemplate(IScriptSystem* pSS);
 
 public:
-	int DumpAnims(IFunctionHandler *pH);
-	int DumpModels (IFunctionHandler *pH);
-	int TestParticles (IFunctionHandler *pH);
-	int StopParticles (IFunctionHandler *pH);
-	int TrashAnims(IFunctionHandler* pH);
-	int UnloadAnim(IFunctionHandler* pH);
-	int ClearDecals(IFunctionHandler* pH);
-	int DumpDecals(IFunctionHandler* pH);
-	int Start2Anims(IFunctionHandler* pH);
-	int DumpStates (IFunctionHandler* pH);
-	int ExportModels(IFunctionHandler* pH);
+    int DumpAnims(IFunctionHandler* pH);
+    int DumpModels(IFunctionHandler* pH);
+    int TestParticles(IFunctionHandler* pH);
+    int StopParticles(IFunctionHandler* pH);
+    int TrashAnims(IFunctionHandler* pH);
+    int UnloadAnim(IFunctionHandler* pH);
+    int ClearDecals(IFunctionHandler* pH);
+    int DumpDecals(IFunctionHandler* pH);
+    int Start2Anims(IFunctionHandler* pH);
+    int DumpStates(IFunctionHandler* pH);
+    int ExportModels(IFunctionHandler* pH);
 
-	ICryCharManager* getAnimationManager();
+    ICryCharManager* getAnimationManager();
 
 private:
-	ISystem *m_pSystem;
+    ISystem* m_pSystem;
 };
 
 #endif

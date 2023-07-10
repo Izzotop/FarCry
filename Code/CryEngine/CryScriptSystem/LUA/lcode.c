@@ -20,9 +20,9 @@
 #include "lparser.h"
 
 
-#define hasjumps(e)	((e)->t != (e)->f)
+#define hasjumps(e)  ((e)->t != (e)->f)
 
-#define getcode(fs,e)	((fs)->f->code[(e)->u.i.info])
+#define getcode(fs,e)  ((fs)->f->code[(e)->u.i.info])
 
 
 

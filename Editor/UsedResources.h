@@ -7,7 +7,7 @@
 //  Version:     v1.00
 //  Created:     28/11/2003 by Timur.
 //  Compilers:   Visual Studio.NET 2003
-//  Description: 
+//  Description:
 // -------------------------------------------------------------------------
 //  History:
 //
@@ -20,21 +20,19 @@
 class CErrorRecord;
 
 //! Class passed to resource gathering functions
-class CUsedResources
-{
+class CUsedResources {
 public:
-	//////////////////////////////////////////////////////////////////////////
-	CUsedResources();
-	void Add( const CString &resourceFileName );
+    //////////////////////////////////////////////////////////////////////////
+    CUsedResources();
+    void Add(const CString& resourceFileName);
 
-	//! Validate gathered resources.
-	//! Reports warning if resource is not found.
-	void Validate( CErrorReport *report );
+    //! Validate gathered resources.
+    //! Reports warning if resource is not found.
+    void Validate(CErrorReport* report);
 
 public:
-	typedef std::set<CString,stl::less_stricmp<CString> > ResourceFiles;
-	ResourceFiles files;
+    typedef std::set<CString, stl::less_stricmp<CString>> ResourceFiles;
+    ResourceFiles files;
 };
-
 
 #endif // __UsedResources_h__

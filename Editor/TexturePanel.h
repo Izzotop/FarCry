@@ -10,42 +10,40 @@
 /////////////////////////////////////////////////////////////////////////////
 // TexturePanel dialog
 
-class CTexturePanel : public CDialog
-{
-// Construction
+class CTexturePanel : public CDialog {
+    // Construction
 public:
-	CTexturePanel(class CTextureTool *tool,CWnd* pParent = NULL);   // standard constructor
+    CTexturePanel(class CTextureTool* tool, CWnd* pParent = nullptr); // standard constructor
 
-// Dialog Data
-	//{{AFX_DATA(CTexturePanel)
-	enum { IDD = IDD_PANEL_TEXTURE_TOOL };
-	CCustomButton	m_apply;
-	//}}AFX_DATA
+    // Dialog Data
+    //{{AFX_DATA(CTexturePanel)
+    enum { IDD = IDD_PANEL_TEXTURE_TOOL };
+    CCustomButton m_apply;
+    //}}AFX_DATA
 
-
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CTexturePanel)
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	//}}AFX_VIRTUAL
-
-// Implementation
+    // Overrides
+    // ClassWizard generated virtual function overrides
+    //{{AFX_VIRTUAL(CTexturePanel)
 protected:
-	virtual void OnOK() {};
-	virtual void OnCancel() {};
+    virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
+    //}}AFX_VIRTUAL
 
-	// Generated message map functions
-	//{{AFX_MSG(CTexturePanel)
-	virtual BOOL OnInitDialog();
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
+    // Implementation
+protected:
+    virtual void OnOK(){};
+    virtual void OnCancel(){};
 
-	CTextureTool *m_tool;
+    // Generated message map functions
+    //{{AFX_MSG(CTexturePanel)
+    virtual BOOL OnInitDialog();
+    //}}AFX_MSG
+    DECLARE_MESSAGE_MAP()
 
-	CNumberCtrl m_shift[2];
-	CNumberCtrl m_scale[2];
-	CNumberCtrl m_rotate;
+    CTextureTool* m_tool;
+
+    CNumberCtrl m_shift[2];
+    CNumberCtrl m_scale[2];
+    CNumberCtrl m_rotate;
 };
 
 //{{AFX_INSERT_LOCATION}}

@@ -7,7 +7,7 @@
 //  Version:     v1.00
 //  Created:     22/1/2003 by Timur.
 //  Compilers:   Visual Studio.NET
-//  Description: 
+//  Description:
 // -------------------------------------------------------------------------
 //  History:
 //
@@ -24,60 +24,65 @@ class CEntityScript;
 
 //////////////////////////////////////////////////////////////////////////
 /** Prototype of entity, contain specified entity properties.
-*/
-class CRYEDIT_API CEntityPrototype : public CBaseLibraryItem
-{
+ */
+class CRYEDIT_API CEntityPrototype : public CBaseLibraryItem {
 public:
-	typedef Functor0 UpdateCallback;
+    typedef Functor0 UpdateCallback;
 
-	CEntityPrototype();
-	~CEntityPrototype();
+    CEntityPrototype();
+    ~CEntityPrototype();
 
-	//! Set prototype description.
-	void SetDescription( const CString &description ) { m_description = description; };
-	//! Get prototype description.
-	const CString& GetDescription() const { return m_description; };
+    //! Set prototype description.
+    void SetDescription(const CString& description) {
+        m_description = description;
+    };
+    //! Get prototype description.
+    const CString& GetDescription() const {
+        return m_description;
+    };
 
-	//! Set class name of entity.
-	void SetEntityClassName( const CString &className );
-	//! Get class name of entity.
-	const CString& GetEntityClassName() const { return m_className; }
+    //! Set class name of entity.
+    void SetEntityClassName(const CString& className);
+    //! Get class name of entity.
+    const CString& GetEntityClassName() const {
+        return m_className;
+    }
 
-	//! Reload entity class.
-	void Reload();
+    //! Reload entity class.
+    void Reload();
 
-	//! Return properties of entity.
-	CVarBlock* GetProperties();
-	//! Get entity script of this prototype.
-	CEntityScript* GetScript();
+    //! Return properties of entity.
+    CVarBlock* GetProperties();
+    //! Get entity script of this prototype.
+    CEntityScript* GetScript();
 
-	//////////////////////////////////////////////////////////////////////////
-	//! Serialize prototype to xml.
-	virtual void Serialize( SerializeContext &ctx );
+    //////////////////////////////////////////////////////////////////////////
+    //! Serialize prototype to xml.
+    virtual void Serialize(SerializeContext& ctx);
 
-	//////////////////////////////////////////////////////////////////////////
-	// Update callback.
-	//////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////
+    // Update callback.
+    //////////////////////////////////////////////////////////////////////////
 
-	void AddUpdateListener( UpdateCallback cb );
-	void RemoveUpdateListener( UpdateCallback cb );
+    void AddUpdateListener(UpdateCallback cb);
+    void RemoveUpdateListener(UpdateCallback cb);
 
-	//! Called after prototype is updated.
-	void Update();
+    //! Called after prototype is updated.
+    void Update();
 
 private:
-	//! Name of entity class name.
-	CString m_className;
-	//! Description of this prototype.
-	CString m_description;
-	//! Entity properties.
-	CVarBlockPtr m_properties;
+    //! Name of entity class name.
+    CString m_className;
+    //! Description of this prototype.
+    CString m_description;
+    //! Entity properties.
+    CVarBlockPtr m_properties;
 
-	// Pointer to entity script.
-	TSmartPtr<CEntityScript> m_script;
+    // Pointer to entity script.
+    TSmartPtr<CEntityScript> m_script;
 
-	//! List of update callbacks.
-	std::list<UpdateCallback> m_updateListeners;
+    //! List of update callbacks.
+    std::list<UpdateCallback> m_updateListeners;
 };
 
 TYPEDEF_AUTOPTR(CEntityPrototype);

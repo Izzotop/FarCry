@@ -20,64 +20,75 @@
 #include "BaseObject.h"
 
 /*!
- *	CTagComment is an object that represent text commentary added to named 3d position in world.
+ *    CTagComment is an object that represent text commentary added to named 3d position in world.
  *
  */
-class CTagComment : public CBaseObject
-{
+class CTagComment : public CBaseObject {
 public:
-	DECLARE_DYNCREATE(CTagComment)
+    DECLARE_DYNCREATE(CTagComment)
 
-	//////////////////////////////////////////////////////////////////////////
-	// Ovverides from CBaseObject.
-	//////////////////////////////////////////////////////////////////////////
-	void Display( DisplayContext &disp );
+    //////////////////////////////////////////////////////////////////////////
+    // Ovverides from CBaseObject.
+    //////////////////////////////////////////////////////////////////////////
+    void Display(DisplayContext& disp);
 
-	//////////////////////////////////////////////////////////////////////////
-	virtual void SetScale( const Vec3d &scale );
+    //////////////////////////////////////////////////////////////////////////
+    virtual void SetScale(const Vec3d& scale);
 
-	//! Called when object is being created.
-	int MouseCreateCallback( CViewport *view,EMouseEvent event,CPoint &point,int flags );
-	bool HitTest( HitContext &hc );
+    //! Called when object is being created.
+    int MouseCreateCallback(CViewport* view, EMouseEvent event, CPoint& point, int flags);
+    bool HitTest(HitContext& hc);
 
-	void GetBoundBox( BBox &box );
-	void GetLocalBounds( BBox &box );
+    void GetBoundBox(BBox& box);
+    void GetLocalBounds(BBox& box);
 
-	XmlNodeRef Export( const CString &levelPath,XmlNodeRef &xmlNode );
-	//////////////////////////////////////////////////////////////////////////
+    XmlNodeRef Export(const CString& levelPath, XmlNodeRef& xmlNode);
+    //////////////////////////////////////////////////////////////////////////
 
-	virtual void SetHelperScale( float scale ) { m_helperScale = scale; };
-	virtual float GetHelperScale() { return m_helperScale; };
+    virtual void SetHelperScale(float scale) {
+        m_helperScale = scale;
+    };
+    virtual float GetHelperScale() {
+        return m_helperScale;
+    };
 
 protected:
-	//! Dtor must be protected.
-	CTagComment();
-	float GetRadius();
+    //! Dtor must be protected.
+    CTagComment();
+    float GetRadius();
 
-	void DeleteThis() { delete this; };
+    void DeleteThis() {
+        delete this;
+    };
 
-	CVariable<CString> mv_comment;
-	CVariable<bool> mv_fixed;
-	
-	static float m_helperScale;
+    CVariable<CString> mv_comment;
+    CVariable<bool> mv_fixed;
+
+    static float m_helperScale;
 };
 
 /*!
- * Class Description of CTagComment.	
+ * Class Description of CTagComment.
  */
-class CTagCommentClassDesc : public CObjectClassDesc
-{
+class CTagCommentClassDesc : public CObjectClassDesc {
 public:
-	REFGUID ClassID()
-	{
-		// {FAAA3955-EFE0-4888-85E8-C5481DC16FA5}
-		static const GUID guid = { 0xfaaa3955, 0xefe0, 0x4888, { 0x85, 0xe8, 0xc5, 0x48, 0x1d, 0xc1, 0x6f, 0xa5 } };
-		return guid;
-	}
-	ObjectType GetObjectType() { return OBJTYPE_TAGPOINT; };
-	const char* ClassName() { return "StdTagComment"; };
-	const char* Category() { return ""; };
-	CRuntimeClass* GetRuntimeClass() { return RUNTIME_CLASS(CTagComment); };
+    REFGUID ClassID() {
+        // {FAAA3955-EFE0-4888-85E8-C5481DC16FA5}
+        static const GUID guid = {0xfaaa3955, 0xefe0, 0x4888, {0x85, 0xe8, 0xc5, 0x48, 0x1d, 0xc1, 0x6f, 0xa5}};
+        return guid;
+    }
+    ObjectType GetObjectType() {
+        return OBJTYPE_TAGPOINT;
+    };
+    const char* ClassName() {
+        return "StdTagComment";
+    };
+    const char* Category() {
+        return "";
+    };
+    CRuntimeClass* GetRuntimeClass() {
+        return RUNTIME_CLASS(CTagComment);
+    };
 };
 
 #endif // __tagcomment_h__

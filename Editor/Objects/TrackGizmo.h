@@ -7,7 +7,7 @@
 //  Version:     v1.00
 //  Created:     2/7/2002 by Timur.
 //  Compilers:   Visual Studio.NET
-//  Description: 
+//  Description:
 // -------------------------------------------------------------------------
 //  History:
 //
@@ -27,28 +27,27 @@ struct DisplayContext;
 struct IAnimNode;
 
 /** Gizmo of Objects animation track.
-*/
-class CTrackGizmo : public CGizmo
-{
+ */
+class CTrackGizmo : public CGizmo {
 public:
-	CTrackGizmo();
-	~CTrackGizmo();
+    CTrackGizmo();
+    ~CTrackGizmo();
 
-	//////////////////////////////////////////////////////////////////////////
-	// Ovverides from CGizmo
-	//////////////////////////////////////////////////////////////////////////
-	virtual void GetWorldBounds( BBox &bbox );
-	virtual void Display( DisplayContext &dc );
-	virtual bool HitTest( HitContext &hc );
+    //////////////////////////////////////////////////////////////////////////
+    // Ovverides from CGizmo
+    //////////////////////////////////////////////////////////////////////////
+    virtual void GetWorldBounds(BBox& bbox);
+    virtual void Display(DisplayContext& dc);
+    virtual bool HitTest(HitContext& hc);
 
-	//////////////////////////////////////////////////////////////////////////
-	void SetAnimNode( IAnimNode *node );
-	void DrawAxis( DisplayContext &dc,const Vec3 &pos );
+    //////////////////////////////////////////////////////////////////////////
+    void SetAnimNode(IAnimNode* node);
+    void DrawAxis(DisplayContext& dc, const Vec3& pos);
 
 private:
-	IAnimNode *m_animNode;
-	BBox m_bbox;
-	bool m_keysSelected;
+    IAnimNode* m_animNode;
+    BBox m_bbox;
+    bool m_keysSelected;
 };
 
 // Define CGizmoPtr smart pointer.

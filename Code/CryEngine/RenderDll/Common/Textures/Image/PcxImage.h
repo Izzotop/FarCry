@@ -5,21 +5,17 @@
 /**
  * An ImageFile subclass for reading PCX files.
  */
-class CImagePcxFile : public CImageFile
-{
-  ///
-  friend class CImageFile;	// For constructor
+class CImagePcxFile : public CImageFile {
+    ///
+    friend class CImageFile; // For constructor
 
 private:
-  /// Read the PCX file from the buffer.
-  CImagePcxFile (byte* buf, long size);
+    /// Read the PCX file from the buffer.
+    CImagePcxFile(byte* buf, long size);
 
 public:
-  ///
-  virtual ~CImagePcxFile ();
+    ///
+    virtual ~CImagePcxFile();
 };
 
-
 #endif
-
-

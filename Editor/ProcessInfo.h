@@ -7,7 +7,7 @@
 //  Version:     v1.00
 //  Created:     13/5/2002 by Timur.
 //  Compilers:   Visual Studio.NET
-//  Description: 
+//  Description:
 // -------------------------------------------------------------------------
 //  History:
 //
@@ -21,36 +21,34 @@
 #endif
 
 /** Stores information about memory usage of process, retrieved from CProcessInfo class.
-		All size values are in bytes.
+        All size values are in bytes.
 */
-struct ProcessMemInfo
-{
-	int WorkingSet;
-	int PeakWorkingSet;
-	int PagefileUsage;
-	int PeakPagefileUsage;
-	int PageFaultCount;
+struct ProcessMemInfo {
+    int WorkingSet;
+    int PeakWorkingSet;
+    int PagefileUsage;
+    int PeakPagefileUsage;
+    int PageFaultCount;
 };
 
 /** Use this class to query information about current process.
-		Like memory usage, pagefile usage etc..
+        Like memory usage, pagefile usage etc..
 */
-class CProcessInfo
-{
+class CProcessInfo {
 public:
-	CProcessInfo(void);
-	~CProcessInfo(void);
+    CProcessInfo();
+    ~CProcessInfo();
 
-	//! Loads PSAPI.DLL into the editor memoryspace
-	static void LoadPSApi();
+    //! Loads PSAPI.DLL into the editor memoryspace
+    static void LoadPSApi();
 
-	//! Unloads PSAPI.DLL from the editor memoryspace
-	static void UnloadPSApi();
+    //! Unloads PSAPI.DLL from the editor memoryspace
+    static void UnloadPSApi();
 
-	/** Retrieve information about memory usage of current process.
-			@param meminfo Output parameter where information is saved.
-	*/
-	static void QueryMemInfo( ProcessMemInfo &meminfo );
+    /** Retrieve information about memory usage of current process.
+            @param meminfo Output parameter where information is saved.
+    */
+    static void QueryMemInfo(ProcessMemInfo& meminfo);
 };
 
 #endif // __processinfo_h__

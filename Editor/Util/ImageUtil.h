@@ -21,52 +21,51 @@
 #endif
 
 /*!
- *	Utility Class to manipulate images.
+ *    Utility Class to manipulate images.
  */
-class CImageUtil
-{
+class CImageUtil {
 public:
-	//////////////////////////////////////////////////////////////////////////
-	// Image loading.
-	//////////////////////////////////////////////////////////////////////////
-	//! Load image, detect image type by file extension.
-	static bool LoadImage( const CString &fileName, CImage &image );
-	//! Save image, detect image type by file extension.
-	static bool SaveImage( const CString &fileName, CImage &image );
+    //////////////////////////////////////////////////////////////////////////
+    // Image loading.
+    //////////////////////////////////////////////////////////////////////////
+    //! Load image, detect image type by file extension.
+    static bool LoadImage(const CString& fileName, CImage& image);
+    //! Save image, detect image type by file extension.
+    static bool SaveImage(const CString& fileName, CImage& image);
 
-	// General image fucntions
-	static bool LoadJPEG( const CString &strFileName,CImage &image );
-	static bool SaveJPEG( const CString &strFileName,CImage &image );
+    // General image fucntions
+    static bool LoadJPEG(const CString& strFileName, CImage& image);
+    static bool SaveJPEG(const CString& strFileName, CImage& image);
 
-	static bool SaveBitmap( const CString &szFileName, CImage &image,bool inverseY=true );
-	static bool SaveBitmap(LPCSTR szFileName, DWORD dwWidth, DWORD dwHeight, DWORD dwBPP, HDC hdc);
-	static bool LoadBmp( const CString &file,CImage &image );
-	
-	//! Save image in PGM format.
-	static bool SavePGM( const CString &fileName, uint dwWidth, uint dwHeight, uint *pData);
-	//! Load image in PGM format.
-	static bool LoadPGM( const CString &fileName, uint *pWidthOut, uint *pHeightOut, uint **pImageDataOut);
+    static bool SaveBitmap(const CString& szFileName, CImage& image, bool inverseY = true);
+    static bool SaveBitmap(LPCSTR szFileName, DWORD dwWidth, DWORD dwHeight, DWORD dwBPP, HDC hdc);
+    static bool LoadBmp(const CString& file, CImage& image);
 
-	//////////////////////////////////////////////////////////////////////////
-	// Image scaling.
-	//////////////////////////////////////////////////////////////////////////
-	//! Scale source image to fit size of target image.
-	static void ScaleToFit( const CByteImage &srcImage,CByteImage &trgImage );
-	//! Scale source image to fit size of target image.
-	static void ScaleToFit( const CImage &srcImage,CImage &trgImage );
+    //! Save image in PGM format.
+    static bool SavePGM(const CString& fileName, uint dwWidth, uint dwHeight, uint* pData);
+    //! Load image in PGM format.
+    static bool LoadPGM(const CString& fileName, uint* pWidthOut, uint* pHeightOut, uint** pImageDataOut);
 
-	//! Smooth image.
-	static void SmoothImage( CByteImage &image,int numSteps );
+    //////////////////////////////////////////////////////////////////////////
+    // Image scaling.
+    //////////////////////////////////////////////////////////////////////////
+    //! Scale source image to fit size of target image.
+    static void ScaleToFit(const CByteImage& srcImage, CByteImage& trgImage);
+    //! Scale source image to fit size of target image.
+    static void ScaleToFit(const CImage& srcImage, CImage& trgImage);
 
-	//////////////////////////////////////////////////////////////////////////
-	// filtered lookup 
-	//////////////////////////////////////////////////////////////////////////
+    //! Smooth image.
+    static void SmoothImage(CByteImage& image, int numSteps);
 
-	//! behaviour outside of the texture is not defined
-	//! \param iniX in fix point 24.8
-	//! \param iniY in fix point 24.8
-	//! \return 0..255
-	static unsigned char GetBilinearFilteredAt( const int iniX256, const int iniY256, const CByteImage &image );
+    //////////////////////////////////////////////////////////////////////////
+    // filtered lookup
+    //////////////////////////////////////////////////////////////////////////
+
+    //! behaviour outside of the texture is not defined
+    //! \param iniX in fix point 24.8
+    //! \param iniY in fix point 24.8
+    //! \return 0..255
+    static unsigned char GetBilinearFilteredAt(const int iniX256, const int iniY256, const CByteImage& image);
 };
 
 #endif // __ImageUtil_h__

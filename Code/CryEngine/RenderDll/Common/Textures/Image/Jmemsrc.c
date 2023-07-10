@@ -31,11 +31,11 @@
 /* Expanded data source object for stdio input */
 
 typedef struct {
-  struct jpeg_source_mgr pub;	/* public fields */
+  struct jpeg_source_mgr pub;    /* public fields */
 
-  FILE * infile;		/* source stream */
-  JOCTET * buffer;		/* start of buffer */
-  boolean start_of_file;	/* have we gotten any data yet? */
+  FILE * infile;        /* source stream */
+  JOCTET * buffer;        /* start of buffer */
+  boolean start_of_file;    /* have we gotten any data yet? */
 } my_source_mgr;
 
 typedef my_source_mgr * my_src_ptr;
@@ -122,10 +122,10 @@ my_jpeg_memory_src (j_decompress_ptr cinfo, char * inbfr, int len)
    * This makes it unsafe to use this manager and a different source
    * manager serially with the same JPEG object.  Caveat programmer.
    */
-  if (cinfo->src == NULL) {	/* first time for this JPEG object? */
+  if (cinfo->src == nullptr) {    /* first time for this JPEG object? */
     cinfo->src = (struct jpeg_source_mgr *)
       (*cinfo->mem->alloc_small) ((j_common_ptr) cinfo, JPOOL_PERMANENT,
-				  SIZEOF(my_source_mgr));
+                  SIZEOF(my_source_mgr));
     src = (my_src_ptr) cinfo->src;
     src->buffer = (JOCTET *) inbfr;
   }
@@ -137,7 +137,7 @@ my_jpeg_memory_src (j_decompress_ptr cinfo, char * inbfr, int len)
   src->pub.resync_to_restart = my_jpeg_resync_to_restart; /* use default method */
   src->pub.term_source = term_source;
   src->infile = 0L;
-  src->pub.bytes_in_buffer = len;		/*!!! sets to entire file len */
-  src->pub.next_input_byte = (JOCTET *)inbfr;	/*!!! at start of buffer */
+  src->pub.bytes_in_buffer = len;        /*!!! sets to entire file len */
+  src->pub.next_input_byte = (JOCTET *)inbfr;    /*!!! at start of buffer */
 }
 

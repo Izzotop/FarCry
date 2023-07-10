@@ -24,43 +24,47 @@
 #include "Objects\ObjectManager.h"
 
 //////////////////////////////////////////////////////////////////////////
-class CPickObjectTool : public CEditTool,public IObjectSelectCallback
-{
+class CPickObjectTool : public CEditTool, public IObjectSelectCallback {
 public:
-	DECLARE_DYNAMIC(CPickObjectTool)
+    DECLARE_DYNAMIC(CPickObjectTool)
 
-	CPickObjectTool( IPickObjectCallback *callback,CRuntimeClass *targetClass=NULL );
-	~CPickObjectTool();
+    CPickObjectTool(IPickObjectCallback* callback, CRuntimeClass* targetClass = nullptr);
+    ~CPickObjectTool();
 
-	//! If set to true, pick tool will not stop picking after first pick.
-	void SetMultiplePicks( bool bEnable ) { m_bMultiPick = bEnable; };
+    //! If set to true, pick tool will not stop picking after first pick.
+    void SetMultiplePicks(bool bEnable) {
+        m_bMultiPick = bEnable;
+    };
 
-	// Ovverides from CEditTool
-	bool MouseCallback( CViewport *view,EMouseEvent event,CPoint &point,int flags );
-	
-	// Delete itself.
-	void Release() { delete this; };
+    // Ovverides from CEditTool
+    bool MouseCallback(CViewport* view, EMouseEvent event, CPoint& point, int flags);
 
-	virtual void BeginEditParams( IEditor *ie,int flags );
-	virtual void EndEditParams() {};
+    // Delete itself.
+    void Release() {
+        delete this;
+    };
 
-	virtual void Display( DisplayContext &dc ) {};
-	virtual bool OnKeyDown( CViewport *view,uint nChar,uint nRepCnt,uint nFlags );
-	virtual bool OnKeyUp( CViewport *view,uint nChar,uint nRepCnt,uint nFlags ) { return false; };
+    virtual void BeginEditParams(IEditor* ie, int flags);
+    virtual void EndEditParams(){};
 
-	virtual bool OnSelectObject( CBaseObject *obj );
+    virtual void Display(DisplayContext& dc){};
+    virtual bool OnKeyDown(CViewport* view, uint nChar, uint nRepCnt, uint nFlags);
+    virtual bool OnKeyUp(CViewport* view, uint nChar, uint nRepCnt, uint nFlags) {
+        return false;
+    };
+
+    virtual bool OnSelectObject(CBaseObject* obj);
 
 private:
-	bool IsRelevant( CBaseObject *obj );
+    bool IsRelevant(CBaseObject* obj);
 
-	//! Object that requested pick.
-	IPickObjectCallback* m_callback;
+    //! Object that requested pick.
+    IPickObjectCallback* m_callback;
 
-	//! If target class specified, will pick only objects that belongs to that runtime class.
-	CRuntimeClass* m_targetClass;
+    //! If target class specified, will pick only objects that belongs to that runtime class.
+    CRuntimeClass* m_targetClass;
 
-	bool m_bMultiPick;
+    bool m_bMultiPick;
 };
-
 
 #endif // __PickObjectTool_h__

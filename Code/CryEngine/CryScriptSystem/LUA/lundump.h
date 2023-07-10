@@ -11,20 +11,20 @@
 #include "lzio.h"
 
 /* load one chunk */
-Proto* luaU_undump (lua_State* L, ZIO* Z);
+Proto* luaU_undump(lua_State* L, ZIO* Z);
 
 /* find byte order */
-int luaU_endianness (void);
+int luaU_endianness();
 
 /* definitions for headers of binary files */
-#define	VERSION		0x41		/* last format change was in 4.1 */
-#define	VERSION0	0x41		/* last major  change was in 4.1 */
-#define	LUA_SIGNATURE	"\033Lua"	/* binary files start with <esc>Lua */
+#define VERSION 0x41            /* last format change was in 4.1 */
+#define VERSION0 0x41           /* last major  change was in 4.1 */
+#define LUA_SIGNATURE "\033Lua" /* binary files start with <esc>Lua */
 
 /* a multiple of PI for testing native format */
 /* multiplying by 1E8 gives non-trivial integer values */
-//#define	TEST_NUMBER	3.14159265358979323846E8
+// #define  TEST_NUMBER  3.14159265358979323846E8
 
-#define	TEST_NUMBER	3.14159265358979323846f
+#define TEST_NUMBER 3.14159265358979323846f
 
 #endif

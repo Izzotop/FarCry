@@ -18,25 +18,20 @@ _ACCESS_POOL;
 
 #include "CryFont.h"
 
-ISystem *gISystem = 0;
-//! Get the system interface 
-ISystem	*GetISystem()
-{
-	return gISystem;
+ISystem* gISystem = nullptr;
+// Get the system interface
+ISystem* GetISystem() {
+    return gISystem;
 }
 
-///////////////////////////////////////////////
-extern "C" ICryFont* CreateCryFontInterface(ISystem *pSystem)
-{
-	gISystem = pSystem;
-	return new CCryFont(pSystem);
+extern "C" ICryFont* CreateCryFontInterface(ISystem* pSystem) {
+    gISystem = pSystem;
+    return new CCryFont(pSystem);
 }
 
-///////////////////////////////////////////////
 #ifndef _XBOX
 #ifndef PS2
-BOOL APIENTRY DllMain(HANDLE hModule, DWORD  ul_reason_for_call, LPVOID lpReserved)
-{
+BOOL APIENTRY DllMain(HANDLE hModule, DWORD ul_reason_for_call, LPVOID lpReserved) {
     return TRUE;
 }
 #endif

@@ -7,7 +7,7 @@
 //  Version:     v1.00
 //  Created:     26/9/2002 by Timur.
 //  Compilers:   Visual Studio.NET
-//  Description: 
+//  Description:
 // -------------------------------------------------------------------------
 //  History:
 //
@@ -24,30 +24,33 @@
 
 // CLayoutConfigDialog dialog
 
-class CLayoutConfigDialog : public CDialog
-{
-	DECLARE_DYNAMIC(CLayoutConfigDialog)
+class CLayoutConfigDialog : public CDialog {
+    DECLARE_DYNAMIC(CLayoutConfigDialog)
 
 public:
-	CLayoutConfigDialog(CWnd* pParent = NULL);   // standard constructor
-	virtual ~CLayoutConfigDialog();
+    CLayoutConfigDialog(CWnd* pParent = nullptr); // standard constructor
+    virtual ~CLayoutConfigDialog();
 
-	void SetLayout( EViewLayout layout ) { m_layout = layout; };
-	EViewLayout GetLayout() const { return m_layout; };
+    void SetLayout(EViewLayout layout) {
+        m_layout = layout;
+    };
+    EViewLayout GetLayout() const {
+        return m_layout;
+    };
 
-// Dialog Data
-	enum { IDD = IDD_LAYOUT };
+    // Dialog Data
+    enum { IDD = IDD_LAYOUT };
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	virtual BOOL OnInitDialog();
-	virtual void OnOK();
+    virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
+    virtual BOOL OnInitDialog();
+    virtual void OnOK();
 
-	DECLARE_MESSAGE_MAP()
+    DECLARE_MESSAGE_MAP()
 
-	CListCtrl m_layouts;
-	CImageList m_imageList;
-	EViewLayout m_layout;
+    CListCtrl m_layouts;
+    CImageList m_imageList;
+    EViewLayout m_layout;
 };
 
 #endif // __layoutconfigdialog_h__

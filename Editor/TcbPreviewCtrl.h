@@ -7,7 +7,7 @@
 //  Version:     v1.00
 //  Created:     30/7/2002 by Timur.
 //  Compilers:   Visual Studio.NET
-//  Description: 
+//  Description:
 // -------------------------------------------------------------------------
 //  History:
 //
@@ -24,36 +24,32 @@ struct IAnimTrack;
 
 // CTcbPreviewCtrl
 
-class CTcbPreviewCtrl : public CWnd
-{
-	DECLARE_DYNAMIC(CTcbPreviewCtrl)
+class CTcbPreviewCtrl : public CWnd {
+    DECLARE_DYNAMIC(CTcbPreviewCtrl)
 
 public:
-	CTcbPreviewCtrl();
-	virtual ~CTcbPreviewCtrl();
+    CTcbPreviewCtrl();
+    virtual ~CTcbPreviewCtrl();
 
-	void SetTcb( float tens,float cont,float bias,float easeto,float easefrom );
+    void SetTcb(float tens, float cont, float bias, float easeto, float easefrom);
 
 protected:
-	DECLARE_MESSAGE_MAP()
+    DECLARE_MESSAGE_MAP()
 
+    afx_msg void OnPaint();
 
-	afx_msg void OnPaint();
-	
-	void DrawSpline( CDC &dc );
+    void DrawSpline(CDC& dc);
 
+    CRect m_rcClient;
 
-	CRect m_rcClient;
-	
-	// Tcb params,
-	float m_tens;
-	float m_cont;
-	float m_bias;
-	float m_easeto;
-	float m_easefrom;
+    // Tcb params,
+    float m_tens;
+    float m_cont;
+    float m_bias;
+    float m_easeto;
+    float m_easefrom;
 
-	TSmartPtr<IAnimTrack> m_spline;
+    TSmartPtr<IAnimTrack> m_spline;
 };
-
 
 #endif // __tcbpreviewctrl_h__

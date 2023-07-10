@@ -24,42 +24,40 @@
 
 class CPakFile;
 
-class CNamedData : public CObject
-{
-DECLARE_SERIAL( CNamedData )
+class CNamedData : public CObject {
+    DECLARE_SERIAL(CNamedData)
 public:
-	CNamedData();
-	virtual ~CNamedData();
-	void AddDataBlock( const CString &blockName,void*	pData,int nSize,bool bCompress=true );
-	void AddDataBlock( const CString &blockName,CMemoryBlock &block );
-	//! Returns uncompressed block data.
-	bool GetDataBlock( const CString &blockName,void*	&pData, int &nSize );
-	//! Returns raw data block in original form (Compressed or Uncompressed).
-	CMemoryBlock* GetDataBlock( const CString &blockName,bool &bCompressed );
+    CNamedData();
+    virtual ~CNamedData();
+    void AddDataBlock(const CString& blockName, void* pData, int nSize, bool bCompress = true);
+    void AddDataBlock(const CString& blockName, CMemoryBlock& block);
+    //! Returns uncompressed block data.
+    bool GetDataBlock(const CString& blockName, void*& pData, int& nSize);
+    //! Returns raw data block in original form (Compressed or Uncompressed).
+    CMemoryBlock* GetDataBlock(const CString& blockName, bool& bCompressed);
 
-	void Clear();
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CCurveObject)
-	public:
-	virtual void Serialize(CArchive& ar);
-	//}}AFX_VIRTUAL
+    void Clear();
+    // ClassWizard generated virtual function overrides
+    //{{AFX_VIRTUAL(CCurveObject)
+public:
+    virtual void Serialize(CArchive& ar);
+    //}}AFX_VIRTUAL
 
-	//! Save named data to pak file.
-	void Save( CPakFile &pakFile );
-	//! Load named data from pak file.
-	void Load( const CString &levelPath,CPakFile &pakFile );
+    //! Save named data to pak file.
+    void Save(CPakFile& pakFile);
+    //! Load named data from pak file.
+    void Load(const CString& levelPath, CPakFile& pakFile);
 
 private:
-	struct DataBlock
-	{
-		CString blockName;
-		CMemoryBlock data;
-		CMemoryBlock compressedData;
-		//! This block is compressed.
-		bool bCompressed;
-	};
-	typedef std::map<CString,DataBlock*,stl::less_stricmp<CString> > Blocks;
-	Blocks m_blocks;
+    struct DataBlock {
+        CString blockName;
+        CMemoryBlock data;
+        CMemoryBlock compressedData;
+        //! This block is compressed.
+        bool bCompressed;
+    };
+    typedef std::map<CString, DataBlock*, stl::less_stricmp<CString>> Blocks;
+    Blocks m_blocks;
 };
 
 #endif // __NamedData_h__

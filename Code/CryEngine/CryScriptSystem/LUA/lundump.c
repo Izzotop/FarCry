@@ -17,8 +17,8 @@
 #include "lstring.h"
 #include "lundump.h"
 
-#define	LoadByte		ezgetc
-#define	LoadShort		(short) LoadInt
+#define  LoadByte    ezgetc
+#define  LoadShort    (short) LoadInt
 
 static const l_char* ZNAME (ZIO* Z)
 {
@@ -103,7 +103,7 @@ static TString* LoadString (lua_State* L, ZIO* Z, int swap)
  {
   l_char* s=luaO_openspace(L,size,l_char);
   LoadBlock(L,s,size,Z,0);
-  return luaS_newlstr(L,s,size-1);	/* remove trailing '\0' */
+  return luaS_newlstr(L,s,size-1);  /* remove trailing '\0' */
  }
 }
 
@@ -153,14 +153,14 @@ static void LoadConstants (lua_State* L, Proto* f, ZIO* Z, int swap)
   switch (ttype(o))
   {
    case LUA_TNUMBER:
-	nvalue(o)=LoadNumber(L,Z,swap);
-	break;
+  nvalue(o)=LoadNumber(L,Z,swap);
+  break;
    case LUA_TSTRING:
-	tsvalue(o)=LoadString(L,Z,swap);
-	break;
+  tsvalue(o)=LoadString(L,Z,swap);
+  break;
    default:
-	luaO_verror(L,l_s("bad constant type (%d) in `%.99s'"),ttype(o),ZNAME(Z));
-	break;
+  luaO_verror(L,l_s("bad constant type (%d) in `%.99s'"),ttype(o),ZNAME(Z));
+  break;
   }
  }
  n=LoadInt(L,Z,swap);
@@ -201,11 +201,11 @@ static void TestSize (lua_State* L, int s, const l_char* what, ZIO* Z)
  int r=LoadByte(L,Z);
  if (r!=s)
   luaO_verror(L,l_s("virtual machine mismatch in `%.99s':\n")
-	l_s("  size of %.20s is %d but read %d"),ZNAME(Z),what,s,r);
+  l_s("  size of %.20s is %d but read %d"),ZNAME(Z),what,s,r);
 }
 
-#define TESTSIZE(s,w)	TestSize(L,s,w,Z)
-#define V(v)		v/16,v%16
+#define TESTSIZE(s,w)  TestSize(L,s,w,Z)
+#define V(v)    v/16,v%16
 
 static int LoadHeader (lua_State* L, ZIO* Z)
 {
@@ -215,13 +215,13 @@ static int LoadHeader (lua_State* L, ZIO* Z)
  version=LoadByte(L,Z);
  if (version>VERSION)
   luaO_verror(L,l_s("`%.99s' too new:\n")
-	l_s("  read version %d.%d; expected at most %d.%d"),
-	ZNAME(Z),V(version),V(VERSION));
- if (version<VERSION0)			/* check last major change */
+  l_s("  read version %d.%d; expected at most %d.%d"),
+  ZNAME(Z),V(version),V(VERSION));
+ if (version<VERSION0)      /* check last major change */
   luaO_verror(L,l_s("`%.99s' too old:\n")
-	l_s("  read version %d.%d; expected at least %d.%d"),
-	ZNAME(Z),V(version),V(VERSION));
- swap=(luaU_endianness()!=LoadByte(L,Z));	/* need to swap bytes? */
+  l_s("  read version %d.%d; expected at least %d.%d"),
+  ZNAME(Z),V(version),V(VERSION));
+ swap=(luaU_endianness()!=LoadByte(L,Z));  /* need to swap bytes? */
  TESTSIZE(sizeof(int),l_s("int"));
  TESTSIZE(sizeof(size_t), l_s("size_t"));
  TESTSIZE(sizeof(Instruction), l_s("size_t"));
@@ -231,7 +231,7 @@ static int LoadHeader (lua_State* L, ZIO* Z)
  TESTSIZE(SIZE_C, l_s("C"));
  TESTSIZE(sizeof(lua_Number), l_s("number"));
  x=LoadNumber(L,Z,swap);
- if ((int)x!=(int)tx)		/* disregard errors in last bits of fraction */
+ if ((int)x!=(int)tx)    /* disregard errors in last bits of fraction */
   luaO_verror(L,l_s("unknown number format in `%.99s':\n")
       l_s("  read ") l_s(LUA_NUMBER_FMT) l_s("; expected ") l_s(LUA_NUMBER_FMT),
       ZNAME(Z),x,tx);
@@ -257,7 +257,7 @@ Proto* luaU_undump (lua_State* L, ZIO* Z)
 /*
 ** find byte order
 */
-int luaU_endianness (void)
+int luaU_endianness ()
 {
  int x=1;
  return *(l_char*)&x;

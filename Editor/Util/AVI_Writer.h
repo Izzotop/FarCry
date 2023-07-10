@@ -7,7 +7,7 @@
 //  Version:     v1.00
 //  Created:     13/5/2004 by Timur.
 //  Compilers:   Visual Studio.NET 2003
-//  Description: 
+//  Description:
 // -------------------------------------------------------------------------
 //  History:
 //
@@ -20,18 +20,17 @@
 //////////////////////////////////////////////////////////////////////////
 // Can save sequence of images to the AVI file.
 //////////////////////////////////////////////////////////////////////////
-class CAVI_Writer
-{
+class CAVI_Writer {
 public:
-	CAVI_Writer();
-	~CAVI_Writer();
+    CAVI_Writer();
+    ~CAVI_Writer();
 
-	bool OpenFile( const char *filename,int width,int height );
-	bool CloseFile();
-	bool AddFrame( CImage &image );
+    bool OpenFile(const char* filename, int width, int height);
+    bool CloseFile();
+    bool AddFrame(CImage& image);
+
 private:
-	class CAVIGenerator *m_pAVI;
+    class CAVIGenerator* m_pAVI;
 };
 
 #endif // __AVI_Writer_h__
-

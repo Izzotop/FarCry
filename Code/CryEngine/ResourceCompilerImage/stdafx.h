@@ -5,40 +5,31 @@
 
 #pragma once
 
-#define WIN32_LEAN_AND_MEAN		// Exclude rarely-used stuff from Windows headers
+#define WIN32_LEAN_AND_MEAN // Exclude rarely-used stuff from Windows headers
 
-
-#define _WIN32_WINNT 0x0500		// min Win2000 for GetConsoleWindow()     Baustelle
+#define _WIN32_WINNT 0x0500 // min Win2000 for GetConsoleWindow()     Baustelle
 
 // Windows Header Files:
-#include <windows.h>
+#include <Windows.h>
 
-
-
-#include <stdio.h>
+#include <cstdio>
 #include <tchar.h>
-#define _ATL_CSTRING_EXPLICIT_CONSTRUCTORS	// some CString constructors will be explicit
+#define _ATL_CSTRING_EXPLICIT_CONSTRUCTORS // some CString constructors will be explicit
 
 #include <atlbase.h>
 #include <atlstr.h>
 
 #include <vector>
 
-
 extern HMODULE g_hInst;
 
-
-
 #ifndef ReleasePpo
-#define ReleasePpo(ppo) \
-	if (*(ppo) != NULL) \
-		{ \
-		(*(ppo))->Release(); \
-		*(ppo) = NULL; \
-		} \
-		else (VOID)0
+#define ReleasePpo(ppo)                                                                                                                                                            \
+    if (*(ppo) != nullptr) {                                                                                                                                                          \
+        (*(ppo))->Release();                                                                                                                                                       \
+        *(ppo) = nullptr;                                                                                                                                                             \
+    } else                                                                                                                                                                         \
+        (VOID)0
 #endif
-
-
 
 // TODO: reference additional headers your program requires here

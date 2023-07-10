@@ -5,6 +5,6 @@
 
 class CLUADbg;
 
-bool InvokeDebugger(CLUADbg *pDebugger, const char *pszSourceFile = NULL, int iLine = 0, const char *pszReason = NULL);
+bool InvokeDebugger(CLUADbg* pDebugger, const char* pszSourceFile = nullptr, int iLine = 0, const char* pszReason = nullptr);
 
 #endif

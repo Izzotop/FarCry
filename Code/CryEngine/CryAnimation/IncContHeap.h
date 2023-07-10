@@ -10,43 +10,47 @@
 #define _CRY_ANIMATION_INCREMENTAL_CONTINUOUS_HEAP_HDR_
 
 #if defined(LINUX)
-# include "platform.h"
+#include "platform.h"
 #endif
 
 // base class for temporary array of bytes; can be used for any purpose, e.g. as a temporary
 // storage between frames
-class CTempStorageBase
-{
+class CTempStorageBase {
 public:
-	// the increment in bytes, in which the block size will rise
-	enum {g_nBlockIncrement = 0x1000};
+    // the increment in bytes, in which the block size will rise
+    enum { g_nBlockIncrement = 0x1000 };
 
-	// constructs the whole thing
-	void init()
-	{
-		m_pTemp = NULL;
-		m_nSize = 0;
-	}
+    // constructs the whole thing
+    void init() {
+        m_pTemp = nullptr;
+        m_nSize = 0;
+    }
 
-	void* data() {return m_pTemp;}
-	const void* data() const {return m_pTemp;}
-	unsigned size() const {return m_nSize;}
+    void* data() {
+        return m_pTemp;
+    }
+    const void* data() const {
+        return m_pTemp;
+    }
+    unsigned size() const {
+        return m_nSize;
+    }
 
 protected:
-	LPVOID m_pTemp;
-	unsigned m_nSize;
+    LPVOID m_pTemp;
+    unsigned m_nSize;
 };
 
 // temporary array of bytes; can be used for any purpose, e.g. as a temporary
 // storage between frames. Uses Standard allocator
-class CTempStorage: public CTempStorageBase
-{
+class CTempStorage : public CTempStorageBase {
 public:
-	// frees the tempoorary storage
-	void done();
+    // frees the tempoorary storage
+    void done();
 
-	// reserves at least the given number of bytes
-	void reserve (unsigned sizeMin);
+    // reserves at least the given number of bytes
+    void reserve(unsigned sizeMin);
+
 protected:
 };
 

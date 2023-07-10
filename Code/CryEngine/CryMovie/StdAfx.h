@@ -11,7 +11,7 @@
 #endif // _MSC_VER > 1000
 
 //////////////////////////////////////////////////////////////////////////
-// THIS MUST BE AT THE VERY BEGINING OF STDAFX.H FILE.
+// THIS MUST BE AT THE VERY BEGINNING OF STDAFX.H FILE.
 // Disable STL threading support, (makes STL faster)
 //////////////////////////////////////////////////////////////////////////
 #define _NOTHREADS
@@ -26,7 +26,7 @@
 #include "platform.h"
 
 #if !defined(LINUX)
-#include <assert.h>
+#include <cassert>
 #endif
 
 #include "Cry_Math.h"

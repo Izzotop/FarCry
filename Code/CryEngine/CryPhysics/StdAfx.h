@@ -18,38 +18,36 @@
 #define _STLP_NO_THREADS
 //////////////////////////////////////////////////////////////////////////
 
-#pragma warning (disable : 4554 4305 4244)
+#pragma warning(disable : 4554 4305 4244)
 #include "platform.h"
 
 #include "Cry_Math.h"
 #include "Cry_XOptimise.h"
 
-
 #ifdef GAMECUBE
 
-//#include <math.h>
-#include <stdlib.h>
-#include <stdio.h>
+// #include <math.h>
+#include <cstdlib>
+#include <cstdio>
 #include <ctype.h>
-//#include <string.h>
+// #include <string.h>
 
-//#include <time.h>
+// #include <time.h>
 #include <dolphin.h>
 #include <stdarg.h>
 #include "GCDefines.h"
 #endif
 
-
 #ifndef _XBOX
 #ifdef WIN32
-#define WIN32_LEAN_AND_MEAN		// Exclude rarely-used stuff from Windows headers
-#include <windows.h>
+#define WIN32_LEAN_AND_MEAN // Exclude rarely-used stuff from Windows headers
+#include <Windows.h>
 #endif
 #else
 #include <xtl.h>
 #endif
- 
-#include <stdlib.h>
+
+#include <cstdlib>
 #include <float.h>
 
 #ifndef NO_CRY_STREAM
@@ -57,35 +55,93 @@
 #else
 class CStream {
 public:
-	bool WriteBits(BYTE *pBits, DWORD nSize) { return true; }
-	bool ReadBits(BYTE *pBits, DWORD nSize) { return true; }
-	bool Write(bool b) { return true; }
-	bool Write(char c) { return true; }
-	bool Write(unsigned char uc) { return true; }
-	bool Write(float f) { return true; }
-	bool Write(unsigned short us) { return true; }
-	bool Write(short s) { return true; }
-	bool Write(int i) { return true; }
-	bool Write(unsigned int ui) { return true; }
-	bool Write(const vectorf &v) { return true; }
-	bool Read(bool &b) { return true; }
-	bool Read(char &c) { return true; }
-	bool Read(unsigned char &uc) { return true; }
-	bool Read(unsigned short &us) { return true; }
-	bool Read(short &s) { return true; }
-	bool Read(int &i) { return true; }
-	bool Read(unsigned int &ui) { return true; }
-	bool Read(float &f) { return true; }
-	bool Read(vectorf &v) { return true; }
-	bool WriteNumberInBits(int n,size_t nSize) { return true; }
-	bool WriteNumberInBits(unsigned int n,size_t nSize) { return true; }
-	bool ReadNumberInBits(int &n,size_t nSize) { return true; }
-	bool ReadNumberInBits(unsigned int &n,size_t nSize) { return true; }
-	bool Seek(size_t dwPos = 0) { return true; }
-	size_t GetReadPos() { return 0; }
-	unsigned char *GetPtr() const { return 0; };
-	size_t GetSize() const { return 0; }
-	bool SetSize(size_t indwBitSize) { return true; }
+    bool WriteBits(BYTE* pBits, DWORD nSize) {
+        return true;
+    }
+    bool ReadBits(BYTE* pBits, DWORD nSize) {
+        return true;
+    }
+    bool Write(bool b) {
+        return true;
+    }
+    bool Write(char c) {
+        return true;
+    }
+    bool Write(unsigned char uc) {
+        return true;
+    }
+    bool Write(float f) {
+        return true;
+    }
+    bool Write(unsigned short us) {
+        return true;
+    }
+    bool Write(short s) {
+        return true;
+    }
+    bool Write(int i) {
+        return true;
+    }
+    bool Write(unsigned int ui) {
+        return true;
+    }
+    bool Write(const vectorf& v) {
+        return true;
+    }
+    bool Read(bool& b) {
+        return true;
+    }
+    bool Read(char& c) {
+        return true;
+    }
+    bool Read(unsigned char& uc) {
+        return true;
+    }
+    bool Read(unsigned short& us) {
+        return true;
+    }
+    bool Read(short& s) {
+        return true;
+    }
+    bool Read(int& i) {
+        return true;
+    }
+    bool Read(unsigned int& ui) {
+        return true;
+    }
+    bool Read(float& f) {
+        return true;
+    }
+    bool Read(vectorf& v) {
+        return true;
+    }
+    bool WriteNumberInBits(int n, size_t nSize) {
+        return true;
+    }
+    bool WriteNumberInBits(unsigned int n, size_t nSize) {
+        return true;
+    }
+    bool ReadNumberInBits(int& n, size_t nSize) {
+        return true;
+    }
+    bool ReadNumberInBits(unsigned int& n, size_t nSize) {
+        return true;
+    }
+    bool Seek(size_t dwPos = 0) {
+        return true;
+    }
+    size_t GetReadPos() {
+        return 0;
+    }
+    unsigned char* GetPtr() const {
+        return 0;
+    };
+    size_t GetSize() const {
+        return 0;
+    }
+    bool SetSize(size_t indwBitSize) {
+        return true;
+    }
 };
 #endif
 
@@ -107,11 +163,10 @@ public:
 #ifdef _DEBUG
 #ifdef WIN32
 #include <crtdbg.h>
-#define DEBUG_CLIENTBLOCK new( _NORMAL_BLOCK, __FILE__, __LINE__) 
+#define DEBUG_CLIENTBLOCK new (_NORMAL_BLOCK, __FILE__, __LINE__)
 #define new DEBUG_CLIENTBLOCK
-#endif //WIN32
+#endif // WIN32
 #endif
-
 
 //{{AFX_INSERT_LOCATION}}
 // Microsoft Visual C++ will insert additional declarations immediately before the previous line.

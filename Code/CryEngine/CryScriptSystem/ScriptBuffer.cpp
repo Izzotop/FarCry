@@ -2,7 +2,7 @@
 
 #include "stdafx.h"
 #include <string.h>
-#include <stdio.h>
+#include <cstdio>
 #include "ScriptSystem.h"
 #include "ScriptObject.h"
 #include "RecycleAllocator.h"

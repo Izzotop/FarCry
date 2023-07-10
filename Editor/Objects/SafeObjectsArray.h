@@ -7,7 +7,7 @@
 //  Version:     v1.00
 //  Created:     28/11/2002 by Timur.
 //  Compilers:   Visual Studio.NET
-//  Description: 
+//  Description:
 // -------------------------------------------------------------------------
 //  History:
 //
@@ -20,30 +20,33 @@
 #include "BaseObject.h"
 
 /** This class used as a safe collction of references to CBaseObject instances.
-		Target objects in this collection can be safely removed or added,
-		This object makes references to added objects and recieve back event when theose objects are deleted.
+        Target objects in this collection can be safely removed or added,
+        This object makes references to added objects and recieve back event when theose objects are deleted.
 */
-class CSafeObjectsArray
-{
+class CSafeObjectsArray {
 public:
-	CSafeObjectsArray() {};
-	~CSafeObjectsArray();
+    CSafeObjectsArray(){};
+    ~CSafeObjectsArray();
 
-	void Add( CBaseObject *obj );
-	void Remove( CBaseObject *obj );
+    void Add(CBaseObject* obj);
+    void Remove(CBaseObject* obj);
 
-	bool IsEmpty() const { return m_objects.empty(); }
-	int GetCount() const { return m_objects.size(); }
-	CBaseObject* Get( int index ) const;
+    bool IsEmpty() const {
+        return m_objects.empty();
+    }
+    int GetCount() const {
+        return m_objects.size();
+    }
+    CBaseObject* Get(int index) const;
 
-	// Clear array.
-	void Clear();
+    // Clear array.
+    void Clear();
 
 private:
-	void OnTargetEvent( CBaseObject *target,int event );
+    void OnTargetEvent(CBaseObject* target, int event);
 
-	//////////////////////////////////////////////////////////////////////////
-	std::vector<CBaseObjectPtr> m_objects;
+    //////////////////////////////////////////////////////////////////////////
+    std::vector<CBaseObjectPtr> m_objects;
 };
 
 #endif // __safeobjectsarray_h__

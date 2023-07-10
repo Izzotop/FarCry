@@ -24,97 +24,108 @@
 #include "PickEntitiesPanel.h"
 
 /*!
- *	CAreaSphere is a sphere volume in space where entites can be attached to.
+ *    CAreaSphere is a sphere volume in space where entites can be attached to.
  *
  */
-class CAreaSphere : public CBaseObject, public IPickEntitesOwner
-{
+class CAreaSphere : public CBaseObject, public IPickEntitesOwner {
 public:
-	DECLARE_DYNCREATE(CAreaSphere)
+    DECLARE_DYNCREATE(CAreaSphere)
 
-	//////////////////////////////////////////////////////////////////////////
-	// Ovverides from CBaseObject.
-	//////////////////////////////////////////////////////////////////////////
-	bool Init( IEditor *ie,CBaseObject *prev,const CString &file );
-	void Done();
+    //////////////////////////////////////////////////////////////////////////
+    // Ovverides from CBaseObject.
+    //////////////////////////////////////////////////////////////////////////
+    bool Init(IEditor* ie, CBaseObject* prev, const CString& file);
+    void Done();
 
-	void Display( DisplayContext &dc );
+    void Display(DisplayContext& dc);
 
-	void SetAngles( const Vec3d &angles );
-	void SetScale( const Vec3d &scale );
+    void SetAngles(const Vec3d& angles);
+    void SetScale(const Vec3d& scale);
 
-	void GetBoundBox( BBox &box );
-	void GetLocalBounds( BBox &box );
+    void GetBoundBox(BBox& box);
+    void GetLocalBounds(BBox& box);
 
-	bool HitTest( HitContext &hc );
+    bool HitTest(HitContext& hc);
 
-	void BeginEditParams( IEditor *ie,int flags );
-	void EndEditParams( IEditor *ie );
+    void BeginEditParams(IEditor* ie, int flags);
+    void EndEditParams(IEditor* ie);
 
-	void OnEvent( ObjectEvent event );
+    void OnEvent(ObjectEvent event);
 
-	void Serialize( CObjectArchive &ar );
-	XmlNodeRef Export( const CString &levelPath,XmlNodeRef &xmlNode );
+    void Serialize(CObjectArchive& ar);
+    XmlNodeRef Export(const CString& levelPath, XmlNodeRef& xmlNode);
 
-	void SetAreaId(int nAreaId);
-	int GetAreaId();
-	void SetRadius(float fRadius);
-	float GetRadius();
+    void SetAreaId(int nAreaId);
+    int GetAreaId();
+    void SetRadius(float fRadius);
+    float GetRadius();
 
-	void UpdateGameArea();
+    void UpdateGameArea();
 
-	//////////////////////////////////////////////////////////////////////////
-	// Binded entities.
-	//////////////////////////////////////////////////////////////////////////
-	//! Bind entity to this shape.
-	void AddEntity( CBaseObject *pEntity );
-	void RemoveEntity( int index );
-	CBaseObject* GetEntity( int index );
-	int GetEntityCount() { return m_entities.size(); }
+    //////////////////////////////////////////////////////////////////////////
+    // Binded entities.
+    //////////////////////////////////////////////////////////////////////////
+    //! Bind entity to this shape.
+    void AddEntity(CBaseObject* pEntity);
+    void RemoveEntity(int index);
+    CBaseObject* GetEntity(int index);
+    int GetEntityCount() {
+        return m_entities.size();
+    }
 
 protected:
-	//! Dtor must be protected.
-	CAreaSphere();
+    //! Dtor must be protected.
+    CAreaSphere();
 
-	void DeleteThis() { delete this; };
+    void DeleteThis() {
+        delete this;
+    };
 
-	void OnAreaChange(IVariable *pVar);
-	void OnSizeChange(IVariable *pVar);
+    void OnAreaChange(IVariable* pVar);
+    void OnSizeChange(IVariable* pVar);
 
-	//! List of binded entities.
-	std::vector<GUID> m_entities;
+    //! List of binded entities.
+    std::vector<GUID> m_entities;
 
-	//! AreaId
-	CVariable<int> m_areaId;
-	//! EdgeWidth
-	CVariable<float> m_edgeWidth;
-	//! Local volume space radius.
-	CVariable<float> m_radius;
-	CVariable<int> mv_groupId;
+    //! AreaId
+    CVariable<int> m_areaId;
+    //! EdgeWidth
+    CVariable<float> m_edgeWidth;
+    //! Local volume space radius.
+    CVariable<float> m_radius;
+    CVariable<int> mv_groupId;
 
-	struct IXArea *m_IArea;
+    struct IXArea* m_IArea;
 
-	static int m_nRollupId;
-	static CPickEntitiesPanel *m_pPanel;
+    static int m_nRollupId;
+    static CPickEntitiesPanel* m_pPanel;
 };
 
 /*!
  * Class Description of AreaBox.
  */
-class CAreaSphereClassDesc : public CObjectClassDesc
-{
+class CAreaSphereClassDesc : public CObjectClassDesc {
 public:
-	REFGUID ClassID()
-	{
-		// {640A1105-A421-4ed3-9E71-7783F091AA27}
-		static const GUID guid = { 0x640a1105, 0xa421, 0x4ed3, { 0x9e, 0x71, 0x77, 0x83, 0xf0, 0x91, 0xaa, 0x27 } };
-		return guid;
-	}
-	ObjectType GetObjectType() { return OBJTYPE_VOLUME; };
-	const char* ClassName() { return "AreaSphere"; };
-	const char* Category() { return "Area"; };
-	CRuntimeClass* GetRuntimeClass() { return RUNTIME_CLASS(CAreaSphere); };
-	int GameCreationOrder() { return 51; };
+    REFGUID ClassID() {
+        // {640A1105-A421-4ed3-9E71-7783F091AA27}
+        static const GUID guid = {0x640a1105, 0xa421, 0x4ed3, {0x9e, 0x71, 0x77, 0x83, 0xf0, 0x91, 0xaa, 0x27}};
+        return guid;
+    }
+    ObjectType GetObjectType() {
+        return OBJTYPE_VOLUME;
+    };
+    const char* ClassName() {
+        return "AreaSphere";
+    };
+    const char* Category() {
+        return "Area";
+    };
+    CRuntimeClass* GetRuntimeClass() {
+        return RUNTIME_CLASS(CAreaSphere);
+    };
+    int GameCreationOrder() {
+        return 51;
+    };
 };
 
 #endif // __AreaSphere_h__

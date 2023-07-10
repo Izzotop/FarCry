@@ -7,7 +7,7 @@
 //  Version:     v1.00
 //  Created:     26/7/2002 by Timur.
 //  Compilers:   Visual Studio.NET
-//  Description: 
+//  Description:
 // -------------------------------------------------------------------------
 //  History:
 //
@@ -20,45 +20,46 @@
 #pragma once
 #endif
 
-class CNumberCtrlEdit : public CEdit
-{
-	CNumberCtrlEdit(const CNumberCtrlEdit& d);
-	CNumberCtrlEdit& operator=(const CNumberCtrlEdit& d);
+class CNumberCtrlEdit : public CEdit {
+    CNumberCtrlEdit(const CNumberCtrlEdit& d);
+    CNumberCtrlEdit& operator=(const CNumberCtrlEdit& d);
 
 public:
-	typedef Functor0 UpdateCallback;
+    typedef Functor0 UpdateCallback;
 
-	CNumberCtrlEdit() {};
+    CNumberCtrlEdit(){};
 
-	// Attributes
-	void SetText(const CString& strText);
+    // Attributes
+    void SetText(const CString& strText);
 
-	//! Set callback function called when number edit box is really updated.
-	void SetUpdateCallback( UpdateCallback func ) { m_onUpdate = func; }
+    //! Set callback function called when number edit box is really updated.
+    void SetUpdateCallback(UpdateCallback func) {
+        m_onUpdate = func;
+    }
 
-	// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CNumberCtrlEdit)
-	public:
-	virtual BOOL PreTranslateMessage(MSG* pMsg);
-	//}}AFX_VIRTUAL
+    // Overrides
+    // ClassWizard generated virtual function overrides
+    //{{AFX_VIRTUAL(CNumberCtrlEdit)
+public:
+    virtual BOOL PreTranslateMessage(MSG* pMsg);
+    //}}AFX_VIRTUAL
 
-	// Generated message map functions
+    // Generated message map functions
 protected:
-	//{{AFX_MSG(CNumberCtrlEdit)
-	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
-	afx_msg void OnKillFocus(CWnd* pNewWnd);
-	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
-	afx_msg void OnSetFocus(CWnd* pOldWnd);
-	afx_msg void OnChar( UINT nChar,UINT nRepCnt,UINT nFlags );
-	//}}AFX_MSG
+    //{{AFX_MSG(CNumberCtrlEdit)
+    afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
+    afx_msg void OnKillFocus(CWnd* pNewWnd);
+    afx_msg BOOL OnEraseBkgnd(CDC* pDC);
+    afx_msg void OnSetFocus(CWnd* pOldWnd);
+    afx_msg void OnChar(UINT nChar, UINT nRepCnt, UINT nFlags);
+    //}}AFX_MSG
 
-	DECLARE_MESSAGE_MAP()
+    DECLARE_MESSAGE_MAP()
 
-	// Data
+    // Data
 protected:
-	CString m_strInitText;
-	UpdateCallback m_onUpdate;
+    CString m_strInitText;
+    UpdateCallback m_onUpdate;
 };
 
 #endif // __numberctrledit_h__

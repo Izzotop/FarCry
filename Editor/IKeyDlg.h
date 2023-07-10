@@ -7,7 +7,7 @@
 //  Version:     v1.00
 //  Created:     21/8/2002 by Timur.
 //  Compilers:   Visual Studio.NET
-//  Description: 
+//  Description:
 // -------------------------------------------------------------------------
 //  History:
 //
@@ -22,31 +22,38 @@
 
 #include "IMovieSystem.h"
 
-class IKeyDlg : public CDialog
-{
+class IKeyDlg : public CDialog {
 public:
-	explicit IKeyDlg(UINT nIDTemplate, CWnd* pParentWnd = NULL);
-	
-	virtual void SetKey(IAnimNode *node, IAnimTrack *track, int key) = 0;
-	IAnimNode* GetNode() const { return m_node; };
-	IAnimTrack* GetTrack() const { return m_track; };
-	int GetKey() const { return m_key; };
+    explicit IKeyDlg(UINT nIDTemplate, CWnd* pParentWnd = nullptr);
 
-	// refresh keys displayed in track view.
-	void RefreshTrackView();
-	void RecordTrackUndo();
+    virtual void SetKey(IAnimNode* node, IAnimTrack* track, int key) = 0;
+    IAnimNode* GetNode() const {
+        return m_node;
+    };
+    IAnimTrack* GetTrack() const {
+        return m_track;
+    };
+    int GetKey() const {
+        return m_key;
+    };
 
-	bool CanReloadKey() const { return !m_bNoReloadKey; };
+    // refresh keys displayed in track view.
+    void RefreshTrackView();
+    void RecordTrackUndo();
+
+    bool CanReloadKey() const {
+        return !m_bNoReloadKey;
+    };
 
 protected:
-	virtual void OnOK() {};
-	virtual void OnCancel() {};
+    virtual void OnOK(){};
+    virtual void OnCancel(){};
 
-	IAnimTrack* m_track;
-	IAnimNode* m_node;
-	int m_key;
+    IAnimTrack* m_track;
+    IAnimNode* m_node;
+    int m_key;
 
-	bool m_bNoReloadKey;
+    bool m_bNoReloadKey;
 };
 
 #endif // __ikeydlg_h__

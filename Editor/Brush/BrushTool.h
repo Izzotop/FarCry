@@ -20,64 +20,62 @@
 #pragma once
 #endif
 
-#include "..\EditTool.h"
+#include "../EditTool.h"
 
 //////////////////////////////////////////////////////////////////////////
-class CBrushTool : public CEditTool
-{
-	DECLARE_DYNCREATE(CBrushTool)
+class CBrushTool : public CEditTool {
+    DECLARE_DYNCREATE(CBrushTool)
 public:
-	CBrushTool();
-	virtual ~CBrushTool();
+    CBrushTool();
+    virtual ~CBrushTool();
 
-	//////////////////////////////////////////////////////////////////////////
-	// CEditTool overrides.
-	//////////////////////////////////////////////////////////////////////////
-	virtual void BeginEditParams( IEditor *ie,int flags );
-	virtual void EndEditParams();
+    //////////////////////////////////////////////////////////////////////////
+    // CEditTool overrides.
+    //////////////////////////////////////////////////////////////////////////
+    virtual void BeginEditParams(IEditor* ie, int flags);
+    virtual void EndEditParams();
 
-	virtual void Display( DisplayContext &dc );
-	virtual bool MouseCallback( CViewport *view,EMouseEvent event,CPoint &point,int flags );
+    virtual void Display(DisplayContext& dc);
+    virtual bool MouseCallback(CViewport* view, EMouseEvent event, CPoint& point, int flags);
 
-	// Key down.
-	virtual bool OnKeyDown( CViewport *view,uint nChar,uint nRepCnt,uint nFlags );
-	virtual bool OnKeyUp( CViewport *view,uint nChar,uint nRepCnt,uint nFlags );
-	
-	// Delete itself.
-	virtual void Release() { delete this; };
-	//////////////////////////////////////////////////////////////////////////
-	
+    // Key down.
+    virtual bool OnKeyDown(CViewport* view, uint nChar, uint nRepCnt, uint nFlags);
+    virtual bool OnKeyUp(CViewport* view, uint nChar, uint nRepCnt, uint nFlags);
+
+    // Delete itself.
+    virtual void Release() {
+        delete this;
+    };
+    //////////////////////////////////////////////////////////////////////////
+
 private:
-	void NewBrush( CViewport *view,CPoint point );
-	void StretchBrush( CViewport* view,CPoint point );
-	void CalcLastBrushSize();
+    void NewBrush(CViewport* view, CPoint point);
+    void StretchBrush(CViewport* view, CPoint point);
+    void CalcLastBrushSize();
 
-	// Specific mouse events handlers.
-	bool OnLButtonDown( CViewport *view,UINT nFlags,CPoint point );
-	bool OnLButtonUp( CViewport *view,UINT nFlags,CPoint point );
-	bool OnMouseMove( CViewport *view,UINT nFlags,CPoint point );
+    // Specific mouse events handlers.
+    bool OnLButtonDown(CViewport* view, UINT nFlags, CPoint point);
+    bool OnLButtonUp(CViewport* view, UINT nFlags, CPoint point);
+    bool OnMouseMove(CViewport* view, UINT nFlags, CPoint point);
 
-	//! Operation modes of this viewport.
-	enum BrushOpMode
-	{
-		BrushNoMode = 0,
-		BrushMoveMode,
-		BrushCreateMode,
-		BrushStretchMode,
-	};
+    //! Operation modes of this viewport.
+    enum BrushOpMode {
+        BrushNoMode = 0,
+        BrushMoveMode,
+        BrushCreateMode,
+        BrushStretchMode,
+    };
 
-	
-	IEditor *m_IEditor;
+    IEditor* m_IEditor;
 
-	//////////////////////////////////////////////////////////////////////////
-	//! Bounds of last selected brush or selection.
-	BBox m_lastBrushBounds;
+    //////////////////////////////////////////////////////////////////////////
+    //! Bounds of last selected brush or selection.
+    BBox m_lastBrushBounds;
 
-	//! Current brush tool operation mode.
-	BrushOpMode m_mode;
-	bool m_bMouseCaptured;
-	CPoint m_mouseDownPos;
+    //! Current brush tool operation mode.
+    BrushOpMode m_mode;
+    bool m_bMouseCaptured;
+    CPoint m_mouseDownPos;
 };
-
 
 #endif // __BrushTool_h__

@@ -31,12 +31,12 @@ const l_char lua_ident[] = l_s("$Lua: ") l_s(LUA_VERSION) l_s(" ")
 
 
 #ifndef api_check
-#define api_check(L, o)		/* nothing */
+#define api_check(L, o)    /* nothing */
 #endif
 
-#define api_checknelems(L, n)	api_check(L, (n) <= (L->top - L->ci->base))
+#define api_checknelems(L, n)  api_check(L, (n) <= (L->top - L->ci->base))
 
-#define api_incr_top(L)	incr_top
+#define api_incr_top(L)  incr_top
 
 
 #if defined(LINUX)
@@ -409,10 +409,10 @@ LUA_API void  lua_getregistry (lua_State *L) {
 
 //ALBERTOOO
 LUA_API void  lua_getxregistry (lua_State *L) {
-	lua_lock(L);
-	sethvalue(L->top, G(L)->xregistry);
-	api_incr_top(L);
-	lua_unlock(L);
+  lua_lock(L);
+  sethvalue(L->top, G(L)->xregistry);
+  api_incr_top(L);
+  lua_unlock(L);
 }
 
 
@@ -467,14 +467,14 @@ LUA_API void* lua_getnativedata(lua_State *L, int index) {
 #else
 LUA_API __forceinline void* lua_getnativedata(lua_State *L, int index) {
 #endif
-	StkId t;
-	void *n;
-	lua_lock(L);
-	t = luaA_index(L, index);
-	api_check(L, ttype(t) == LUA_TTABLE);
-	n=t->value.h->nativedata;
+  StkId t;
+  void *n;
+  lua_lock(L);
+  t = luaA_index(L, index);
+  api_check(L, ttype(t) == LUA_TTABLE);
+  n=t->value.h->nativedata;
   lua_unlock(L);
-	return n;
+  return n;
 }
 
 // Crytek change, changed/added by AlbertoD
@@ -483,67 +483,67 @@ LUA_API void lua_setnativedata(lua_State *L, int index,void *n) {
 #else
 LUA_API __forceinline void lua_setnativedata(lua_State *L, int index,void *n) {
 #endif
-	StkId t;
-	lua_lock(L);
-	t = luaA_index(L, index);
-	api_check(L, ttype(t) == LUA_TTABLE);
-	t->value.h->nativedata=n;
+  StkId t;
+  lua_lock(L);
+  t = luaA_index(L, index);
+  api_check(L, ttype(t) == LUA_TTABLE);
+  t->value.h->nativedata=n;
   lua_unlock(L);
 }
 
 // Crytek change, changed/added by AlbertoD
-LUA_API void lua_setuserptr(lua_State *L,void *ptr) { 
-	L->userptr=ptr;
+LUA_API void lua_setuserptr(lua_State *L,void *ptr) {
+  L->userptr=ptr;
 }
 
 // Crytek change, changed/added by AlbertoD
 LUA_API void *lua_getuserptr(lua_State *L) {
-	return L->userptr;
+  return L->userptr;
 }
 
 
 // Crytek change, added by MartinM
 // used to create a hash value out of a lua function (for cheat protection)
 #if defined(LINUX)
-LUA_API void lua_getluafuncdata(lua_State *L, int index, unsigned int **pCode, int *iCodeSize ) 
+LUA_API void lua_getluafuncdata(lua_State *L, int index, unsigned int **pCode, int *iCodeSize )
 #else
-LUA_API __forceinline void lua_getluafuncdata(lua_State *L, int index, unsigned int **pCode, int *iCodeSize ) 
+LUA_API __forceinline void lua_getluafuncdata(lua_State *L, int index, unsigned int **pCode, int *iCodeSize )
 #endif
 {
-	StkId t;
-	void *n;
-	Proto *proto;
-	Closure *closure;
-	
-	*pCode=0;*iCodeSize=0;
+  StkId t;
+  void *n;
+  Proto *proto;
+  Closure *closure;
 
-	lua_lock(L);
-	t = luaA_index(L, index);
-	api_check(L, ttype(t) == LUA_TFUNCTION);
+  *pCode=0;*iCodeSize=0;
 
-	//lua_topointer(L,index);
+  lua_lock(L);
+  t = luaA_index(L, index);
+  api_check(L, ttype(t) == LUA_TFUNCTION);
 
-	closure = t->value.cl;
+  //lua_topointer(L,index);
 
-	if(!lua_iscfunction(L,index))
-	{
-		// is lua function
-		proto = closure->f.l;
+  closure = t->value.cl;
+
+  if(!lua_iscfunction(L,index))
+  {
+    // is lua function
+    proto = closure->f.l;
 
 #if defined(LINUX)
-		*pCode=(unsigned int*)proto->code;
+    *pCode=(unsigned int*)proto->code;
 #else
-		*pCode=proto->code;
+    *pCode=proto->code;
 #endif
-		*iCodeSize=proto->sizecode;
-	}
-	else
-	{
-		// is c function
-		int f=0;		// debugging
-	}
+    *iCodeSize=proto->sizecode;
+  }
+  else
+  {
+    // is c function
+    int f=0;    // debugging
+  }
 
-	lua_unlock(L);
+  lua_unlock(L);
 }
 
 
@@ -596,49 +596,49 @@ LUA_API int lua_ref (lua_State *L,  int lock) {
 }
 
 LUA_API int lua_xref(lua_State *L,int ref){
-	if (lua_isnil(L, -1))
-	{
-		lua_pop(L, 1);
-		return 0;
-	}
-	lua_getxregistry(L);
+  if (lua_isnil(L, -1))
+  {
+    lua_pop(L, 1);
+    return 0;
+  }
+  lua_getxregistry(L);
   lua_pushvalue(L,-2);
-	if(!lua_istable(L,-1))
-	{
+  if(!lua_istable(L,-1))
+  {
 #if defined(WIN64) || defined(LINUX64)
-		abort();
+    abort();
 #else
-		DEBUG_BREAK;
+    DEBUG_BREAK;
 #endif
-	}
-	lua_rawseti(L, -2, ref);
-	lua_pop(L,2);
-	return ref;
+  }
+  lua_rawseti(L, -2, ref);
+  lua_pop(L,2);
+  return ref;
 }
 
 LUA_API void lua_xunref(lua_State *L,int ref){
-	int top=lua_gettop(L);
-	lua_getxregistry(L);
-	lua_pushnil(L);
-	lua_rawseti(L, -2, ref);
-	lua_pop(L,1);
-	if(top!=lua_gettop(L))
-	{
+  int top=lua_gettop(L);
+  lua_getxregistry(L);
+  lua_pushnil(L);
+  lua_rawseti(L, -2, ref);
+  lua_pop(L,1);
+  if(top!=lua_gettop(L))
+  {
 #if defined(WIN64) || defined(LINUX64)
-		abort();
+    abort();
 #else
-		DEBUG_BREAK;
+    DEBUG_BREAK;
 #endif
-	}
+  }
 }
 
 LUA_API int lua_xgetref(lua_State *L,int ref){
-	int status;
-	setobj(L->top, luaH_getnum(G(L)->xregistry, ref));
-	status = (ttype(L->top) != LUA_TNIL);
-	if (status)
-		api_incr_top(L);
-	return status;
+  int status;
+  setobj(L->top, luaH_getnum(G(L)->xregistry, ref));
+  status = (ttype(L->top) != LUA_TNIL);
+  if (status)
+    api_incr_top(L);
+  return status;
 }
 /*
 ** `do' functions (run Lua code)
@@ -686,8 +686,8 @@ LUA_API int lua_dostring (lua_State *L, const l_char *str) {
 */
 
 /* GC values are expressed in Kbytes: #bytes/2^10 */
-#define GCscale(x)		((int)((x)>>10))
-#define GCunscale(x)		((lu_mem)(x)<<10)
+#define GCscale(x)    ((int)((x)>>10))
+#define GCunscale(x)    ((lu_mem)(x)<<10)
 
 LUA_API int lua_getgcthreshold (lua_State *L) {
   int threshold;

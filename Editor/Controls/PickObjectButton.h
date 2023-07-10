@@ -7,7 +7,7 @@
 //  Version:     v1.00
 //  Created:     28/2/2002 by Timur.
 //  Compilers:   Visual C++.NET
-//  Description: 
+//  Description:
 // -------------------------------------------------------------------------
 //  History:
 //
@@ -22,49 +22,46 @@
 /////////////////////////////////////////////////////////////////////////////
 // CPickObjectButton window
 
-class CPickObjectButton : public CColorCheckBox, public IPickObjectCallback
-{
-DECLARE_DYNAMIC(CPickObjectButton)
-// Construction
+class CPickObjectButton : public CColorCheckBox, public IPickObjectCallback {
+    DECLARE_DYNAMIC(CPickObjectButton)
+    // Construction
 public:
-	CPickObjectButton();
+    CPickObjectButton();
 
-	void SetPickCallback( IPickObjectCallback *callback,const CString &statusText,CRuntimeClass *targetClass=0,bool bMultiPick=false );
-	afx_msg void OnClicked();
+    void SetPickCallback(IPickObjectCallback* callback, const CString& statusText, CRuntimeClass* targetClass = 0, bool bMultiPick = false);
+    afx_msg void OnClicked();
 
-// Attributes
+    // Attributes
 public:
-
-// Operations
+    // Operations
 public:
-
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CPickObjectButton)
-	protected:
-	//}}AFX_VIRTUAL
-
-// Implementation
-public:
-	virtual ~CPickObjectButton();
-
-	//! Called when object picked.
-	virtual void OnPick( CBaseObject *picked );
-	//! Called when pick mode cancelled.
-	virtual void OnCancelPick();
-	virtual bool OnPickFilter( CBaseObject *filterObject );
-
-	// Generated message map functions
+    // Overrides
+    // ClassWizard generated virtual function overrides
+    //{{AFX_VIRTUAL(CPickObjectButton)
 protected:
-	//{{AFX_MSG(CPickObjectButton)
-	//}}AFX_MSG
+    //}}AFX_VIRTUAL
 
-	DECLARE_MESSAGE_MAP()
+    // Implementation
+public:
+    virtual ~CPickObjectButton();
 
-	IPickObjectCallback *m_pickCallback;
-	CString m_statusText;
-	CRuntimeClass *m_targetClass;
-	bool m_bMultipick;
+    //! Called when object picked.
+    virtual void OnPick(CBaseObject* picked);
+    //! Called when pick mode cancelled.
+    virtual void OnCancelPick();
+    virtual bool OnPickFilter(CBaseObject* filterObject);
+
+    // Generated message map functions
+protected:
+    //{{AFX_MSG(CPickObjectButton)
+    //}}AFX_MSG
+
+    DECLARE_MESSAGE_MAP()
+
+    IPickObjectCallback* m_pickCallback;
+    CString m_statusText;
+    CRuntimeClass* m_targetClass;
+    bool m_bMultipick;
 };
 
 #endif // __pickobjectbutton_h__

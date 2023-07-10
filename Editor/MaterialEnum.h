@@ -21,33 +21,35 @@
 #endif
 
 /*!
- *	CMaterialEnum class enumerates Materials installed on system.
- *	It scans all effector files, and gather from them all defined effectors.
+ *    CMaterialEnum class enumerates Materials installed on system.
+ *    It scans all effector files, and gather from them all defined effectors.
  */
-class CMaterialEnum
-{
+class CMaterialEnum {
 public:
-	CMaterialEnum();
-	virtual ~CMaterialEnum();
+    CMaterialEnum();
+    virtual ~CMaterialEnum();
 
-	//! Enumerate Materials installed on system.
-	//! @return Number of enumerated Materials.
-	int EnumMaterials();
+    //! Enumerate Materials installed on system.
+    //! @return Number of enumerated Materials.
+    int EnumMaterials();
 
-	//! Get number of Materials in system.
-	//! @return Number of installed Materials.
-	int	GetCount() const { return m_materials.size(); }
-	
-	//! Get name of Material by index.
-	//! index must be between 0 and number returned by EnumMaterials.
-	//! @return Name of Material.
-	const CString& GetMaterial( int i ) { return m_materials[i]; }
+    //! Get number of Materials in system.
+    //! @return Number of installed Materials.
+    int GetCount() const {
+        return m_materials.size();
+    }
+
+    //! Get name of Material by index.
+    //! index must be between 0 and number returned by EnumMaterials.
+    //! @return Name of Material.
+    const CString& GetMaterial(int i) {
+        return m_materials[i];
+    }
 
 private:
-	bool m_bEnumerated;
-	//! Array of Material names.
-	std::vector<CString> m_materials;
+    bool m_bEnumerated;
+    //! Array of Material names.
+    std::vector<CString> m_materials;
 };
-
 
 #endif // __MaterialEnum_h__

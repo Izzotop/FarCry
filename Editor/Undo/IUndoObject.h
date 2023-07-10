@@ -21,24 +21,25 @@
 #endif
 
 //! IUndoObject is a interface of general Undo object.
-struct IUndoObject
-{
-	// Virtual destructor.
-	virtual ~IUndoObject() {};
+struct IUndoObject {
+    // Virtual destructor.
+    virtual ~IUndoObject(){};
 
-	//! Called to delete undo object.
-	virtual void Release() { delete this; };
-	//! Return size of this Undo object.
-	virtual int GetSize() = 0;
-	//! Return description of this Undo object.
-	virtual const char* GetDescription() = 0;
+    //! Called to delete undo object.
+    virtual void Release() {
+        delete this;
+    };
+    //! Return size of this Undo object.
+    virtual int GetSize() = 0;
+    //! Return description of this Undo object.
+    virtual const char* GetDescription() = 0;
 
-	//! Undo this object.
-	//! @param bUndo If true this operation called in response to Undo operation.
-	virtual void Undo( bool bUndo=true ) = 0;
+    //! Undo this object.
+    //! @param bUndo If true this operation called in response to Undo operation.
+    virtual void Undo(bool bUndo = true) = 0;
 
-	//! Redo undone changes on object.
-	virtual void Redo() = 0;
+    //! Redo undone changes on object.
+    virtual void Redo() = 0;
 };
 
 #endif // __IUndoObject_h__

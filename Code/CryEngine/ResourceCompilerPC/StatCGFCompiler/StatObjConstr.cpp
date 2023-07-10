@@ -13,384 +13,361 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-#include "stdafx.h"
+#include "../stdafx.h"
 
 #include "StatObj.h"
 #include "MeshIdx.h"
 #include "../RenderDll/Common/shadow_renderer.h"
-#include <irenderer.h>
+#include <IRenderer.h>
 #include <I3dIndoorEngine.h>
 #include <CrySizer.h>
 
-//#define USE_CCGF
+// #define USE_CCGF
 
-float CStatObj::m_fStreamingTimePerFrame=0;
+float CStatObj::m_fStreamingTimePerFrame = 0;
 
-void CStatObj::Refresh(int nFlags)
-{
-	if(nFlags & FRO_GEOMETRY)
-	{
-		bool bSpritesWasCreated = IsSpritesCreated();
-		ShutDown();
-		Init();
-		bool bRes = LoadObject(m_szFileName, m_szGeomName[0] ? m_szGeomName : 0, m_nStripify, m_bLoadAdditinalInfo, m_bKeepInLocalSpace);
-		if(bRes && bSpritesWasCreated)
-		{
-			Vec3d vColor = Get3DEngine()->GetAmbientColorFromPosition(Vec3d(-1000,-1000,-1000));
-			UpdateCustomLightingSpritesAndShadowMaps(vColor.x, m_nSpriteTexRes);
-		}
+void CStatObj::Refresh(int nFlags) {
+    if (nFlags & FRO_GEOMETRY) {
+        bool bSpritesWasCreated = IsSpritesCreated();
+        ShutDown();
+        Init();
+        bool bRes = LoadObject(m_szFileName, m_szGeomName[0] ? m_szGeomName : nullptr, m_nStripify, m_bLoadAdditinalInfo, m_bKeepInLocalSpace);
+        if (bRes && bSpritesWasCreated) {
+            Vec3d vColor = Get3DEngine()->GetAmbientColorFromPosition(Vec3d(-1000, -1000, -1000));
+            UpdateCustomLightingSpritesAndShadowMaps(vColor.x, m_nSpriteTexRes);
+        }
 
-		if(!bRes)
-		{ // load default in case of error
-			ShutDown();
-			Init();
-			LoadObject("Objects\\default.cgf", 0, m_nStripify, m_bLoadAdditinalInfo, m_bKeepInLocalSpace);
-		}
-	
-		return;
-	}
+        if (!bRes) { // load default in case of error
+            ShutDown();
+            Init();
+            LoadObject("Objects\\default.cgf", 0, m_nStripify, m_bLoadAdditinalInfo, m_bKeepInLocalSpace);
+        }
 
-  if (nFlags & (FRO_TEXTURES | FRO_SHADERS))
-  {
-    CLeafBuffer *lb = m_pLeafBuffer;
-    
-    for (int i=0; i<lb->m_pMats->Count(); i++)
-    {
-      IShader *e = (*lb->m_pMats)[i].shaderItem.m_pShader;
-      if (e && (*lb->m_pMats)[i].pRE && (*lb->m_pMats)[i].nNumIndices)
-        e->Reload(nFlags);
+        return;
     }
-  }
+
+    if (nFlags & (FRO_TEXTURES | FRO_SHADERS)) {
+        CLeafBuffer* lb = m_pLeafBuffer;
+
+        for (int i = 0; i < lb->m_pMats->Count(); i++) {
+            IShader* e = (*lb->m_pMats)[i].shaderItem.m_pShader;
+            if (e && (*lb->m_pMats)[i].pRE && (*lb->m_pMats)[i].nNumIndices)
+                e->Reload(nFlags);
+        }
+    }
 }
 
-bool CStatObj::LoadObject(const char * szFileName, 
-                          const char*szGeomName, 
-                          int nStripify,
-                          bool bLoadAdditinalInfo,
-													bool bKeepInLocalSpace,
-													bool bLoadLater)
-{ 
-	if(!szFileName[0])
-	{
-		GetLog()->Log("Error: CStatObj::LoadObject: szFileName not specified");
-		return 0;
-	}
+bool CStatObj::LoadObject(const char* szFileName, const char* szGeomName, int nStripify, bool bLoadAdditinalInfo, bool bKeepInLocalSpace, bool bLoadLater) {
+    if (!szFileName[0]) {
+        GetLog()->Log("Error: CStatObj::LoadObject: szFileName not specified");
+        return 0;
+    }
 
-	m_nStripify          = nStripify;
-	m_bLoadAdditinalInfo = bLoadAdditinalInfo;
-	m_bKeepInLocalSpace  = bKeepInLocalSpace;
-	m_bStreamable				 = bLoadLater;
+    m_nStripify = nStripify;
+    m_bLoadAdditinalInfo = bLoadAdditinalInfo;
+    m_bKeepInLocalSpace = bKeepInLocalSpace;
+    m_bStreamable = bLoadLater;
 
-	if(bLoadLater)
-	{ // define fake bbox
-		Init();
+    if (bLoadLater) { // define fake bbox
+        Init();
 
-		m_vBoxMin = Vec3d(-1.f,-1.f,-1.f);
-		m_vBoxMax = Vec3d( 1.f, 1.f, 1.f);
-		m_vBoxCenter = Vec3d(0,0,0);
-		m_fRadiusHors = m_fRadiusVert = 1.f;
+        m_vBoxMin = Vec3d(-1.f, -1.f, -1.f);
+        m_vBoxMax = Vec3d(1.f, 1.f, 1.f);
+        m_vBoxCenter = Vec3d(0, 0, 0);
+        m_fRadiusHors = m_fRadiusVert = 1.f;
 
-		// remember names
-		strcpy(m_szFileName,szFileName);
-	  
-		if(szGeomName)
-			strcpy(m_szGeomName,szGeomName);
-		else
-			m_szGeomName[0]=0;
+        // remember names
+        strcpy(m_szFileName, szFileName);
 
-		strcpy(m_szFolderName,szFileName);
-		while(m_szFolderName[0])
-		{ // make folder name
-			if(m_szFolderName[strlen(m_szFolderName)-1] == '\\' || m_szFolderName[strlen(m_szFolderName)-1] == '/')
-			{ m_szFolderName[strlen(m_szFolderName)-1]=0; break; }
-			m_szFolderName[strlen(m_szFolderName)-1]=0;
-		}  
+        if (szGeomName)
+            strcpy(m_szGeomName, szGeomName);
+        else
+            m_szGeomName[0] = 0;
 
-		m_nLoadedTrisCount = 0;
+        strcpy(m_szFolderName, szFileName);
+        while (m_szFolderName[0]) { // make folder name
+            if (m_szFolderName[strlen(m_szFolderName) - 1] == '\\' || m_szFolderName[strlen(m_szFolderName) - 1] == '/') {
+                m_szFolderName[strlen(m_szFolderName) - 1] = 0;
+                break;
+            }
+            m_szFolderName[strlen(m_szFolderName) - 1] = 0;
+        }
 
-		return true;
-	}
+        m_nLoadedTrisCount = 0;
 
-	FILE * f = 0;
+        return true;
+    }
+
+    FILE* f = 0;
 
 #ifdef USE_CCGF
 
-	char szCompiledFileNameFull[512];
-	{
-		char szCompiledFileName[512]="";
-		strcpy(szCompiledFileName,szFileName);
+    char szCompiledFileNameFull[512];
+    {
+        char szCompiledFileName[512] = "";
+        strcpy(szCompiledFileName, szFileName);
 
-		while(strstr(szCompiledFileName,"\\") || strstr(szCompiledFileName,"/"))
-			strcpy(szCompiledFileName,szCompiledFileName+1);
+        while (strstr(szCompiledFileName, "\\") || strstr(szCompiledFileName, "/"))
+            strcpy(szCompiledFileName, szCompiledFileName + 1);
 
-		while(strstr(szCompiledFileName,"."))
-			szCompiledFileName[strlen(szCompiledFileName)-1]=0;
+        while (strstr(szCompiledFileName, "."))
+            szCompiledFileName[strlen(szCompiledFileName) - 1] = 0;
 
-		strcat( szCompiledFileName, "_" );
-		strcat( szCompiledFileName, szGeomName ? szGeomName : "NoGeom" );
-		strcat( szCompiledFileName, ".ccgf" );
-	  
-		snprintf(szCompiledFileNameFull, "CCGF\\%s", szCompiledFileName);
-	}
+        strcat(szCompiledFileName, "_");
+        strcat(szCompiledFileName, szGeomName ? szGeomName : "NoGeom");
+        strcat(szCompiledFileName, ".ccgf");
 
-	f = fopen(szCompiledFileNameFull, "rb");
+        snprintf(szCompiledFileNameFull, "CCGF\\%s", szCompiledFileName);
+    }
+
+    f = fopen(szCompiledFileNameFull, "rb");
 
 #endif // USE_CCGF
-                         
-  if(!f || szGeomName)
-  { // compile object and save to disk
-		strcpy(m_szFileName,szFileName);
-	  
-		if(szGeomName)
-			strcpy(m_szGeomName,szGeomName);
-		else
-			m_szGeomName[0]=0;
 
-		strcpy(m_szFolderName,szFileName);
-		while(m_szFolderName[0])
-		{ // make folder name
-			if(m_szFolderName[strlen(m_szFolderName)-1] == '\\' || m_szFolderName[strlen(m_szFolderName)-1] == '/')
-			{ m_szFolderName[strlen(m_szFolderName)-1]=0; break; }
-			m_szFolderName[strlen(m_szFolderName)-1]=0;
-		}  
+    if (!f || szGeomName) { // compile object and save to disk
+        strcpy(m_szFileName, szFileName);
 
-		m_nLoadedTrisCount = 0;
-		m_pTriData = new CIndexedMesh( m_pSystem, szFileName, szGeomName, &m_nLoadedTrisCount, bLoadAdditinalInfo, bKeepInLocalSpace );
-		if(!m_nLoadedTrisCount)
-		{
-			if(!szGeomName)
-				return false;
+        if (szGeomName)
+            strcpy(m_szGeomName, szGeomName);
+        else
+            m_szGeomName[0] = 0;
 
-			int i;
-			for(i=0; i<m_pTriData->m_lstGeomNames.Count(); i++)
-			if(strcmp(m_pTriData->m_lstGeomNames[i],szGeomName)==0)
-				break;
+        strcpy(m_szFolderName, szFileName);
+        while (m_szFolderName[0]) { // make folder name
+            if (m_szFolderName[strlen(m_szFolderName) - 1] == '\\' || m_szFolderName[strlen(m_szFolderName) - 1] == '/') {
+                m_szFolderName[strlen(m_szFolderName) - 1] = 0;
+                break;
+            }
+            m_szFolderName[strlen(m_szFolderName) - 1] = 0;
+        }
 
-			if(i>=m_pTriData->m_lstGeomNames.Count())
-				return false;
-		}
+        m_nLoadedTrisCount = 0;
+        m_pTriData = new CIndexedMesh(m_pSystem, szFileName, szGeomName, &m_nLoadedTrisCount, bLoadAdditinalInfo, bKeepInLocalSpace);
+        if (!m_nLoadedTrisCount) {
+            if (!szGeomName)
+                return false;
 
-		m_vBoxMin = m_pTriData->m_vBoxMin;
-		m_vBoxMax = m_pTriData->m_vBoxMax;
-		m_vBoxCenter = (m_vBoxMax+m_vBoxMin)/2;
+            int i;
+            for (i = 0; i < m_pTriData->m_lstGeomNames.Count(); i++)
+                if (strcmp(m_pTriData->m_lstGeomNames[i], szGeomName) == 0)
+                    break;
 
-		// copy helpers
-		m_lstHelpers.AddList(*m_pTriData->GetHelpers());
+            if (i >= m_pTriData->m_lstGeomNames.Count())
+                return false;
+        }
 
-		// copy lsources
-		for(int i=0; i<m_pTriData->GetLightSourcesList()->Count(); i++)
-			m_lstLSources.Add(*m_pTriData->GetLightSourcesList()->GetAt(i));
+        m_vBoxMin = m_pTriData->m_vBoxMin;
+        m_vBoxMax = m_pTriData->m_vBoxMax;
+        m_vBoxCenter = (m_vBoxMax + m_vBoxMin) / 2;
 
-		InitParams(m_pTriData->m_vBoxMax.z - m_pTriData->m_vBoxMin.z);
+        // copy helpers
+        m_lstHelpers.AddList(*m_pTriData->GetHelpers());
 
-		Physicalize(); // can change some indices/faces
+        // copy lsources
+        for (int i = 0; i < m_pTriData->GetLightSourcesList()->Count(); i++)
+            m_lstLSources.Add(*m_pTriData->GetLightSourcesList()->GetAt(i));
 
-		// create vert buffers
-		if(m_nLoadedTrisCount>30000)
-			GetLog()->UpdateLoadingScreen("  Indexing huge vertex buffer ...");
+        InitParams(m_pTriData->m_vBoxMax.z - m_pTriData->m_vBoxMin.z);
 
-		MakeBuffers(szGeomName!=0, nStripify, 0);
+        Physicalize(); // can change some indices/faces
 
-		for (int i=0; m_pLeafBuffer && m_pLeafBuffer->m_pMats && i<m_pLeafBuffer->m_pMats->Count(); i++)
-			m_lstShaderTemplates.Add(-1);
+        // create vert buffers
+        if (m_nLoadedTrisCount > 30000)
+            GetLog()->UpdateLoadingScreen("  Indexing huge vertex buffer ...");
 
-		if(m_nLoadedTrisCount>30000)
-			GetLog()->UpdateLoadingScreen(" Indexed OK");
-	
+        MakeBuffers(szGeomName != 0, nStripify, 0);
+
+        for (int i = 0; m_pLeafBuffer && m_pLeafBuffer->m_pMats && i < m_pLeafBuffer->m_pMats->Count(); i++)
+            m_lstShaderTemplates.Add(-1);
+
+        if (m_nLoadedTrisCount > 30000)
+            GetLog()->UpdateLoadingScreen(" Indexed OK");
+
 #ifdef USE_CCGF
 
-		delete m_pTriData;
-		m_pTriData=0;
+        delete m_pTriData;
+        m_pTriData = 0;
 
-		CreateDirectory("CCGF", 0);
+        CreateDirectory("CCGF", 0);
 
-		// Save to file
-    int nPos = 0;
-		Serialize(nPos, 0, true, m_szFolderName);
+        // Save to file
+        int nPos = 0;
+        Serialize(nPos, 0, true, m_szFolderName);
 
-    uchar * pData = new uchar[nPos];
-		nPos=0;
-    Serialize(nPos, pData, true, m_szFolderName);
+        uchar* pData = new uchar[nPos];
+        nPos = 0;
+        Serialize(nPos, pData, true, m_szFolderName);
 
-    f = fopen(szCompiledFileNameFull,"wb");
-		if(f)
-			fwrite(pData,1,nPos,f);
-    delete pData;
+        f = fopen(szCompiledFileNameFull, "wb");
+        if (f)
+            fwrite(pData, 1, nPos, f);
+        delete pData;
 
-	}
-	else
-  { // load ready object from disk
-		GetLog()->UpdateLoadingScreen("Loading compiled object: %s", szCompiledFileNameFull);
+    } else { // load ready object from disk
+        GetLog()->UpdateLoadingScreen("Loading compiled object: %s", szCompiledFileNameFull);
 
-    fseek(f,0,SEEK_END);
-    int nSize = ftell(f);
-    fseek(f,0,SEEK_SET);
+        fseek(f, 0, SEEK_END);
+        int nSize = ftell(f);
+        fseek(f, 0, SEEK_SET);
 
-    uchar * pData = new uchar[nSize];
-    int nReadedBytes = fread(pData,1,nSize,f);
-		if(nReadedBytes != nSize)
-			GetConsole()->Exit("Error: CStatObj::LoadObject: Error reading ccfg: %s", szCompiledFileNameFull);
+        uchar* pData = new uchar[nSize];
+        int nReadedBytes = fread(pData, 1, nSize, f);
+        if (nReadedBytes != nSize)
+            GetConsole()->Exit("Error: CStatObj::LoadObject: Error reading ccfg: %s", szCompiledFileNameFull);
 
-		nSize=0;
-		Serialize(nSize, pData, false, m_szFolderName);
-		assert(nReadedBytes == nSize);
+        nSize = 0;
+        Serialize(nSize, pData, false, m_szFolderName);
+        assert(nReadedBytes == nSize);
 
-    delete pData;
+        delete pData;
 
 #endif // USE_CCGF
-  }
-
-	if(f)
-		fclose(f);
-
-//	if(!szGeomName) // m_pTriData is needed only for indoors
-	//	FreeTriData();
-
-//	buildStencilShadowConnectivity (Get3DEngine()->GetNewStaticConnectivityBuilder(), 0, 0);
-
-	return true;
-}
-
-void CStatObj::FreeTriData()
-{
-	delete m_pTriData;
-	m_pTriData=0;
-}
-
-const char * CStatObj::GetScriptMaterialName(int Id)
-{
-  CLeafBuffer *lb = m_pLeafBuffer;
-  if (Id < 0)
-  {
-    for (int i=0; i<lb->m_pMats->Count(); i++)
-    {
-      if ((*lb->m_pMats)[i].sScriptMaterial[0])
-        return (*lb->m_pMats)[i].sScriptMaterial;
     }
-    return NULL;
-  }
-  else
-  if (Id < lb->m_pMats->Count() && (*lb->m_pMats)[Id].sScriptMaterial[0])
-    return (*lb->m_pMats)[Id].sScriptMaterial;
 
-  return NULL;
+    if (f)
+        fclose(f);
+
+    //    if(!szGeomName) // m_pTriData is needed only for indoors
+    //    FreeTriData();
+
+    //    buildStencilShadowConnectivity (Get3DEngine()->GetNewStaticConnectivityBuilder(), 0, 0);
+
+    return true;
 }
 
-void CStatObj::InitParams(float sizeZ)
-{
-  m_fObjectRadius = GetDistance(m_vBoxMin, m_vBoxMax)/2;
-
-  // calc vert/horis radiuses
-/*  float dxh = GetBoxMax().x - GetBoxMin().x;
-  float dyh = GetBoxMax().y - GetBoxMin().y;
-  m_fRadiusHors = sqrtf(dxh*dxh+dyh*dyh)/2;
-  m_fRadiusVert = GetBoxMax().z/2;*/
-
-  float dxh = (float)max( fabs(GetBoxMax().x), fabs(GetBoxMin().x));
-  float dyh = (float)max( fabs(GetBoxMax().y), fabs(GetBoxMin().y));
-  m_fRadiusHors = (float)sqrt(dxh*dxh+dyh*dyh);
-  m_fRadiusVert = 0.01f + (GetBoxMax().z - GetBoxMin().z)*0.5f;
+void CStatObj::FreeTriData() {
+    delete m_pTriData;
+    m_pTriData = 0;
 }
 
-CStatObj::CStatObj(ISystem	* pSystem) 
-{ 
-  m_pSystem = pSystem;
-  m_nUsers = 0; // referense counter
+const char* CStatObj::GetScriptMaterialName(int Id) {
+    CLeafBuffer* lb = m_pLeafBuffer;
+    if (Id < 0) {
+        for (int i = 0; i < lb->m_pMats->Count(); i++) {
+            if ((*lb->m_pMats)[i].sScriptMaterial[0])
+                return (*lb->m_pMats)[i].sScriptMaterial;
+        }
+        return nullptr;
+    } else if (Id < lb->m_pMats->Count() && (*lb->m_pMats)[Id].sScriptMaterial[0])
+        return (*lb->m_pMats)[Id].sScriptMaterial;
 
-	m_nStripify=0;
-	m_bLoadAdditinalInfo=false;
-	m_bKeepInLocalSpace=false;
-	m_bStreamable=false;
-	m_nSpriteTexRes=0;
-
-  ZeroStruct( m_szFolderName );
-  ZeroStruct( m_szFileName );
-  ZeroStruct( m_szGeomName );
-
-	m_pStencilShadowConnectivity=0;
-
-	m_nLastRendFrameId = 0;
-
-	Init();
+    return nullptr;
 }
 
-void CStatObj::Init() 
-{
-	m_pTriData = 0;
-	m_nLoadedTrisCount = 0;
-  m_fObjectRadius = 0;
-	m_pSvObj=NULL;
-	m_dwFlags=m_dwFlags2=0;
+void CStatObj::InitParams(float sizeZ) {
+    m_fObjectRadius = GetDistance(m_vBoxMin, m_vBoxMax) / 2;
 
-  ZeroStruct( m_arrSpriteTexID );
+    // calc vert/horis radiuses
+    /*  float dxh = GetBoxMax().x - GetBoxMin().x;
+      float dyh = GetBoxMax().y - GetBoxMin().y;
+      m_fRadiusHors = sqrtf(dxh*dxh+dyh*dyh)/2;
+      m_fRadiusVert = GetBoxMax().z/2;*/
 
-	m_vBoxMin.Set(0,0,0); 
-	m_vBoxMax.Set(0,0,0); 
-	m_vBoxCenter.Set(0,0,0);
-	memset(m_arrPhysGeomInfo, 0, sizeof(m_arrPhysGeomInfo));
-
-  m_pSMLSource = 0;
-
-  m_pLeafBuffer = 0;//GetRenderer()->CreateLe afBuffer("StatObj");
-
-	m_bDefaultObject=false;
-
-  memset(m_arrpLowLODs,0,sizeof(m_arrpLowLODs));
-
-  m_nLoadedLodsNum=1;
+    float dxh = (float)max(fabs(GetBoxMax().x), fabs(GetBoxMin().x));
+    float dyh = (float)max(fabs(GetBoxMax().y), fabs(GetBoxMin().y));
+    m_fRadiusHors = (float)sqrt(dxh * dxh + dyh * dyh);
+    m_fRadiusVert = 0.01f + (GetBoxMax().z - GetBoxMin().z) * 0.5f;
 }
 
-CStatObj::~CStatObj() 
-{ 
-	ShutDown();
+CStatObj::CStatObj(ISystem* pSystem) {
+    m_pSystem = pSystem;
+    m_nUsers = 0; // referense counter
+
+    m_nStripify = 0;
+    m_bLoadAdditinalInfo = false;
+    m_bKeepInLocalSpace = false;
+    m_bStreamable = false;
+    m_nSpriteTexRes = 0;
+
+    ZeroStruct(m_szFolderName);
+    ZeroStruct(m_szFileName);
+    ZeroStruct(m_szGeomName);
+
+    m_pStencilShadowConnectivity = 0;
+
+    m_nLastRendFrameId = 0;
+
+    Init();
 }
 
-void CStatObj::ShutDown() 
-{
-	if(!m_pSystem)
-		return;
+void CStatObj::Init() {
+    m_pTriData = 0;
+    m_nLoadedTrisCount = 0;
+    m_fObjectRadius = 0;
+    m_pSvObj = nullptr;
+    m_dwFlags = m_dwFlags2 = 0;
 
-  if(m_pTriData)
-    m_pTriData->FreeLMInfo();
-  delete m_pTriData; 
-	m_pTriData = 0;
+    ZeroStruct(m_arrSpriteTexID);
 
-  for(int n=0; n<2; n++)
-  if(m_arrPhysGeomInfo[n])
-    GetPhysicalWorld()->GetGeomManager()->UnregisterGeometry(m_arrPhysGeomInfo[n]);
+    m_vBoxMin.Set(0, 0, 0);
+    m_vBoxMax.Set(0, 0, 0);
+    m_vBoxCenter.Set(0, 0, 0);
+    memset(m_arrPhysGeomInfo, 0, sizeof(m_arrPhysGeomInfo));
 
-  if(m_pSMLSource && m_pSMLSource->m_LightFrustums.Count() && m_pSMLSource->m_LightFrustums[0].pModelsList)
-    delete m_pSMLSource->m_LightFrustums[0].pModelsList;
-  delete m_pSMLSource;
+    m_pSMLSource = 0;
 
-	if(m_pLeafBuffer && !m_pLeafBuffer->m_bMaterialsWasCreatedInRenderer)
-  {
-    for (int i=0; i<(*m_pLeafBuffer->m_pMats).Count(); i++)
-    {		
-      if((*m_pLeafBuffer->m_pMats)[i].pRE)
-        (*m_pLeafBuffer->m_pMats)[i].pRE->Release();
+    m_pLeafBuffer = 0; // GetRenderer()->CreateLe afBuffer("StatObj");
+
+    m_bDefaultObject = false;
+
+    memset(m_arrpLowLODs, 0, sizeof(m_arrpLowLODs));
+
+    m_nLoadedLodsNum = 1;
+}
+
+CStatObj::~CStatObj() {
+    ShutDown();
+}
+
+void CStatObj::ShutDown() {
+    if (!m_pSystem)
+        return;
+
+    if (m_pTriData)
+        m_pTriData->FreeLMInfo();
+    delete m_pTriData;
+    m_pTriData = nullptr;
+
+    for (int n = 0; n < 2; n++) {
+        if (m_arrPhysGeomInfo[n]) {
+            GetPhysicalWorld()->GetGeomManager()->UnregisterGeometry(m_arrPhysGeomInfo[n]);
+        }
     }
-		delete m_pLeafBuffer->m_pMats;
-		m_pLeafBuffer->m_pMats=0;
-  }
 
-  GetRenderer()->DeleteLeafBuffer(m_pLeafBuffer);
-	m_pLeafBuffer=0;
+    if (m_pSMLSource && m_pSMLSource->m_LightFrustums.Count() && m_pSMLSource->m_LightFrustums[0].pModelsList) {
+        delete m_pSMLSource->m_LightFrustums[0].pModelsList;
+    }
+    delete m_pSMLSource;
 
-  for(int i=0; i<FAR_TEX_COUNT; i++)
-		if(m_arrSpriteTexID[i])
-		  GetRenderer()->RemoveTexture(m_arrSpriteTexID[i]);
+    if (m_pLeafBuffer && !m_pLeafBuffer->m_bMaterialsWasCreatedInRenderer) {
+        for (int i = 0; i < (*m_pLeafBuffer->m_pMats).Count(); i++) {
+            if ((*m_pLeafBuffer->m_pMats)[i].pRE) {
+                (*m_pLeafBuffer->m_pMats)[i].pRE->Release();
+            }
+        }
+        delete m_pLeafBuffer->m_pMats;
+        m_pLeafBuffer->m_pMats = nullptr;
+    }
 
-	if (m_pSvObj)
-	{
-		m_pSvObj->Release();
-		m_pSvObj=NULL;
-	}
-  
-  for(int i=0; i<MAX_STATOBJ_LODS_NUM; i++)
-    delete m_arrpLowLODs[i];
+    GetRenderer()->DeleteLeafBuffer(m_pLeafBuffer);
+    m_pLeafBuffer = nullptr;
 
-  m_ShaderParams.Free();
+    for (int i = 0; i < FAR_TEX_COUNT; i++) {
+        if (m_arrSpriteTexID[i]) {
+            GetRenderer()->RemoveTexture(m_arrSpriteTexID[i]);
+        }
+    }
+
+    if (m_pSvObj) {
+        m_pSvObj->Release();
+        m_pSvObj = nullptr;
+    }
+
+    for (int i = 0; i < MAX_STATOBJ_LODS_NUM; i++) {
+        delete m_arrpLowLODs[i];
+    }
+
+    m_ShaderParams.Free();
 }
 
 /*
@@ -407,9 +384,9 @@ void CStatObj::BuildOcTree()
 
   for(int f=0; f<m_pTriData->m_nFaceCount; f++)
   {
-    m_pTriData->m_pFaces[f].m_vCenter = 
-     (Vec3d(&m_pTriData->m_pVerts[m_pTriData->m_pFaces[f].v[0]].x) + 
-      Vec3d(&m_pTriData->m_pVerts[m_pTriData->m_pFaces[f].v[1]].x) + 
+    m_pTriData->m_pFaces[f].m_vCenter =
+     (Vec3d(&m_pTriData->m_pVerts[m_pTriData->m_pFaces[f].v[0]].x) +
+      Vec3d(&m_pTriData->m_pVerts[m_pTriData->m_pFaces[f].v[1]].x) +
       Vec3d(&m_pTriData->m_pVerts[m_pTriData->m_pFaces[f].v[2]].x))/3.f;
 
     allFaces[f] = &m_pTriData->m_pFaces[f];
@@ -426,126 +403,113 @@ void CStatObj::BuildOcTree()
   delete [] allFaces;
 }*/
 
-//float MakeBuffersTime = 0;
+// float MakeBuffersTime = 0;
 
-void CStatObj::MakeBuffers(bool make_tree, int nStripify, char * szCompiledFileName)
-{
-//  float fTimeStart = GetTimer()->GetAsyncCurTime();
-/*
-  FILE * f = fopen(szCompiledFileName,"rb");
-                         
-  if(f)
-  {
-    fseek(f,0,SEEK_END);
-    int nSize = ftell(f);
-    fseek(f,0,SEEK_SET);
+void CStatObj::MakeBuffers(bool make_tree, int nStripify, char* szCompiledFileName) {
+    //  float fTimeStart = GetTimer()->GetAsyncCurTime();
+    /*
+      FILE * f = fopen(szCompiledFileName,"rb");
 
-    uchar * pData = new uchar[nSize];
-    int nReadedBytes = fread(pData,1,nSize,f);
-    m_pLeafBuffer->Serialize(nSize, pData, false, m_szFolderName, m_nEFT_Flags);
+      if(f)
+      {
+        fseek(f,0,SEEK_END);
+        int nSize = ftell(f);
+        fseek(f,0,SEEK_SET);
 
-    delete pData;
-  }
-  else*/
-  {
-		assert(!m_pLeafBuffer);
-	  m_pLeafBuffer = GetRenderer()->CreateLeafBuffer(eBT_Static,"StatObj");
+        uchar * pData = new uchar[nSize];
+        int nReadedBytes = fread(pData,1,nSize,f);
+        m_pLeafBuffer->Serialize(nSize, pData, false, m_szFolderName, m_nEFT_Flags);
 
-    m_pLeafBuffer->m_pMats = new list2<CMatInfo>;
-		m_pLeafBuffer->m_pMats->AddList(m_pTriData->m_lstMatTable);
+        delete pData;
+      }
+      else*/
+    {
+        assert(!m_pLeafBuffer);
+        m_pLeafBuffer = GetRenderer()->CreateLeafBuffer(eBT_Static, "StatObj");
 
-    if(m_pTriData->m_nFaceCount)
-		{
-//      m_pLeafBuffer->CreateBuffer(m_pTriData, nStripify, true);
-		m_pLeafBuffer->CreateBuffer(m_pTriData, STRIPTYPE_NONE, false ); // no sorting for lightmaps 
-		}
+        m_pLeafBuffer->m_pMats = new list2<CMatInfo>;
+        m_pLeafBuffer->m_pMats->AddList(m_pTriData->m_lstMatTable);
+
+        if (m_pTriData->m_nFaceCount) {
+            //      m_pLeafBuffer->CreateBuffer(m_pTriData, nStripify, true);
+            m_pLeafBuffer->CreateBuffer(m_pTriData, STRIPTYPE_NONE, false); // no sorting for lightmaps
+        }
 
         /*
-    int nSize = 0;
-    m_pLeafBuffer->Serialize(nSize, 0, true, m_szFolderName, m_nEFT_Flags);
+        int nSize = 0;
+        m_pLeafBuffer->Serialize(nSize, 0, true, m_szFolderName, m_nEFT_Flags);
 
-    uchar * pData = new uchar[nSize];
-    m_pLeafBuffer->Serialize(nSize, pData, true, m_szFolderName, m_nEFT_Flags);
+        uchar* pData = new uchar[nSize];
+        m_pLeafBuffer->Serialize(nSize, pData, true, m_szFolderName, m_nEFT_Flags);
 
-    f = fopen(szCompiledFileName,"wb");
-    fwrite(pData,1,nSize,f);
-    delete pData;*/
-  }
+        f = fopen(szCompiledFileName, "wb");
+        fwrite(pData, 1, nSize, f);
+        delete pData;
+        */
+    }
 
-  //fclose(f);
+    // fclose(f);
 
-//  MakeBuffersTime += (GetTimer()->GetAsyncCurTime() - fTimeStart);
+    //  MakeBuffersTime += (GetTimer()->GetAsyncCurTime() - fTimeStart);
 }
 
-//////////////////////////////////////////////////////////////////////////
-void CStatObj::MakeLeafBuffer( CIndexedMesh *mesh,bool bStripify )
-{
-	m_pTriData = mesh;
-	if (m_pLeafBuffer)
-	{
-		// Delete old leaf buffer.
-		GetRenderer()->DeleteLeafBuffer(m_pLeafBuffer);
-	}
-	m_pLeafBuffer = GetRenderer()->CreateLeafBuffer(eBT_Static,"StatObj");
+void CStatObj::MakeLeafBuffer(CIndexedMesh* mesh, bool bStripify) {
+    m_pTriData = mesh;
+    if (m_pLeafBuffer) {
+        // Delete old leaf buffer.
+        GetRenderer()->DeleteLeafBuffer(m_pLeafBuffer);
+    }
+    m_pLeafBuffer = GetRenderer()->CreateLeafBuffer(eBT_Static, "StatObj");
 
-	m_pLeafBuffer->m_pMats = new list2<CMatInfo>;
-	m_pLeafBuffer->m_pMats->AddList(m_pTriData->m_lstMatTable);
+    m_pLeafBuffer->m_pMats = new list2<CMatInfo>;
+    m_pLeafBuffer->m_pMats->AddList(m_pTriData->m_lstMatTable);
 
-	if(m_pTriData->m_nFaceCount)
-	{
-//		m_pLeafBuffer->CreateBuffer(m_pTriData, (bStripify)?1:0, true );
-		m_pLeafBuffer->CreateBuffer(m_pTriData, STRIPTYPE_NONE, false ); // no sorting for lightmaps 
-	}
+    if (m_pTriData->m_nFaceCount) {
+        //        m_pLeafBuffer->CreateBuffer(m_pTriData, (bStripify)?1:0, true );
+        m_pLeafBuffer->CreateBuffer(m_pTriData, STRIPTYPE_NONE, false); // no sorting for lightmaps
+    }
 }
 
-//////////////////////////////////////////////////////////////////////////
-CStatObj::GetAllocatedBytes()
-{
-  int size = sizeof(*this) + m_pTriData ? m_pTriData->GetAllocatedBytes() : 0;
+int CStatObj::GetAllocatedBytes() {
+    int size = sizeof(*this) + m_pTriData ? m_pTriData->GetAllocatedBytes() : 0;
 
-//  for(int i=0; i<MAX_TREE_LEAFS_NUM; i++)
-  {
-    size += m_pLeafBuffer->GetAllocatedBytes(false);
-  }
+    //  for(int i=0; i<MAX_TREE_LEAFS_NUM; i++)
+    { size += m_pLeafBuffer->GetAllocatedBytes(false); }
 
-  return size;
-} 
-
-///////////////////////////////////////////////////////////////////////////////////////    
-Vec3d CStatObj::GetHelperPos(const char * szHelperName)
-{
-  for(int i=0; i<m_lstHelpers.Count(); i++)
-  if(!strcmp(m_lstHelpers[i].sName,szHelperName))
-    return m_lstHelpers[i].tMat.GetTranslation();
-
-  return Vec3d(0,0,0);
+    return size;
 }
 
-///////////////////////////////////////////////////////////////////////////////////////    
-const Matrix * CStatObj::GetHelperMatrixByName(const char * szHelperName)
-{
-  for(int i=0; i<m_lstHelpers.Count(); i++)
-  if(!strcmp(m_lstHelpers[i].sName,szHelperName))
-    return &(m_lstHelpers[i].tMat);
-
-  return 0;
+Vec3d CStatObj::GetHelperPos(const char* szHelperName) {
+    for (int i = 0; i < m_lstHelpers.Count(); i++) {
+        if (!strcmp(m_lstHelpers[i].sName, szHelperName)) {
+            return m_lstHelpers[i].tMat.GetTranslation();
+        }
+    }
+    return Vec3d(0, 0, 0);
 }
 
-///////////////////////////////////////////////////////////////////////////////////////    
-const char *CStatObj::GetHelperById(int nId, Vec3d & vPos, Matrix * pMat, int * pnType)
-{
-  if ( nId >= m_lstHelpers.Count() || nId<0 )
-    return (NULL);
+const Matrix* CStatObj::GetHelperMatrixByName(const char* szHelperName) {
+    for (int i = 0; i < m_lstHelpers.Count(); i++) {
+        if (!strcmp(m_lstHelpers[i].sName, szHelperName)) {
+            return &(m_lstHelpers[i].tMat);
+        }
+    }
+    return nullptr;
+}
 
-	vPos   = m_lstHelpers[nId].tMat.GetTranslation();
+const char* CStatObj::GetHelperById(int nId, Vec3d& vPos, Matrix* pMat, int* pnType) {
+    if (nId >= m_lstHelpers.Count() || nId < 0)
+        return (nullptr);
 
-  if(pnType)
-		*pnType = m_lstHelpers[nId].nType;
+    vPos = m_lstHelpers[nId].tMat.GetTranslation();
 
-	if(pMat)
-		*pMat   = m_lstHelpers[nId].tMat;
+    if (pnType)
+        *pnType = m_lstHelpers[nId].nType;
 
-  return (m_lstHelpers[nId].sName);
+    if (pMat)
+        *pMat = m_lstHelpers[nId].tMat;
+
+    return (m_lstHelpers[nId].sName);
 }
 
 /*
@@ -560,49 +524,44 @@ bool CStatObj::GetHelper(int id, char * szHelperName, int nMaxHelperNameSize, Ve
   return true;
 } */
 
-void CStatObj::UpdateCustomLightingSpritesAndShadowMaps(float fStatObjAmbientLevel, int nTexRes)
-{
-	m_nSpriteTexRes = nTexRes;
-  Vec3d vLight = m_pSystem->GetI3DEngine()->GetSunPosition();
-  vLight.Normalize();
-//  Vec3d vColor = m_pSystem->GetI3DEngine()->GetWorldColor();
-  float fSize = m_vBoxMax.z - m_vBoxMin.z;
+void CStatObj::UpdateCustomLightingSpritesAndShadowMaps(float fStatObjAmbientLevel, int nTexRes) {
+    m_nSpriteTexRes = nTexRes;
+    Vec3d vLight = m_pSystem->GetI3DEngine()->GetSunPosition();
+    vLight.Normalize();
+    //  Vec3d vColor = m_pSystem->GetI3DEngine()->GetWorldColor();
+    float fSize = m_vBoxMax.z - m_vBoxMin.z;
 
-  // update lighting for full lod and lower lods
-  m_pLeafBuffer->UpdateCustomLighting( vLight, fSize, fStatObjAmbientLevel );  
-  int nLowestLod=0;
-  for(int nLodLevel=1; nLodLevel<MAX_STATOBJ_LODS_NUM; nLodLevel++)
-  if(m_arrpLowLODs[nLodLevel])
-  {
-    m_arrpLowLODs[nLodLevel]->GetLeafBuffer()->UpdateCustomLighting( vLight, fSize, fStatObjAmbientLevel );  
-    nLowestLod = nLodLevel;
-  }
+    // update lighting for full lod and lower lods
+    m_pLeafBuffer->UpdateCustomLighting(vLight, fSize, fStatObjAmbientLevel);
+    int nLowestLod = 0;
+    for (int nLodLevel = 1; nLodLevel < MAX_STATOBJ_LODS_NUM; nLodLevel++)
+        if (m_arrpLowLODs[nLodLevel]) {
+            m_arrpLowLODs[nLodLevel]->GetLeafBuffer()->UpdateCustomLighting(vLight, fSize, fStatObjAmbientLevel);
+            nLowestLod = nLodLevel;
+        }
 
-  // make sprites
-  if(nLowestLod)
-  {
-    // clear sprites in full lod
-    for(int i=0; i<FAR_TEX_COUNT; i++)
-      if(m_arrSpriteTexID[i])
-    {
-      GetRenderer()->RemoveTexture(m_arrSpriteTexID[i]);
-      m_arrSpriteTexID[i]=0;
-    }
+    // make sprites
+    if (nLowestLod) {
+        // clear sprites in full lod
+        for (int i = 0; i < FAR_TEX_COUNT; i++)
+            if (m_arrSpriteTexID[i]) {
+                GetRenderer()->RemoveTexture(m_arrSpriteTexID[i]);
+                m_arrSpriteTexID[i] = 0;
+            }
 
-    // make new sprites in low lod
-    m_arrpLowLODs[nLowestLod]->CreateModelFarImages(nTexRes); // use lowest lod if present
+        // make new sprites in low lod
+        m_arrpLowLODs[nLowestLod]->CreateModelFarImages(nTexRes); // use lowest lod if present
 
-    // move sprite id from low inro into full lod
-    memcpy(m_arrSpriteTexID, m_arrpLowLODs[nLowestLod]->m_arrSpriteTexID, sizeof(m_arrSpriteTexID));
-    memset(m_arrpLowLODs[nLowestLod]->m_arrSpriteTexID, 0, sizeof(m_arrpLowLODs[nLowestLod]->m_arrSpriteTexID));
-  }
-  else
-    CreateModelFarImages(nTexRes);
+        // move sprite id from low inro into full lod
+        memcpy(m_arrSpriteTexID, m_arrpLowLODs[nLowestLod]->m_arrSpriteTexID, sizeof(m_arrSpriteTexID));
+        memset(m_arrpLowLODs[nLowestLod]->m_arrSpriteTexID, 0, sizeof(m_arrpLowLODs[nLowestLod]->m_arrSpriteTexID));
+    } else
+        CreateModelFarImages(nTexRes);
 
-  MakeShadowMaps(vLight);
+    MakeShadowMaps(vLight);
 
-//  if(m_pTriData && !m_pTriData->m_lstLSources.Count())
-	//	FreeTriData();
+    //  if(m_pTriData && !m_pTriData->m_lstLSources.Count())
+    //    FreeTriData();
 }
 
 /*
@@ -626,143 +585,132 @@ bool CStatObj::SetPhysMaterialName(int nMatID, const char * szPhysMatName)
 }
 */
 
-void CStatObj::RegisterUser()
-{
-  m_nUsers++;
+void CStatObj::RegisterUser() {
+    m_nUsers++;
 }
 
-void CStatObj::UnregisterUser()
-{
-  m_nUsers--;
+void CStatObj::UnregisterUser() {
+    m_nUsers--;
 }
 
-void CStatObj::LoadLowLODs(int nStripify,bool bLoadAdditinalInfo,bool bKeepInLocalSpace)
-{
-  if(m_szGeomName[0])
-    return;
+void CStatObj::LoadLowLODs(int nStripify, bool bLoadAdditinalInfo, bool bKeepInLocalSpace) {
+    if (m_szGeomName[0])
+        return;
 
-  m_nLoadedLodsNum = 1;
+    m_nLoadedLodsNum = 1;
 
-  for(int nLodLevel=1; nLodLevel<MAX_STATOBJ_LODS_NUM; nLodLevel++)
-  {
-    // make lod file name
-    char sLodFileName[512];
-    strncpy(sLodFileName, m_szFileName, sizeof(m_szFileName));
-    sLodFileName[strlen(sLodFileName)-4]=0;
-    strcat(sLodFileName,"_lod");
-    char sLodNum[8];
-    ltoa(nLodLevel,sLodNum,10);
-    strcat(sLodFileName,sLodNum);
-    strcat(sLodFileName,".cgf");
+    for (int nLodLevel = 1; nLodLevel < MAX_STATOBJ_LODS_NUM; nLodLevel++) {
+        // make lod file name
+        char sLodFileName[512];
+        strncpy(sLodFileName, m_szFileName, sizeof(m_szFileName));
+        sLodFileName[strlen(sLodFileName) - 4] = 0;
+        strcat(sLodFileName, "_lod");
+        char sLodNum[8];
+        ltoa(nLodLevel, sLodNum, 10);
+        strcat(sLodFileName, sLodNum);
+        strcat(sLodFileName, ".cgf");
 
-    // try to load
-	  m_arrpLowLODs[nLodLevel] = new CStatObj(m_pSystem);
-    bool bRes = fxopen(sLodFileName,"r") && 
-			m_arrpLowLODs[nLodLevel]->LoadObject(sLodFileName, 0, nStripify, bLoadAdditinalInfo, bKeepInLocalSpace);
+        // try to load
+        m_arrpLowLODs[nLodLevel] = new CStatObj(m_pSystem);
+        bool bRes = fxopen(sLodFileName, "r") && m_arrpLowLODs[nLodLevel]->LoadObject(sLodFileName, 0, nStripify, bLoadAdditinalInfo, bKeepInLocalSpace);
 
-    if(!bRes || m_arrpLowLODs[nLodLevel]->m_nLoadedTrisCount > m_nLoadedTrisCount / 1.8f)
-    {
-      if(bRes)
-        GetLog()->Log("Error: CStatObj::LoadLowLODs: Low lod model contains too many polygons (more than half of original model, loading skipped): %s", sLodFileName);
+        if (!bRes || m_arrpLowLODs[nLodLevel]->m_nLoadedTrisCount > m_nLoadedTrisCount / 1.8f) {
+            if (bRes)
+                GetLog()->Log("Error: CStatObj::LoadLowLODs: Low lod model contains too many polygons (more than half of original model, loading skipped): %s", sLodFileName);
 
-      delete m_arrpLowLODs[nLodLevel];
-      m_arrpLowLODs[nLodLevel]=0;
-      break;
+            delete m_arrpLowLODs[nLodLevel];
+            m_arrpLowLODs[nLodLevel] = 0;
+            break;
+        }
+        m_nLoadedLodsNum++;
     }
-    m_nLoadedLodsNum++;
-  }
 }
 
-float CStatObj::GetDistFromPoint(const Vec3d & vPoint)
-{
-  float fMinDist = 4096;
-  for(int v=0; v<m_pTriData->m_nVertCount; v++)
-  {
-    float fDist = GetDistance(m_pTriData->m_pVerts[v],vPoint);
-    if(fDist < fMinDist)
-      fMinDist = fDist;
-  }
+float CStatObj::GetDistFromPoint(const Vec3d& vPoint) {
+    float fMinDist = 4096;
+    for (int v = 0; v < m_pTriData->m_nVertCount; v++) {
+        float fDist = GetDistance(m_pTriData->m_pVerts[v], vPoint);
+        if (fDist < fMinDist)
+            fMinDist = fDist;
+    }
 
-  return fMinDist;
+    return fMinDist;
 }
 
-bool CStatObj::IsSameObject(const char * szFileName, const char * szGeomName)
-{
-	// cmp object names
-	if (szGeomName)
-	{
-		if(stricmp(szGeomName,m_szGeomName)!=0)
-			return false;
-	}
+bool CStatObj::IsSameObject(const char* szFileName, const char* szGeomName) {
+    // cmp object names
+    if (szGeomName) {
+        if (stricmp(szGeomName, m_szGeomName) != 0)
+            return false;
+    }
 
-  // Normilize file name
-	char szFileNameNorm[MAX_PATH_LENGTH]="";
-	char *pszDest = szFileNameNorm;
-	const char *pszSource = szFileName;
-	while (*pszSource)
-	{
-		if (*pszSource=='/')
-			*pszDest++='\\';
-		else 
-			*pszDest++=*pszSource;
-		pszSource++;
-	}
-	*pszDest=0;
+    // Normilize file name
+    char szFileNameNorm[MAX_PATH_LENGTH] = "";
+    char* pszDest = szFileNameNorm;
+    const char* pszSource = szFileName;
+    while (*pszSource) {
+        if (*pszSource == '/')
+            *pszDest++ = '\\';
+        else
+            *pszDest++ = *pszSource;
+        pszSource++;
+    }
+    *pszDest = 0;
 
-	// cmp file names
-	if(stricmp(szFileNameNorm,m_szFileName)!=0)
-		return false;
+    // cmp file names
+    if (stricmp(szFileNameNorm, m_szFileName) != 0)
+        return false;
 
-	return true;
+    return true;
 }
 /*
 // SetHideability and SetBending will be removed from here
 #include "objman.h"
 #include "3dengine.h"
 
-void CStatObj::SetHideability(int nHideability) 
-{ 
-	m_nHideability = nHideability; 
+void CStatObj::SetHideability(int nHideability)
+{
+    m_nHideability = nHideability;
 
-	list2<StatInstGroup> & TypeList = ((C3DEngine*)Get3DEngine())->GetObjManager()->m_lstStaticTypes;
-	for(int i=0; i<TypeList.Count(); i++)
-		if(TypeList[i].pStatObj == this)
-			TypeList[i].bHideability = (nHideability!=0);
+    list2<StatInstGroup> & TypeList = ((C3DEngine*)Get3DEngine())->GetObjManager()->m_lstStaticTypes;
+    for(int i=0; i<TypeList.Count(); i++)
+        if(TypeList[i].pStatObj == this)
+            TypeList[i].bHideability = (nHideability!=0);
 }
 
-void CStatObj::SetBending(float fBending) 
-{ 
-	m_fBending = fBending; 
+void CStatObj::SetBending(float fBending)
+{
+    m_fBending = fBending;
 
-	list2<StatInstGroup> & TypeList = ((C3DEngine*)Get3DEngine())->GetObjManager()->m_lstStaticTypes;
-	for(int i=0; i<TypeList.Count(); i++)
-		if(TypeList[i].pStatObj == this)
-			TypeList[i].fBending = fBending;
+    list2<StatInstGroup> & TypeList = ((C3DEngine*)Get3DEngine())->GetObjManager()->m_lstStaticTypes;
+    for(int i=0; i<TypeList.Count(); i++)
+        if(TypeList[i].pStatObj == this)
+            TypeList[i].fBending = fBending;
 }
 */
 
-void CStatObj::GetMemoryUsage(ICrySizer* pSizer)
-{
-	pSizer->AddObject(this,GetMemoryUsage());
+void CStatObj::GetMemoryUsage(ICrySizer* pSizer) {
+    pSizer->AddObject(this, GetMemoryUsage());
 }
 
-int CStatObj::GetMemoryUsage()
-{
-	int nSize=0;
-	
-	for(int i=0; i<MAX_STATOBJ_LODS_NUM; i++)
-		if(m_arrpLowLODs[i])
-			nSize += m_arrpLowLODs[i]->GetMemoryUsage();
+int CStatObj::GetMemoryUsage() {
+    int nSize = 0;
 
-	nSize += m_lstHelpers.GetMemoryUsage();
-	nSize += m_lstLSources.GetMemoryUsage();
-	nSize += m_lstOcclVolInds.GetMemoryUsage();
-	nSize += m_lstOcclVolVerts.GetMemoryUsage();
-	nSize += m_lstShaderTemplates.GetMemoryUsage();
-	nSize += m_pSMLSource ? sizeof(*m_pSMLSource) : 0;
-	nSize += m_pSvObj ? m_pSvObj->GetMemoryUsage() : 0;
-	nSize += m_pTriData ? m_pTriData->GetMemoryUsage() : 0;
-	nSize += m_ShaderParams.GetMemoryUsage() + m_ShaderParams.Num()*sizeof(SShaderParam);
-	
-	return nSize;
+    for (int i = 0; i < MAX_STATOBJ_LODS_NUM; i++) {
+        if (m_arrpLowLODs[i]) {
+            nSize += m_arrpLowLODs[i]->GetMemoryUsage();
+        }
+    }
+
+    nSize += m_lstHelpers.GetMemoryUsage();
+    nSize += m_lstLSources.GetMemoryUsage();
+    nSize += m_lstOcclVolInds.GetMemoryUsage();
+    nSize += m_lstOcclVolVerts.GetMemoryUsage();
+    nSize += m_lstShaderTemplates.GetMemoryUsage();
+    nSize += m_pSMLSource ? sizeof(*m_pSMLSource) : 0;
+    nSize += m_pSvObj ? m_pSvObj->GetMemoryUsage() : 0;
+    nSize += m_pTriData ? m_pTriData->GetMemoryUsage() : 0;
+    nSize += m_ShaderParams.GetMemoryUsage() + m_ShaderParams.Num() * sizeof(SShaderParam);
+
+    return nSize;
 }

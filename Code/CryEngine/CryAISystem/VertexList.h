@@ -5,25 +5,28 @@
 
 class CCryFile;
 
-class CVertexList
-{
+class CVertexList {
 
-	Obstacles m_vList;
+    Obstacles m_vList;
 
 public:
-	CVertexList(void);
-	~CVertexList(void);
-	int AddVertex(const ObstacleData & od);
+    CVertexList();
+    ~CVertexList();
+    int AddVertex(const ObstacleData& od);
 
-	const ObstacleData GetVertex(int index);
-	ObstacleData &ModifyVertex(int index);
-	int FindVertex(const ObstacleData & od);
+    const ObstacleData GetVertex(int index);
+    ObstacleData& ModifyVertex(int index);
+    int FindVertex(const ObstacleData& od);
 
-	void WriteToFile( CCryFile& file );
-	void ReadFromFile( class CCryFile &file );
+    void WriteToFile(CCryFile& file);
+    void ReadFromFile(class CCryFile& file);
 
-	void Clear() {m_vList.clear();}
-	int GetSize() {return m_vList.size();}
+    void Clear() {
+        m_vList.clear();
+    }
+    int GetSize() {
+        return m_vList.size();
+    }
 };
 
 #endif // #ifndef _VERTEX_LIST_

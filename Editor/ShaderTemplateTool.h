@@ -22,79 +22,71 @@
 
 #include "EditTool.h"
 
-#include <list>														// STL list<>
-//using namespace std;
+#include <list> // STL list<>
+// using namespace std;
 
-
-class CShaderParameterSet
-{
+class CShaderParameterSet {
 public:
-
 private:
-	TArray <SShaderParam *> m_ShaderParams;
+    TArray<SShaderParam*> m_ShaderParams;
 };
-
 
 //////////////////////////////////////////////////////////////////////////
-class CShaderTemplateTool : public CEditTool
-{
-	DECLARE_DYNCREATE(CShaderTemplateTool)
+class CShaderTemplateTool : public CEditTool {
+    DECLARE_DYNCREATE(CShaderTemplateTool)
 public:
+    CShaderTemplateTool();
 
-	//! constructor
-									CShaderTemplateTool				();
+    virtual ~CShaderTemplateTool();
 
-	//! destructor
-	virtual					~CShaderTemplateTool			();
+    virtual void BeginEditParams(IEditor* ie, int flags);
+    virtual void EndEditParams();
 
-	virtual void		BeginEditParams						( IEditor *ie,int flags );
-	virtual void		EndEditParams							( void );
+    virtual void Display(DisplayContext& dc);
 
-	virtual void		Display										( DisplayContext &dc );
+    // Ovverides from CEditTool
+    bool MouseCallback(CViewport* view, EMouseEvent event, CPoint& point, int flags);
 
-	// Ovverides from CEditTool
-	bool						MouseCallback							( CViewport *view,EMouseEvent event,CPoint &point,int flags );
+    // Key down.
+    bool OnKeyDown(CViewport* view, uint nChar, uint nRepCnt, uint nFlags);
+    bool OnKeyUp(CViewport* view, uint nChar, uint nRepCnt, uint nFlags);
 
-	// Key down.
-	bool						OnKeyDown									( CViewport *view,uint nChar,uint nRepCnt,uint nFlags );
-	bool						OnKeyUp										( CViewport *view,uint nChar,uint nRepCnt,uint nFlags );
-	
-	// Delete itself.
-	void						Release										( void ) { delete this; };
+    // Delete itself.
+    void Release() {
+        delete this;
+    };
 
-	void						Modify										( void );
+    void Modify();
 
-	//! open file open dialog and call OnFileChanged()
-//	void						ChooseInputFile						( void );
+    //! open file open dialog and call OnFileChanged()
+    //    void                        ChooseInputFile                        ( void );
 
-	//! refresh the material combobox and call OnMaterialChanged()
-	void						OnFileChanged							( CString inRelFilename );
+    //! refresh the material combobox and call OnMaterialChanged()
+    void OnFileChanged(CString inRelFilename);
 
-	//! refresh the choosen templatename and call OnTemplateChanged()
-	void						OnMaterialChanged					( void );
+    //! refresh the choosen templatename and call OnTemplateChanged()
+    void OnMaterialChanged();
 
-	//! refresh the xml
-	void						OnTemplateChanged					( void );
+    //! refresh the xml
+    void OnTemplateChanged();
 
+    void OnBnClickedShadertemplLoad();
+    void OnBnClickedShadertemplSave();
 
-	void						OnBnClickedShadertemplLoad( void );
-	void						OnBnClickedShadertemplSave( void );
-
-	CString					getFilename								( void );
+    CString getFilename();
 
 private:
-//	Vec3													m_pointerPos;
-//	float													m_brushRadius;
-//	bool													m_bMakeHole;
+    //    Vec3                                                    m_pointerPos;
+    //    float                                                    m_brushRadius;
+    //    bool                                                    m_bMakeHole;
 
-	IEditor *											m_ie;
+    IEditor* m_ie;
 
-	int														m_panelId;
-	class CShaderTemplatePanel *	m_panel;
-	CString												m_sFilename;
+    int m_panelId;
+    class CShaderTemplatePanel* m_panel;
+    CString m_sFilename;
 
-	std::list<CShaderParameterSet *>		m_ShaderParameterSetList;
+    std::list<CShaderParameterSet*> m_ShaderParameterSetList;
 };
-
 
 #endif // __ShaderTemplateTool_h__

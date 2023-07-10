@@ -13,194 +13,172 @@ static char THIS_FILE[] = __FILE__;
 /////////////////////////////////////////////////////////////////////////////
 // CToolBarTab
 
-CToolBarTab::CToolBarTab()
-{
-}
+CToolBarTab::CToolBarTab() {}
 
-CToolBarTab::~CToolBarTab()
-{
-}
+CToolBarTab::~CToolBarTab() {}
 
 BEGIN_MESSAGE_MAP(CToolBarTab, CTabCtrl)
-	//{{AFX_MSG_MAP(CToolBarTab)
-	ON_WM_CREATE()
-	ON_WM_SIZE()
-	ON_NOTIFY_REFLECT(TCN_SELCHANGE, OnSelchange)
-	ON_NOTIFY_REFLECT(TCN_SELCHANGING, OnSelchanging)
-	ON_WM_VSCROLL()
-	//}}AFX_MSG_MAP
+//{{AFX_MSG_MAP(CToolBarTab)
+ON_WM_CREATE()
+ON_WM_SIZE()
+ON_NOTIFY_REFLECT(TCN_SELCHANGE, OnSelchange)
+ON_NOTIFY_REFLECT(TCN_SELCHANGING, OnSelchanging)
+ON_WM_VSCROLL()
+//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
 // CToolBarTab message handlers
 
-int CToolBarTab::OnCreate(LPCREATESTRUCT lpCreateStruct) 
-{
-	if (CTabCtrl::OnCreate(lpCreateStruct) == -1)
-		return -1;
-	
-	// TODO: Add your specialized creation code here
+int CToolBarTab::OnCreate(LPCREATESTRUCT lpCreateStruct) {
+    if (CTabCtrl::OnCreate(lpCreateStruct) == -1)
+        return -1;
 
-	// Set another font for the tab control
-	SendMessage(WM_SETFONT, (WPARAM)
-		GetStockObject(DEFAULT_GUI_FONT), MAKELPARAM(FALSE, 0));
+    // TODO: Add your specialized creation code here
 
-	// Create the scrolling controls
-	m_cScrollBar.Create(WS_CHILD | WS_VISIBLE | SBS_VERT, 
-		CRect(90, 20, 110, 400), this, NULL);
+    // Set another font for the tab control
+    SendMessage(WM_SETFONT, (WPARAM)GetStockObject(DEFAULT_GUI_FONT), MAKELPARAM(FALSE, 0));
 
-	m_cScrollBar.EnableScrollBar();
-	m_cScrollBar.ShowScrollBar();
-	
-	return 0;
+    // Create the scrolling controls
+    m_cScrollBar.Create(WS_CHILD | WS_VISIBLE | SBS_VERT, CRect(90, 20, 110, 400), this, nullptr);
+
+    m_cScrollBar.EnableScrollBar();
+    m_cScrollBar.ShowScrollBar();
+
+    return 0;
 }
 
-void CToolBarTab::OnSize(UINT nType, int cx, int cy) 
-{
-	////////////////////////////////////////////////////////////////////////
-	// Resize all toolbars that are linked with tabs
-	////////////////////////////////////////////////////////////////////////
+void CToolBarTab::OnSize(UINT nType, int cx, int cy) {
+    ////////////////////////////////////////////////////////////////////////
+    // Resize all toolbars that are linked with tabs
+    ////////////////////////////////////////////////////////////////////////
 
-	CTabCtrl::OnSize(nType, cx, cy);
-	
-	// Resize the plugin windows in the tab control
-	ResizeAllContainers();
+    CTabCtrl::OnSize(nType, cx, cy);
 
-	// Resize the scrollbar
-	m_cScrollBar.SetWindowPos(NULL, 159, 28, 16, cy - 30, SWP_NOZORDER);
+    // Resize the plugin windows in the tab control
+    ResizeAllContainers();
+
+    // Resize the scrollbar
+    m_cScrollBar.SetWindowPos(nullptr, 159, 28, 16, cy - 30, SWP_NOZORDER);
 }
 
-void CToolBarTab::ResizeAllContainers()
-{
-	////////////////////////////////////////////////////////////////////////
-	// Center all containers in the tab control
-	////////////////////////////////////////////////////////////////////////
-	
-	unsigned int i;
-	TCITEM tci;
-	RECT rcClient;
-	RECT rcWndOldClient;
+void CToolBarTab::ResizeAllContainers() {
+    ////////////////////////////////////////////////////////////////////////
+    // Center all containers in the tab control
+    ////////////////////////////////////////////////////////////////////////
 
-	GetClientRect(&rcClient);
+    unsigned int i;
+    TCITEM tci;
+    RECT rcClient;
+    RECT rcWndOldClient;
 
-	for (i=0; i<GetItemCount(); i++)
-	{
-		// Get the item, retrieve the application specific parameter
-		tci.mask = TCIF_PARAM;
-		GetItem(i, &tci);
+    GetClientRect(&rcClient);
 
-		ASSERT(::IsWindow((HWND) tci.lParam));
+    for (i = 0; i < GetItemCount(); i++) {
+        // Get the item, retrieve the application specific parameter
+        tci.mask = TCIF_PARAM;
+        GetItem(i, &tci);
 
-		// Save the window dimensions so we can restore the height later
-		::GetClientRect((HWND) tci.lParam, &rcWndOldClient);
+        ASSERT(::IsWindow((HWND)tci.lParam));
 
-		// Resize it
-		::SetWindowPos((HWND) tci.lParam, NULL, 0, 25, rcClient.right - 2, 
-			rcWndOldClient.bottom, SWP_NOZORDER);
-	}
+        // Save the window dimensions so we can restore the height later
+        ::GetClientRect((HWND)tci.lParam, &rcWndOldClient);
 
+        // Resize it
+        ::SetWindowPos((HWND)tci.lParam, nullptr, 0, 25, rcClient.right - 2, rcWndOldClient.bottom, SWP_NOZORDER);
+    }
 
+    RECT rcClientContainer, rcClientUIElements;
 
-	RECT rcClientContainer, rcClientUIElements;
+    GetClientRect(&rcClientContainer);
+    ::GetClientRect((HWND)tci.lParam, &rcClientUIElements);
 
-	GetClientRect(&rcClientContainer);
-	::GetClientRect((HWND) tci.lParam, &rcClientUIElements);
-	
-	if ((rcClientUIElements.bottom - rcClientUIElements.top) + 175 > rcClientContainer.bottom - rcClientContainer.top)
-		m_cScrollBar.ShowWindow(SW_SHOW);
-	else
-		m_cScrollBar.ShowWindow(SW_HIDE);
+    if ((rcClientUIElements.bottom - rcClientUIElements.top) + 175 > rcClientContainer.bottom - rcClientContainer.top)
+        m_cScrollBar.ShowWindow(SW_SHOW);
+    else
+        m_cScrollBar.ShowWindow(SW_HIDE);
 
-/*
-	SCROLLINFO info;
+    /*
+            SCROLLINFO info;
 
-  info.cbSize = sizeof(SCROLLINFO);     
-  info.fMask = SIF_ALL;     
-  info.nMin = 0;     
-  info.nMax = 100; 
-  info.nPage = 2;     
-  info.nPos = 5;
-  info.nTrackPos = 0;
-	m_cScrollBar.SetScrollInfo(&info);
-*/
+      info.cbSize = sizeof(SCROLLINFO);
+      info.fMask = SIF_ALL;
+      info.nMin = 0;
+      info.nMax = 100;
+      info.nPage = 2;
+      info.nPos = 5;
+      info.nTrackPos = 0;
+            m_cScrollBar.SetScrollInfo(&info);
+    */
 
-	m_cScrollBar.SetScrollRange(0, 100);
- 
+    m_cScrollBar.SetScrollRange(0, 100);
 
-
-	//m_cScrollBar.SetScrollRange(25, 25 + (rcClientUIElements.bottom - rcClientUIElements.top) + 175);
-
-
+    // m_cScrollBar.SetScrollRange(25, 25 + (rcClientUIElements.bottom - rcClientUIElements.top) + 175);
 }
 
-void CToolBarTab::OnSelchange(NMHDR* pNMHDR, LRESULT* pResult) 
-{
-	////////////////////////////////////////////////////////////////////////
-	// Show the toolbar associated with the current tab
-	////////////////////////////////////////////////////////////////////////
+void CToolBarTab::OnSelchange(NMHDR* pNMHDR, LRESULT* pResult) {
+    ////////////////////////////////////////////////////////////////////////
+    // Show the toolbar associated with the current tab
+    ////////////////////////////////////////////////////////////////////////
 
-	// TODO: Add your control notification handler code here
-	
-	TCITEM tci;
-	
-	tci.mask = TCIF_PARAM;
-	GetItem(GetCurSel(), &tci);
-	ASSERT(::IsWindow((HWND) tci.lParam));
+    // TODO: Add your control notification handler code here
 
-	// Show the current toolbar window
-	::ShowWindow((HWND) tci.lParam, SW_NORMAL);
-	
-	// Make sure the window is placed correctly
-	ResizeAllContainers();
+    TCITEM tci;
 
-	*pResult = 0;
+    tci.mask = TCIF_PARAM;
+    GetItem(GetCurSel(), &tci);
+    ASSERT(::IsWindow((HWND)tci.lParam));
+
+    // Show the current toolbar window
+    ::ShowWindow((HWND)tci.lParam, SW_NORMAL);
+
+    // Make sure the window is placed correctly
+    ResizeAllContainers();
+
+    *pResult = 0;
 }
 
-void CToolBarTab::OnSelchanging(NMHDR* pNMHDR, LRESULT* pResult) 
-{
-	////////////////////////////////////////////////////////////////////////
-	// Current tab is about to change, hide the toolbar associated with the
-	// current tab
-	////////////////////////////////////////////////////////////////////////
+void CToolBarTab::OnSelchanging(NMHDR* pNMHDR, LRESULT* pResult) {
+    ////////////////////////////////////////////////////////////////////////
+    // Current tab is about to change, hide the toolbar associated with the
+    // current tab
+    ////////////////////////////////////////////////////////////////////////
 
-	// TODO: Add your control notification handler code here
-	
-	TCITEM tci;
+    // TODO: Add your control notification handler code here
 
-	// Hide the current toolbar
-	tci.mask = TCIF_PARAM;
-	GetItem(GetCurSel(), &tci);
-	ASSERT(::IsWindow((HWND) tci.lParam));
-	::ShowWindow((HWND) tci.lParam, SW_HIDE);
-		
-	*pResult = 0;
+    TCITEM tci;
+
+    // Hide the current toolbar
+    tci.mask = TCIF_PARAM;
+    GetItem(GetCurSel(), &tci);
+    ASSERT(::IsWindow((HWND)tci.lParam));
+    ::ShowWindow((HWND)tci.lParam, SW_HIDE);
+
+    *pResult = 0;
 }
 
-BOOL CToolBarTab::OnCmdMsg(UINT nID, int nCode, void* pExtra, AFX_CMDHANDLERINFO* pHandlerInfo) 
-{
-	////////////////////////////////////////////////////////////////////////
-	// Route the toolbars events to the main window
-	////////////////////////////////////////////////////////////////////////
+BOOL CToolBarTab::OnCmdMsg(UINT nID, int nCode, void* pExtra, AFX_CMDHANDLERINFO* pHandlerInfo) {
+    ////////////////////////////////////////////////////////////////////////
+    // Route the toolbars events to the main window
+    ////////////////////////////////////////////////////////////////////////
 
-	// TODO: Add your specialized code here and/or call the base class
-	
-	if (AfxGetMainWnd())
-		AfxGetMainWnd()->OnCmdMsg(nID, nCode, pExtra, pHandlerInfo);
+    // TODO: Add your specialized code here and/or call the base class
 
-	return CTabCtrl::OnCmdMsg(nID, nCode, pExtra, pHandlerInfo);
+    if (AfxGetMainWnd())
+        AfxGetMainWnd()->OnCmdMsg(nID, nCode, pExtra, pHandlerInfo);
+
+    return CTabCtrl::OnCmdMsg(nID, nCode, pExtra, pHandlerInfo);
 }
 
-void CToolBarTab::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar) 
-{
-	// Change the position of the UI elements to reflect the new scrollbar position
-	//ResizeAllContainers();
-		
-	switch (nSBCode)
-	{
-		case SB_LINEDOWN:
-			pScrollBar->SetScrollPos(nPos + 1);
-			break;
-	}
+void CToolBarTab::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar) {
+    // Change the position of the UI elements to reflect the new scrollbar position
+    // ResizeAllContainers();
 
-	CTabCtrl::OnVScroll(nSBCode, nPos, pScrollBar);
+    switch (nSBCode) {
+    case SB_LINEDOWN:
+        pScrollBar->SetScrollPos(nPos + 1);
+        break;
+    }
+
+    CTabCtrl::OnVScroll(nSBCode, nPos, pScrollBar);
 }

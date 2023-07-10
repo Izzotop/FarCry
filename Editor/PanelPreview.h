@@ -7,7 +7,7 @@
 //  Version:     v1.00
 //  Created:     29/3/2003 by Timur.
 //  Compilers:   Visual Studio.NET
-//  Description: 
+//  Description:
 // -------------------------------------------------------------------------
 //  History:
 //
@@ -21,26 +21,25 @@
 #include "XTToolkit.h"
 #include "Controls\PreviewModelCtrl.h"
 
-class CPanelPreview : public CXTResizeDialog
-{
-	DECLARE_DYNAMIC(CPanelPreview)
+class CPanelPreview : public CXTResizeDialog {
+    DECLARE_DYNAMIC(CPanelPreview)
 
 public:
-	CPanelPreview(CWnd* pParent = NULL);   // standard constructor
-	virtual ~CPanelPreview();
+    CPanelPreview(CWnd* pParent = nullptr); // standard constructor
+    virtual ~CPanelPreview();
 
-	void LoadFile( const CString &filename );
+    void LoadFile(const CString& filename);
 
-// Dialog Data
-	enum { IDD = IDD_PANEL_PREVIEW };
+    // Dialog Data
+    enum { IDD = IDD_PANEL_PREVIEW };
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	virtual BOOL OnInitDialog();
+    virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
+    virtual BOOL OnInitDialog();
 
-	DECLARE_MESSAGE_MAP()
+    DECLARE_MESSAGE_MAP()
 
-	CPreviewModelCtrl m_previewCtrl;
+    CPreviewModelCtrl m_previewCtrl;
 };
 
 #endif // __panelpreview_h__

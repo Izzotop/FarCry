@@ -7,7 +7,7 @@
 //  Version:     v1.00
 //  Created:     28/10/2003 by Timur.
 //  Compilers:   Visual Studio.NET 2003
-//  Description: 
+//  Description:
 // -------------------------------------------------------------------------
 //  History:
 //
@@ -16,113 +16,99 @@
 #include "StdAfx.h"
 #include "PreferencesPropertyPage.h"
 
-IMPLEMENT_DYNAMIC(CPreferencesPropertyPage,CWnd)
+IMPLEMENT_DYNAMIC(CPreferencesPropertyPage, CWnd)
 
 //////////////////////////////////////////////////////////////////////////
 // CPreferencesPropertyPageClassDesc implementation.
 //////////////////////////////////////////////////////////////////////////
-IPreferencesPage* CPreferencesPropertyPageClassDesc::CreatePage( const CRect &rc,CWnd *pParentWnd )
-{
-	CPreferencesPropertyPage *pPage = new CPreferencesPropertyPage();
-	if (pPage->Create( rc,pParentWnd ) != TRUE)
-		return 0;
-	return pPage;
+IPreferencesPage* CPreferencesPropertyPageClassDesc::CreatePage(const CRect& rc, CWnd* pParentWnd) {
+    CPreferencesPropertyPage* pPage = new CPreferencesPropertyPage();
+    if (pPage->Create(rc, pParentWnd) != TRUE)
+        return 0;
+    return pPage;
 }
 
 //////////////////////////////////////////////////////////////////////////
 // CPreferencesPropertyPage implementation.
 //////////////////////////////////////////////////////////////////////////
 BEGIN_MESSAGE_MAP(CPreferencesPropertyPage, CWnd)
-	ON_WM_SIZE()
+ON_WM_SIZE()
 END_MESSAGE_MAP()
 
 //////////////////////////////////////////////////////////////////////////
-CPreferencesPropertyPage::CPreferencesPropertyPage()
-{
-	m_pVars = new CVarBlock;
+CPreferencesPropertyPage::CPreferencesPropertyPage() {
+    m_pVars = new CVarBlock;
 }
 
 //////////////////////////////////////////////////////////////////////////
-BOOL CPreferencesPropertyPage::Create( const CRect &rc,CWnd *pParentWnd )
-{
-	LPCTSTR pszCreateClass = AfxRegisterWndClass(CS_HREDRAW|CS_VREDRAW,::LoadCursor(NULL,IDC_ARROW));
-	
-	if (!CreateEx(0, pszCreateClass, _T(""), WS_TABSTOP|WS_CLIPCHILDREN|WS_CLIPSIBLINGS|WS_CHILD|WS_GROUP, rc, pParentWnd,0 ))
-		return FALSE;
+BOOL CPreferencesPropertyPage::Create(const CRect& rc, CWnd* pParentWnd) {
+    LPCTSTR pszCreateClass = AfxRegisterWndClass(CS_HREDRAW | CS_VREDRAW, ::LoadCursor(nullptr, IDC_ARROW));
 
-	// Create Hidden.
-	ShowWindow( SW_HIDE );
+    if (!CreateEx(0, pszCreateClass, _T(""), WS_TABSTOP | WS_CLIPCHILDREN | WS_CLIPSIBLINGS | WS_CHILD | WS_GROUP, rc, pParentWnd, 0))
+        return FALSE;
 
-	CRect rcp( 0,0,rc.Width(),rc.Height() );
-	m_wndProps.Create( WS_CHILD|WS_VISIBLE|WS_BORDER,rcp,this );
+    // Create Hidden.
+    ShowWindow(SW_HIDE);
 
-	m_wndProps.SetFlags( CPropertyCtrl::F_VS_DOT_NET_STYLE );
-	m_wndProps.SetItemHeight( 15 );
-	m_wndProps.AddVarBlock( m_pVars );
-	m_wndProps.ExpandAll();
+    CRect rcp(0, 0, rc.Width(), rc.Height());
+    m_wndProps.Create(WS_CHILD | WS_VISIBLE | WS_BORDER, rcp, this);
 
-	return TRUE;
+    m_wndProps.SetFlags(CPropertyCtrl::F_VS_DOT_NET_STYLE);
+    m_wndProps.SetItemHeight(15);
+    m_wndProps.AddVarBlock(m_pVars);
+    m_wndProps.ExpandAll();
+
+    return TRUE;
 }
 
 //////////////////////////////////////////////////////////////////////////
-void CPreferencesPropertyPage::AddVariable( CVariableBase &var,const char *varName,unsigned char dataType )
-{
-	var.AddRef(); // Variables are local and must not be released by CVarBlock.
-	if (varName)
-		var.SetName(varName);
-	var.SetDataType(dataType);
-	m_pVars->AddVariable( &var );
+void CPreferencesPropertyPage::AddVariable(CVariableBase& var, const char* varName, unsigned char dataType) {
+    var.AddRef(); // Variables are local and must not be released by CVarBlock.
+    if (varName)
+        var.SetName(varName);
+    var.SetDataType(dataType);
+    m_pVars->AddVariable(&var);
 }
 
 //////////////////////////////////////////////////////////////////////////
-void CPreferencesPropertyPage::AddVariable( CVariableArray &table,CVariableBase &var,const char *varName,unsigned char dataType )
-{
-	var.AddRef(); // Variables are local and must not be released by CVarBlock.
-	if (varName)
-		var.SetName(varName);
-	var.SetDataType(dataType);
-	table.AddChildVar( &var );
+void CPreferencesPropertyPage::AddVariable(CVariableArray& table, CVariableBase& var, const char* varName, unsigned char dataType) {
+    var.AddRef(); // Variables are local and must not be released by CVarBlock.
+    if (varName)
+        var.SetName(varName);
+    var.SetDataType(dataType);
+    table.AddChildVar(&var);
 }
 
 //////////////////////////////////////////////////////////////////////////
-void CPreferencesPropertyPage::OnApply()
-{
+void CPreferencesPropertyPage::OnApply() {}
+
+//////////////////////////////////////////////////////////////////////////
+void CPreferencesPropertyPage::OnCancel() {}
+
+//////////////////////////////////////////////////////////////////////////
+bool CPreferencesPropertyPage::OnQueryCancel() {
+    return true;
 }
 
 //////////////////////////////////////////////////////////////////////////
-void CPreferencesPropertyPage::OnCancel()
-{
+void CPreferencesPropertyPage::OnSetActive(bool bActive) {}
+
+//////////////////////////////////////////////////////////////////////////
+void CPreferencesPropertyPage::OnOK() {
+    OnApply();
 }
 
 //////////////////////////////////////////////////////////////////////////
-bool CPreferencesPropertyPage::OnQueryCancel()
-{
-	return true;
-}
+void CPreferencesPropertyPage::OnSize(UINT nType, int cx, int cy) {
+    CWnd::OnSize(nType, cx, cy);
 
-//////////////////////////////////////////////////////////////////////////
-void CPreferencesPropertyPage::OnSetActive( bool bActive )
-{
-}
+    if (!m_wndProps.GetSafeHwnd())
+        return;
 
-//////////////////////////////////////////////////////////////////////////
-void CPreferencesPropertyPage::OnOK()
-{
-	OnApply();
-}
+    // CRect rc;
+    // GetClientRect( rc );
 
-//////////////////////////////////////////////////////////////////////////
-void CPreferencesPropertyPage::OnSize(UINT nType, int cx, int cy)
-{
-	CWnd::OnSize(nType, cx, cy);
-
-	if (!m_wndProps.GetSafeHwnd())
-		return;
-
-	//CRect rc;
-	//GetClientRect( rc );
-
-	//m_wndProps.MoveWindow( rc );
-	//m_wndProps.Invalidate();
-	m_wndProps.SetWindowPos( NULL,0,0,cx,cy,SWP_NOMOVE );
+    // m_wndProps.MoveWindow( rc );
+    // m_wndProps.Invalidate();
+    m_wndProps.SetWindowPos(nullptr, 0, 0, cx, cy, SWP_NOMOVE);
 }

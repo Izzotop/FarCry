@@ -20,26 +20,23 @@
 #pragma once
 #endif
 
-
 // CSplitterWndEx
 
-class CSplitterWndEx : public CSplitterWnd
-{
+class CSplitterWndEx : public CSplitterWnd {
 public:
-	DECLARE_DYNAMIC(CSplitterWndEx)
+    DECLARE_DYNAMIC(CSplitterWndEx)
 
-	CSplitterWndEx();
-	~CSplitterWndEx();
+    CSplitterWndEx();
+    ~CSplitterWndEx();
 
-	virtual CWnd* GetActivePane(int* pRow = NULL, int* pCol = NULL);
-	//! Assign any Window to splitter window pane.
-	void SetPane( int row,int col,CWnd *pWnd,SIZE sizeInit );
-	// Ovveride this for flat look.
-	void OnDrawSplitter(CDC* pDC, ESplitType nType, const CRect& rectArg);
+    virtual CWnd* GetActivePane(int* pRow = nullptr, int* pCol = nullptr);
+    //! Assign any Window to splitter window pane.
+    void SetPane(int row, int col, CWnd* pWnd, SIZE sizeInit);
+    // Ovveride this for flat look.
+    void OnDrawSplitter(CDC* pDC, ESplitType nType, const CRect& rectArg);
 
 protected:
-	DECLARE_MESSAGE_MAP()
+    DECLARE_MESSAGE_MAP()
 };
-
 
 #endif __splitterwndex_h__

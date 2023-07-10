@@ -9,21 +9,21 @@
 // Iterator class allows iteration thru elements of container.
 //
 ///////////////////////////////////////////////////////////////////////////////
-class CSequenceIt : public ISequenceIt
-{
+class CSequenceIt : public ISequenceIt {
 public:
-	CSequenceIt();
-	virtual ~CSequenceIt();
-	void Release();
-	void	add( IAnimSequence* element );
-	void	clear();
-	bool	empty() const;
-	int		count() const;
-	IAnimSequence*	first();
-	IAnimSequence*	next();
+    CSequenceIt();
+    virtual ~CSequenceIt();
+    void Release();
+    void add(IAnimSequence* element);
+    void clear();
+    bool empty() const;
+    int count() const;
+    IAnimSequence* first();
+    IAnimSequence* next();
+
 private:
-	typedef std::vector<IAnimSequence*>	Elements;
-	int	m_count;
-	Elements::iterator	m_current;
-	Elements	m_elements;
+    typedef std::vector<IAnimSequence*> Elements;
+    int m_count;
+    Elements::iterator m_current;
+    Elements m_elements;
 };

@@ -7,7 +7,7 @@
 //  Version:     v1.00
 //  Created:     2/12/2002 by Timur.
 //  Compilers:   Visual Studio.NET
-//  Description: 
+//  Description:
 // -------------------------------------------------------------------------
 //  History:
 //
@@ -18,28 +18,30 @@
 #pragma once
 
 /** Material used by brush.
-*/
-class CBrushMtl : public CRefCountBase
-{
+ */
+class CBrushMtl : public CRefCountBase {
 public:
-	CBrushMtl();
-	IShader* GetShader() const { return m_shaderItem.m_pShader; };
-	SRenderShaderResources* GetShaderResources() const { return m_shaderItem.m_pShaderResources; };
-	ITexPic* GetEditorTexture() const
-	{
-    if (m_shaderItem.m_pShaderResources->m_Textures[EFTT_DIFFUSE])
-		  return m_shaderItem.m_pShaderResources->m_Textures[EFTT_DIFFUSE]->m_TU.m_ITexPic;
-    return NULL;
-	}
+    CBrushMtl();
+    IShader* GetShader() const {
+        return m_shaderItem.m_pShader;
+    };
+    SRenderShaderResources* GetShaderResources() const {
+        return m_shaderItem.m_pShaderResources;
+    };
+    ITexPic* GetEditorTexture() const {
+        if (m_shaderItem.m_pShaderResources->m_Textures[EFTT_DIFFUSE])
+            return m_shaderItem.m_pShaderResources->m_Textures[EFTT_DIFFUSE]->m_TU.m_ITexPic;
+        return nullptr;
+    }
 
-	//! Reload shader description inside renderer.
-	void ReloadShader();
+    //! Reload shader description inside renderer.
+    void ReloadShader();
 
 private:
-	SShaderItem m_shaderItem;
-	SInputShaderResources m_sr;
+    SShaderItem m_shaderItem;
+    SInputShaderResources m_sr;
 
-	CString m_shaderName;
+    CString m_shaderName;
 };
 
 // Typedef smart pointer to brush material.

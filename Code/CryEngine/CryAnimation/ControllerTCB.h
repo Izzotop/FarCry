@@ -25,104 +25,105 @@
 // Implementation of IController interface (see File:Controller.h)
 // Controller implementing the TCB (Kochanek-Bartles Hermit spline).
 ///////////////////////////////////////////////////////////////////////////
-class CControllerTCB: public IController
-{
+class CControllerTCB : public IController {
 public:
-	// each controller has an ID, by which it is identifiable
-	unsigned GetID () const {return m_nControllerId;}
+    // each controller has an ID, by which it is identifiable
+    unsigned GetID() const {
+        return m_nControllerId;
+    }
 
-	//  returns orientation of the controller at the given time
-	CryQuat GetOrientation (float t);
+    //  returns orientation of the controller at the given time
+    CryQuat GetOrientation(float t);
 
-	//  returns the orientation of the controller at the given time, in logarithmic space
-	Vec3 GetOrientation2(float t) { return Vec3(0,0,0); };
+    //  returns the orientation of the controller at the given time, in logarithmic space
+    Vec3 GetOrientation2(float t) {
+        return Vec3(0, 0, 0);
+    };
 
-	// returns position of the controller at the given time
-	Vec3 GetPosition (float t);
+    // returns position of the controller at the given time
+    Vec3 GetPosition(float t);
 
-	// returns scale of the controller at the given time
-	Vec3 GetScale (float t);
-	
-	// retrieves the position and orientation within one call
-	// may be optimal in some applications
-	void GetValue (float t, CryQuat& q, Vec3 &p);
+    // returns scale of the controller at the given time
+    Vec3 GetScale(float t);
 
-	// ignore.
-	void GetValue2 (float t, PQLog& pq) {};
+    // retrieves the position and orientation within one call
+    // may be optimal in some applications
+    void GetValue(float t, CryQuat& q, Vec3& p);
 
-	// returns the start time
-	virtual float GetTimeStart ()
-	{
-		return m_timeStart;
-	}
+    // ignore.
+    void GetValue2(float t, PQLog& pq){};
 
-	// returns the end time
-	virtual float GetTimeEnd()
-	{
-		return m_timeEnd;
-	}
+    // returns the start time
+    virtual float GetTimeStart() {
+        return m_timeStart;
+    }
 
-	ILog* GetLog()const;
+    // returns the end time
+    virtual float GetTimeEnd() {
+        return m_timeEnd;
+    }
 
-	size_t sizeofThis() const { return sizeof(*this); }
+    ILog* GetLog() const;
+
+    size_t sizeofThis() const {
+        return sizeof(*this);
+    }
+
 protected:
-	// Controller ID, used for identification purposes (bones are bound to controllers using their IDs
-	unsigned m_nControllerId;
+    // Controller ID, used for identification purposes (bones are bound to controllers using their IDs
+    unsigned m_nControllerId;
 
-	float m_timeStart;
-	float m_timeEnd;
+    float m_timeStart;
+    float m_timeEnd;
 };
 
 //////////////////////////////////////////////////////////////////////////
 // TCB Controller implementation for vector.
 //////////////////////////////////////////////////////////////////////////
-class CControllerTCBVec3 : public CControllerTCB
-{
+class CControllerTCBVec3 : public CControllerTCB {
 public:
-	// Loads (initializes) controller from the given chunk. The chunk descriptor is followed by the 
-	// chunk data immediately. Returns true if successful
-	bool Load( const CONTROLLER_CHUNK_DESC_0826* pChunk,float secsPerTick );
+    // Loads (initializes) controller from the given chunk. The chunk descriptor is followed by the
+    // chunk data immediately. Returns true if successful
+    bool Load(const CONTROLLER_CHUNK_DESC_0826* pChunk, float secsPerTick);
 
-	// returns position of the controller at the given time
-	Vec3 GetPosition (float t);
+    // returns position of the controller at the given time
+    Vec3 GetPosition(float t);
 
-	// returns scale of the controller at the given time
-	Vec3 GetScale (float t);
+    // returns scale of the controller at the given time
+    Vec3 GetScale(float t);
 
-	virtual bool IsLooping() const;
-	
-	size_t sizeofThis()const
-	{
-		return sizeof(*this) + m_spline.sizeofThis();
-	}
+    virtual bool IsLooping() const;
+
+    size_t sizeofThis() const {
+        return sizeof(*this) + m_spline.sizeofThis();
+    }
 
 protected:
-	// TCB Splines.
-	TCBSpline<Vec3> m_spline;
+    // TCB Splines.
+    TCBSpline<Vec3> m_spline;
 };
 
 //////////////////////////////////////////////////////////////////////////
 // TCB Controller implementation for quaternion.
 //////////////////////////////////////////////////////////////////////////
-class CControllerTCBQuat : public CControllerTCB
-{
+class CControllerTCBQuat : public CControllerTCB {
 public:
-	// Loads (initializes) controller from the given chunk. The chunk descriptor is followed by the 
-	// chunk data immediately. Returns true if successful
-	bool Load( const CONTROLLER_CHUNK_DESC_0826* pChunk,float secsPerTick );
+    // Loads (initializes) controller from the given chunk. The chunk descriptor is followed by the
+    // chunk data immediately. Returns true if successful
+    bool Load(const CONTROLLER_CHUNK_DESC_0826* pChunk, float secsPerTick);
 
-	//  returns orientation of the controller at the given time
-	CryQuat GetOrientation(float t);
+    //  returns orientation of the controller at the given time
+    CryQuat GetOrientation(float t);
 
-	virtual bool IsLooping() const;
+    virtual bool IsLooping() const;
 
-	size_t sizeofThis()const
-	{
-		return sizeof(*this) + m_spline.sizeofThis();
-	}
+    size_t sizeofThis() const {
+        return sizeof(*this) + m_spline.sizeofThis();
+    }
+
 protected:
-	// TCB Splines.
-	TCBAngleAxisSpline m_spline;
+    // TCB Splines.
+    TCBAngleAxisSpline m_spline;
 };
 
 //////////////////////////////////////////////////////////////////////////

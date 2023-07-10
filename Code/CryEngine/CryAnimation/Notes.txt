@@ -57,17 +57,17 @@ After that, depending on the circumstances, rendering and skinning speed may imp
 The sample code that attaches a body part to an existing character and returns true if 
 the operation was successful:
 
-	ICryCharModel* pModel = m_pAnimationSystem->LoadModel(model);
-	if (pModel)
-	{
-		ICryCharSubmesh* pSubmesh = m_character->AddSubmesh (pModel, true);
-		return pSubmesh != NULL;
-	}
-	
+  ICryCharModel* pModel = m_pAnimationSystem->LoadModel(model);
+  if (pModel)
+  {
+    ICryCharSubmesh* pSubmesh = m_character->AddSubmesh (pModel, true);
+    return pSubmesh != nullptr;
+  }
+
 after this, you can access pSubmesh to start a morph or make it visible/invisible.
 to remove the submesh:
 
-	m_character->RemoveSubmesh(pSubmesh);
+  m_character->RemoveSubmesh(pSubmesh);
 
 
 In the future, perhaps it would be beneficial to make functionality to match different skeletons

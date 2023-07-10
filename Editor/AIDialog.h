@@ -7,7 +7,7 @@
 //  Version:     v1.00
 //  Created:     21/3/2002 by Timur.
 //  Compilers:   Visual C++ 7.0
-//  Description: 
+//  Description:
 // -------------------------------------------------------------------------
 //  History:
 //
@@ -22,46 +22,46 @@
 
 // CAIDialog dialog
 
-class CAIDialog : public CDialog
-{
-	DECLARE_DYNAMIC(CAIDialog)
+class CAIDialog : public CDialog {
+    DECLARE_DYNAMIC(CAIDialog)
 
 public:
-	CAIDialog(CWnd* pParent = NULL);   // standard constructor
-	virtual ~CAIDialog();
+    CAIDialog(CWnd* pParent = nullptr); // standard constructor
+    virtual ~CAIDialog();
 
-// Dialog Data
-	enum { IDD = IDD_AICONFIG };
+    // Dialog Data
+    enum { IDD = IDD_AICONFIG };
 
-	void SetAIBehavior( const CString &behavior );
-	CString GetAIBehavior() { return m_aiBehavior; };
-
-protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-
-	DECLARE_MESSAGE_MAP()
+    void SetAIBehavior(const CString& behavior);
+    CString GetAIBehavior() {
+        return m_aiBehavior;
+    };
 
 protected:
-	virtual BOOL OnInitDialog();
-	afx_msg void OnDestroy();
+    virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
 
-	void ReloadBehaviors();
+    DECLARE_MESSAGE_MAP()
 
-	//////////////////////////////////////////////////////////////////////////
-	// FIELDS
-	//////////////////////////////////////////////////////////////////////////
-	CListBox m_behaviors;
+protected:
+    virtual BOOL OnInitDialog();
+    afx_msg void OnDestroy();
 
-	CString m_aiBehavior;
+    void ReloadBehaviors();
 
+    //////////////////////////////////////////////////////////////////////////
+    // FIELDS
+    //////////////////////////////////////////////////////////////////////////
+    CListBox m_behaviors;
 
-	CCustomButton m_editBtn;
-	CCustomButton m_reloadBtn;
+    CString m_aiBehavior;
 
-	CEdit m_description;
-	afx_msg void OnBnClickedEdit();
-	afx_msg void OnBnClickedReload();
-	afx_msg void OnLbnSelchangeBehavior();
+    CCustomButton m_editBtn;
+    CCustomButton m_reloadBtn;
+
+    CEdit m_description;
+    afx_msg void OnBnClickedEdit();
+    afx_msg void OnBnClickedReload();
+    afx_msg void OnLbnSelchangeBehavior();
 };
 
 #endif // __aidialog_h__

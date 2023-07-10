@@ -10,42 +10,40 @@
 /////////////////////////////////////////////////////////////////////////////
 // CStartupDialog dialog
 
-class CStartupDialog : public CDialog
-{
-// Construction
+class CStartupDialog : public CDialog {
+    // Construction
 public:
-	CStartupDialog(CWnd* pParent = NULL);   // standard constructor
+    CStartupDialog(CWnd* pParent = nullptr); // standard constructor
 
-// Dialog Data
-	//{{AFX_DATA(CStartupDialog)
-	enum { IDD = IDD_STARTUP };
-	CButton	m_cUseAsBase;
-	CListBox	m_lstRecentMaps;
-	int		m_optSelection;
-	CString	m_strMapFileName;
-	CString	m_strDirName;
-	//}}AFX_DATA
+    // Dialog Data
+    //{{AFX_DATA(CStartupDialog)
+    enum { IDD = IDD_STARTUP };
+    CButton m_cUseAsBase;
+    CListBox m_lstRecentMaps;
+    int m_optSelection;
+    CString m_strMapFileName;
+    CString m_strDirName;
+    //}}AFX_DATA
 
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CStartupDialog)
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	//}}AFX_VIRTUAL
-
-// Implementation
+    // Overrides
+    // ClassWizard generated virtual function overrides
+    //{{AFX_VIRTUAL(CStartupDialog)
 protected:
+    virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
+    //}}AFX_VIRTUAL
 
-	// Generated message map functions
-	//{{AFX_MSG(CStartupDialog)
-	virtual void OnOK();
-	virtual BOOL OnInitDialog();
-	afx_msg void OnBrowseForMap();
-	afx_msg void OnChangeLevDir();
-	afx_msg void OnSelectedRecentDoc();
-	afx_msg void OnDblClickRecentDoc();
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
+    // Implementation
+protected:
+    // Generated message map functions
+    //{{AFX_MSG(CStartupDialog)
+    virtual void OnOK();
+    virtual BOOL OnInitDialog();
+    afx_msg void OnBrowseForMap();
+    afx_msg void OnChangeLevDir();
+    afx_msg void OnSelectedRecentDoc();
+    afx_msg void OnDblClickRecentDoc();
+    //}}AFX_MSG
+    DECLARE_MESSAGE_MAP()
 };
 
 //{{AFX_INSERT_LOCATION}}

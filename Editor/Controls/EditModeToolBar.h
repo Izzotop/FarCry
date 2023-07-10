@@ -11,71 +11,69 @@
 /////////////////////////////////////////////////////////////////////////////
 // CEditModeToolBar window
 
-class CEditModeToolBar : public CXTToolBar
-{
-// Construction
+class CEditModeToolBar : public CXTToolBar {
+    // Construction
 public:
-	CEditModeToolBar();
+    CEditModeToolBar();
 
-	BOOL Create( CWnd *pParentWnd,DWORD dwStyle = WS_CHILD | WS_VISIBLE | CBRS_TOP,UINT nID = AFX_IDW_TOOLBAR );
+    BOOL Create(CWnd* pParentWnd, DWORD dwStyle = WS_CHILD | WS_VISIBLE | CBRS_TOP, UINT nID = AFX_IDW_TOOLBAR);
 
-// Attributes
+    // Attributes
 public:
-
-// Operations
+    // Operations
 public:
-	CString GetSelection();
-	void SetSelection( const CString &name );
-	void AddSelection( const CString &name );
-	void RemoveSelection( const CString &name );
+    CString GetSelection();
+    void SetSelection(const CString& name);
+    void AddSelection(const CString& name);
+    void RemoveSelection(const CString& name);
 
-	void SetCurrentLayer( const CString &layerName );
-	void SetGridSize( float size );
-	void NextSelectMask();
+    void SetCurrentLayer(const CString& layerName);
+    void SetGridSize(float size);
+    void NextSelectMask();
 
-	// Data
-	//{{AFX_DATA(CEditModeToolBar)
-	CString	m_szSelection;
-	//}}AFX_DATA
+    // Data
+    //{{AFX_DATA(CEditModeToolBar)
+    CString m_szSelection;
+    //}}AFX_DATA
 
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CEditModeToolBar)
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	//}}AFX_VIRTUAL
-
-// Implementation
-public:
-	virtual ~CEditModeToolBar();
-
-	void OnSnapMenu( CPoint pos );
-	void OnAxisTerrainMenu( CPoint pos );
-
-	// Generated message map functions
+    // Overrides
+    // ClassWizard generated virtual function overrides
+    //{{AFX_VIRTUAL(CEditModeToolBar)
 protected:
-	//{{AFX_MSG(CEditModeToolBar)
-	afx_msg void OnSelectionChanged();
-	afx_msg void OnNotifyOnSelectionChanged(NMHDR* pNMHDR, LRESULT* pResult);
-	afx_msg void OnRButtonUp(UINT nFlags, CPoint point);
-	afx_msg void OnToolbarDropDown(NMHDR* pnhdr, LRESULT *plr);
-	afx_msg void OnUpdateCoordsRefSys(CCmdUI *pCmdUI);
-	afx_msg void OnCoordsRefSys();
-	afx_msg void OnUpdateSelectionMask(CCmdUI *pCmdUI);
-	afx_msg void OnSelectionMask();
-	//}}AFX_MSG
-	
-	DECLARE_MESSAGE_MAP()
+    virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
+                                                     //}}AFX_VIRTUAL
 
-	CSelectionCombo m_selections;
-	CXTFlatComboBox m_refCoords;
-	CXTFlatComboBox m_selectionMask;
-	//CExtComboBox m_selections;
+    // Implementation
+public:
+    virtual ~CEditModeToolBar();
 
-	CMenu m_gridMenu;
-	RefCoordSys m_coordSys;
+    void OnSnapMenu(CPoint pos);
+    void OnAxisTerrainMenu(CPoint pos);
 
-	int m_objectSelectionMask;
+    // Generated message map functions
+protected:
+    //{{AFX_MSG(CEditModeToolBar)
+    afx_msg void OnSelectionChanged();
+    afx_msg void OnNotifyOnSelectionChanged(NMHDR* pNMHDR, LRESULT* pResult);
+    afx_msg void OnRButtonUp(UINT nFlags, CPoint point);
+    afx_msg void OnToolbarDropDown(NMHDR* pnhdr, LRESULT* plr);
+    afx_msg void OnUpdateCoordsRefSys(CCmdUI* pCmdUI);
+    afx_msg void OnCoordsRefSys();
+    afx_msg void OnUpdateSelectionMask(CCmdUI* pCmdUI);
+    afx_msg void OnSelectionMask();
+    //}}AFX_MSG
+
+    DECLARE_MESSAGE_MAP()
+
+    CSelectionCombo m_selections;
+    CXTFlatComboBox m_refCoords;
+    CXTFlatComboBox m_selectionMask;
+    // CExtComboBox m_selections;
+
+    CMenu m_gridMenu;
+    RefCoordSys m_coordSys;
+
+    int m_objectSelectionMask;
 };
 
 /////////////////////////////////////////////////////////////////////////////

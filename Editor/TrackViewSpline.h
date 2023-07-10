@@ -7,7 +7,7 @@
 //  Version:     v1.00
 //  Created:     7/5/2002 by Timur.
 //  Compilers:   Visual Studio.NET
-//  Description: 
+//  Description:
 // -------------------------------------------------------------------------
 //  History:
 //
@@ -20,40 +20,41 @@
 #pragma once
 #endif
 
-//forward declaration
+// forward declaration
 struct IAnimTrack;
 
 // CTrackViewSpline
 
-class CTrackViewSpline : public CWnd
-{
-	DECLARE_DYNAMIC(CTrackViewSpline)
+class CTrackViewSpline : public CWnd {
+    DECLARE_DYNAMIC(CTrackViewSpline)
 
 public:
-	CTrackViewSpline();
-	virtual ~CTrackViewSpline();
+    CTrackViewSpline();
+    virtual ~CTrackViewSpline();
 
-	void SetTrack( IAnimTrack *track );
-	
-	void SetTimeScale( float timeScale );
-	float GetTimeScale() { return m_timeScale; }
-	void SetTimeRange( float start,float end );
-	void SetCurrTime( float currTime );
-	float GetCurrTime() const { return m_currTime; };
+    void SetTrack(IAnimTrack* track);
+
+    void SetTimeScale(float timeScale);
+    float GetTimeScale() {
+        return m_timeScale;
+    }
+    void SetTimeRange(float start, float end);
+    void SetCurrTime(float currTime);
+    float GetCurrTime() const {
+        return m_currTime;
+    };
 
 protected:
-	DECLARE_MESSAGE_MAP()
+    DECLARE_MESSAGE_MAP()
 public:
-	afx_msg void OnPaint();
+    afx_msg void OnPaint();
 
-	IAnimTrack *m_track;
+    IAnimTrack* m_track;
 
-	
-	Range m_timeRange;
-	float m_timeScale;
-	float m_ticksStep;
-	float m_currTime;
+    Range m_timeRange;
+    float m_timeScale;
+    float m_ticksStep;
+    float m_currTime;
 };
-
 
 #endif // __trackviewspline_h__

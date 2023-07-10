@@ -7,7 +7,7 @@
 //  Version:     v1.00
 //  Created:     12/3/2002 by Timur.
 //  Compilers:   Visual C++ 7.0
-//  Description: 
+//  Description:
 // -------------------------------------------------------------------------
 //  History:
 //
@@ -15,7 +15,6 @@
 
 #ifndef __weaponprops_h__
 #define __weaponprops_h__
-
 
 #include "Controls\PropertyCtrl.h"
 
@@ -25,41 +24,40 @@
 
 // CWeaponProps dialog
 
-class CWeaponProps : public CPropertyPage
-{
-	DECLARE_DYNAMIC(CWeaponProps)
+class CWeaponProps : public CPropertyPage {
+    DECLARE_DYNAMIC(CWeaponProps)
 
 public:
-	CWeaponProps();
-	virtual ~CWeaponProps();
+    CWeaponProps();
+    virtual ~CWeaponProps();
 
-// Dialog Data
-	enum { IDD = IDD_WEAPONS };
+    // Dialog Data
+    enum { IDD = IDD_WEAPONS };
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+    virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
 
-	DECLARE_MESSAGE_MAP()
+    DECLARE_MESSAGE_MAP()
 
 private:
-	CPropertyCtrl	m_propWnd;
-	XmlNodeRef m_node;
-	CString m_title;
+    CPropertyCtrl m_propWnd;
+    XmlNodeRef m_node;
+    CString m_title;
 
 protected:
-	CListBox m_availableWeapons;
-	CListBox m_usedWeapons;
+    CListBox m_availableWeapons;
+    CListBox m_usedWeapons;
 
-	virtual BOOL OnInitDialog();
-	virtual void OnOK();
-	virtual BOOL OnQueryCancel();
-	virtual void OnReset();
-	virtual void OnCancel();
+    virtual BOOL OnInitDialog();
+    virtual void OnOK();
+    virtual BOOL OnQueryCancel();
+    virtual void OnReset();
+    virtual void OnCancel();
 
-	void OnPropertyChanged( XmlNodeRef node );
+    void OnPropertyChanged(XmlNodeRef node);
 
-	afx_msg void OnBnClickedAdd();
-	afx_msg void OnBnClickedRemove();
+    afx_msg void OnBnClickedAdd();
+    afx_msg void OnBnClickedRemove();
 };
 
 #endif // __weaponprops_h__

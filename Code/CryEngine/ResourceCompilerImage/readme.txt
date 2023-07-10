@@ -1,10 +1,7 @@
-
-
 template examples:
 * normalmap_high
 * normalmap_low
 * skybox
-
 
 todo:
 * reduce resolution with add and sub
@@ -20,7 +17,6 @@ todo:
 * check for resource compiler (is gfx support enougth)
 * Init() with access to log, error and info
 
-
 future todo:
 * gamma, brightness
 * support premultiplied alpha (DXT2 and DXT4)
@@ -30,42 +26,25 @@ future todo:
 * mask color for lightmaps and border colors
 * better mipmap filter kernel
 
-
-
-
 ----------------------------------------------------------------------------------------------------
 
 e.g.
 
 template=skybox_texture
 
-
-
 e.g.
 
-pixelformat=DXT1					; default
+pixelformat=DXT1                    ; default
 mipmaps=none
-
-
 
 e.g.
 
 pixelformat=R8G8B8
-mipmaps=max							; default
+mipmaps=max                            ; default
 mipmirror=0
-
-
-
 
 e.g.
 
 pixelformat=DXT3
 mipmaps=3
-mipmirror=1							; default
-
-
-
-
-
-
-
+mipmirror=1                            ; default

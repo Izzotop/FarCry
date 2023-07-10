@@ -3,30 +3,27 @@
 #define __CRESKYZONE_H__
 
 //=============================================================
-class CRESkyZone : public CRendElement
-{
+class CRESkyZone : public CRendElement {
 public:
-  Vec3d mViewPos;
-  Vec3d mMins;
-  Vec3d mMaxs;
-  Vec3d mCenter;
-  float mRadius;
-  byte *mPVS;
+    Vec3d mViewPos;
+    Vec3d mMins;
+    Vec3d mMaxs;
+    Vec3d mCenter;
+    float mRadius;
+    byte* mPVS;
 
-  CRESkyZone()
-  {
-    mfSetType(eDATA_SkyZone);
-    mfUpdateFlags(FCEF_TRANSFORM | FCEF_NODEL);
-    mPVS = NULL;
-  }
+    CRESkyZone() {
+        mfSetType(eDATA_SkyZone);
+        mfUpdateFlags(FCEF_TRANSFORM | FCEF_NODEL);
+        mPVS = nullptr;
+    }
 
-  virtual ~CRESkyZone()
-  {
-    if (mPVS)
-      delete [] mPVS;
-  }
+    virtual ~CRESkyZone() {
+        if (mPVS)
+            delete[] mPVS;
+    }
 
-  virtual bool mfCompile(SShader *ef, char *scr);
+    virtual bool mfCompile(SShader* ef, char* scr);
 };
 
-#endif  // __CRESKYZONE_H__
+#endif // __CRESKYZONE_H__

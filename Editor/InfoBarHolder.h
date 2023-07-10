@@ -16,46 +16,45 @@ class CInfoProgressBar;
 /////////////////////////////////////////////////////////////////////////////
 // CInfoBarHolder dialog
 
-class CInfoBarHolder : public CXTDialogBar
-{
-// Construction
+class CInfoBarHolder : public CXTDialogBar {
+    // Construction
 public:
-	CInfoBarHolder();   // standard constructor
-	~CInfoBarHolder();   // standard destructor
+    CInfoBarHolder();  // standard constructor
+    ~CInfoBarHolder(); // standard destructor
 
-// Dialog Data
-	//{{AFX_DATA(CInfoBarHolder)
-	enum { IDD = IDD_INFO_BAR_HOLDER };
-		// NOTE: the ClassWizard will add data members here
-	//}}AFX_DATA
+    // Dialog Data
+    //{{AFX_DATA(CInfoBarHolder)
+    enum { IDD = IDD_INFO_BAR_HOLDER };
+    // NOTE: the ClassWizard will add data members here
+    //}}AFX_DATA
 
+    BOOL Create(CWnd* pParentWnd, UINT nStyle, UINT nID);
+    void IdleUpdate();
 
-	BOOL Create( CWnd* pParentWnd, UINT nStyle, UINT nID );
-	void IdleUpdate();
+    CInfoProgressBar* GetProgressBar() {
+        return m_progressBar;
+    };
 
-	CInfoProgressBar* GetProgressBar() { return m_progressBar; };
+    void EnableProgressBar(bool bEnable);
 
-	void EnableProgressBar( bool bEnable );
-
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CInfoBarHolder)
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	//}}AFX_VIRTUAL
-
-// Implementation
+    // Overrides
+    // ClassWizard generated virtual function overrides
+    //{{AFX_VIRTUAL(CInfoBarHolder)
 protected:
+    virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
+                                                     //}}AFX_VIRTUAL
 
-	// Generated message map functions
-	//{{AFX_MSG(CInfoBarHolder)
-		// NOTE: the ClassWizard will add member functions here
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
+    // Implementation
+protected:
+    // Generated message map functions
+    //{{AFX_MSG(CInfoBarHolder)
+    // NOTE: the ClassWizard will add member functions here
+    //}}AFX_MSG
+    DECLARE_MESSAGE_MAP()
 
-	CInfoBar *m_infoBar;
-	CInfoProgressBar *m_progressBar;
-	bool m_bInProgressBarMode;
+    CInfoBar* m_infoBar;
+    CInfoProgressBar* m_progressBar;
+    bool m_bInProgressBarMode;
 };
 
 //{{AFX_INSERT_LOCATION}}

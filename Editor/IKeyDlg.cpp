@@ -7,39 +7,33 @@
 //  Version:     v1.00
 //  Created:     21/8/2002 by Timur.
 //  Compilers:   Visual Studio.NET
-//  Description: 
+//  Description:
 // -------------------------------------------------------------------------
 //  History:
 //
 ////////////////////////////////////////////////////////////////////////////
-
 
 #include "StdAfx.h"
 #include "ikeydlg.h"
 
 #include "TrackViewUndo.h"
 
-IKeyDlg::IKeyDlg(UINT nIDTemplate, CWnd *pParentWnd) :
-				 CDialog(nIDTemplate, pParentWnd)
-{
-	m_bNoReloadKey = false;
+IKeyDlg::IKeyDlg(UINT nIDTemplate, CWnd* pParentWnd) : CDialog(nIDTemplate, pParentWnd) {
+    m_bNoReloadKey = false;
 }
 
 //////////////////////////////////////////////////////////////////////////
-void IKeyDlg::RefreshTrackView()
-{
-	// Prevent endless recursion, when SetKey calls refersh.
-	m_bNoReloadKey = true;
-	GetIEditor()->UpdateTrackView(true);
-	m_bNoReloadKey = false;
+void IKeyDlg::RefreshTrackView() {
+    // Prevent endless recursion, when SetKey calls refersh.
+    m_bNoReloadKey = true;
+    GetIEditor()->UpdateTrackView(true);
+    m_bNoReloadKey = false;
 }
 
 //////////////////////////////////////////////////////////////////////////
-void IKeyDlg::RecordTrackUndo()
-{
-	if (m_track)
-	{
-		CUndo undo("Track Modify");
-		CUndo::Record( new CUndoTrackObject(m_track) );
-	}
+void IKeyDlg::RecordTrackUndo() {
+    if (m_track) {
+        CUndo undo("Track Modify");
+        CUndo::Record(new CUndoTrackObject(m_track));
+    }
 }

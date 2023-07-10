@@ -5,16 +5,14 @@
 #error "_TinyCoolEdit require <_TinyWindow.h>"
 #endif
 
-class _TinyCoolEdit : public _TinyRichEdit
-{
-	virtual BOOL Create(ULONG nID=0,DWORD dwStyle=WS_VISIBLE,DWORD dwExStyle=0,const RECT* pRect=NULL,_TinyWindow *pParentWnd=NULL){
-		BOOL bRes=_TinyEdit::Create(nID,dwStyle,dwExStyle,pRect,pParentWnd);
-		if(!bRes)return FALSE;
-		return TRUE;		
-	}
-	bool Reshape(int w,int h)
-	{
-	}
+class _TinyCoolEdit : public _TinyRichEdit {
+    virtual BOOL Create(ULONG nID = 0, DWORD dwStyle = WS_VISIBLE, DWORD dwExStyle = 0, const RECT* pRect = nullptr, _TinyWindow* pParentWnd = nullptr) {
+        BOOL bRes = _TinyEdit::Create(nID, dwStyle, dwExStyle, pRect, pParentWnd);
+        if (!bRes)
+            return FALSE;
+        return TRUE;
+    }
+    bool Reshape(int w, int h) {}
 };
 
 #endif //_TINYCOOLEDIT_H_

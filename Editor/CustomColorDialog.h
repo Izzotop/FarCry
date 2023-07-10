@@ -10,29 +10,27 @@
 /////////////////////////////////////////////////////////////////////////////
 // CCustomColorDialog dialog
 
-class CCustomColorDialog : public CColorDialog
-{
-	DECLARE_DYNAMIC(CCustomColorDialog)
+class CCustomColorDialog : public CColorDialog {
+    DECLARE_DYNAMIC(CCustomColorDialog)
 
 public:
-	CCustomColorDialog(COLORREF clrInit = 0, DWORD dwFlags = 0,
-			CWnd* pParentWnd = NULL);
-	~CCustomColorDialog();
+    CCustomColorDialog(COLORREF clrInit = 0, DWORD dwFlags = 0, CWnd* pParentWnd = nullptr);
+    ~CCustomColorDialog();
 
 protected:
-	//{{AFX_MSG(CCustomColorDialog)
-	afx_msg void OnPickColor();
-	virtual BOOL OnInitDialog();
-	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
-	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
+    //{{AFX_MSG(CCustomColorDialog)
+    afx_msg void OnPickColor();
+    virtual BOOL OnInitDialog();
+    afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
+    afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
+    //}}AFX_MSG
+    DECLARE_MESSAGE_MAP()
 
-	void PickMode( bool bEnable );
+    void PickMode(bool bEnable);
 
-	CButton m_pickColor;
-	bool m_bPickMode;
-	HCURSOR m_pickerCusror;
+    CButton m_pickColor;
+    bool m_bPickMode;
+    HCURSOR m_pickerCusror;
 };
 
 //{{AFX_INSERT_LOCATION}}

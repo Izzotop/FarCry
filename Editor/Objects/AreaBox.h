@@ -24,102 +24,113 @@
 #include "PickEntitiesPanel.h"
 
 /*!
- *	CAreaBox is a box volume in space where entites can be attached to.
+ *    CAreaBox is a box volume in space where entites can be attached to.
  *
  */
-class CAreaBox : public CBaseObject, public IPickEntitesOwner
-{
+class CAreaBox : public CBaseObject, public IPickEntitesOwner {
 public:
-	DECLARE_DYNCREATE(CAreaBox)
+    DECLARE_DYNCREATE(CAreaBox)
 
-	//////////////////////////////////////////////////////////////////////////
-	// Ovverides from CBaseObject.
-	//////////////////////////////////////////////////////////////////////////
-	bool Init( IEditor *ie,CBaseObject *prev,const CString &file );
-	void Done();
+    //////////////////////////////////////////////////////////////////////////
+    // Ovverides from CBaseObject.
+    //////////////////////////////////////////////////////////////////////////
+    bool Init(IEditor* ie, CBaseObject* prev, const CString& file);
+    void Done();
 
-	void Display( DisplayContext &dc );
+    void Display(DisplayContext& dc);
 
-	void InvalidateTM();
+    void InvalidateTM();
 
-	void SetScale( const Vec3d &scale );
+    void SetScale(const Vec3d& scale);
 
-	void GetBoundBox( BBox &box );
-	void GetLocalBounds( BBox &box );
-	bool HitTest( HitContext &hc );
+    void GetBoundBox(BBox& box);
+    void GetLocalBounds(BBox& box);
+    bool HitTest(HitContext& hc);
 
-	void BeginEditParams( IEditor *ie,int flags );
-	void EndEditParams( IEditor *ie );
+    void BeginEditParams(IEditor* ie, int flags);
+    void EndEditParams(IEditor* ie);
 
-	void OnEvent( ObjectEvent event );
+    void OnEvent(ObjectEvent event);
 
-	void Serialize( CObjectArchive &ar );
-	XmlNodeRef Export( const CString &levelPath,XmlNodeRef &xmlNode );
+    void Serialize(CObjectArchive& ar);
+    XmlNodeRef Export(const CString& levelPath, XmlNodeRef& xmlNode);
 
-	void SetAreaId(int nAreaId);
-	int GetAreaId();
-	void SetBox(BBox box);
-	BBox GetBox();
+    void SetAreaId(int nAreaId);
+    int GetAreaId();
+    void SetBox(BBox box);
+    BBox GetBox();
 
-	void UpdateGameArea();
+    void UpdateGameArea();
 
-	//////////////////////////////////////////////////////////////////////////
-	// Binded entities.
-	//////////////////////////////////////////////////////////////////////////
-	//! Bind entity to this shape.
-	void AddEntity( CBaseObject *pEntity );
-	void RemoveEntity( int index );
-	CBaseObject* GetEntity( int index );
-	int GetEntityCount() { return m_entities.size(); }
+    //////////////////////////////////////////////////////////////////////////
+    // Binded entities.
+    //////////////////////////////////////////////////////////////////////////
+    //! Bind entity to this shape.
+    void AddEntity(CBaseObject* pEntity);
+    void RemoveEntity(int index);
+    CBaseObject* GetEntity(int index);
+    int GetEntityCount() {
+        return m_entities.size();
+    }
 
 protected:
-	//! Dtor must be protected.
-	CAreaBox();
+    //! Dtor must be protected.
+    CAreaBox();
 
-	void DeleteThis() { delete this; };
+    void DeleteThis() {
+        delete this;
+    };
 
-	void OnAreaChange(IVariable *pVar);
-	void OnSizeChange(IVariable *pVar);
+    void OnAreaChange(IVariable* pVar);
+    void OnSizeChange(IVariable* pVar);
 
-	//! List of binded entities.
-	std::vector<GUID> m_entities;
+    //! List of binded entities.
+    std::vector<GUID> m_entities;
 
-	//! AreaId
-	CVariable<int> m_areaId;
-	//! EdgeWidth
-	CVariable<float> m_edgeWidth;
-	//! Local volume space bounding box.
-	CVariable<float> mv_width;
-	CVariable<float> mv_length;
-	CVariable<float> mv_height;
-	CVariable<int> mv_groupId;
+    //! AreaId
+    CVariable<int> m_areaId;
+    //! EdgeWidth
+    CVariable<float> m_edgeWidth;
+    //! Local volume space bounding box.
+    CVariable<float> mv_width;
+    CVariable<float> mv_length;
+    CVariable<float> mv_height;
+    CVariable<int> mv_groupId;
 
-	//! Local volume space bounding box.
-	BBox m_box;
+    //! Local volume space bounding box.
+    BBox m_box;
 
-	struct IXArea *m_IArea;
+    struct IXArea* m_IArea;
 
-	static int m_nRollupId;
-	static CPickEntitiesPanel *m_pPanel;
+    static int m_nRollupId;
+    static CPickEntitiesPanel* m_pPanel;
 };
 
 /*!
  * Class Description of AreaBox.
  */
-class CAreaBoxClassDesc : public CObjectClassDesc
-{
+class CAreaBoxClassDesc : public CObjectClassDesc {
 public:
-	REFGUID ClassID()
-	{
-		// {0EEA0A78-428C-4ad4-9EC1-97525AEB1BCB}
-		static const GUID guid = { 0xeea0a78, 0x428c, 0x4ad4, { 0x9e, 0xc1, 0x97, 0x52, 0x5a, 0xeb, 0x1b, 0xcb } };
-		return guid;
-	}
-	ObjectType GetObjectType() { return OBJTYPE_VOLUME; };
-	const char* ClassName() { return "AreaBox"; };
-	const char* Category() { return "Area"; };
-	CRuntimeClass* GetRuntimeClass() { return RUNTIME_CLASS(CAreaBox); };
-	int GameCreationOrder() { return 52; };
+    REFGUID ClassID() {
+        // {0EEA0A78-428C-4ad4-9EC1-97525AEB1BCB}
+        static const GUID guid = {0xeea0a78, 0x428c, 0x4ad4, {0x9e, 0xc1, 0x97, 0x52, 0x5a, 0xeb, 0x1b, 0xcb}};
+        return guid;
+    }
+    ObjectType GetObjectType() {
+        return OBJTYPE_VOLUME;
+    };
+    const char* ClassName() {
+        return "AreaBox";
+    };
+    const char* Category() {
+        return "Area";
+    };
+    CRuntimeClass* GetRuntimeClass() {
+        return RUNTIME_CLASS(CAreaBox);
+    };
+    int GameCreationOrder() {
+        return 52;
+    };
 };
 
 #endif // __AreaBox_h__

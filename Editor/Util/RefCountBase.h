@@ -18,67 +18,63 @@
 #pragma once
 
 //! Derive from this class to get reference counting for your class.
-class CRYEDIT_API CRefCountBase : public CObject
-{
+class CRYEDIT_API CRefCountBase : public CObject {
 public:
-	CRefCountBase() { m_nRefCount = 0; };
+    CRefCountBase() {
+        m_nRefCount = 0;
+    };
 
-	//! Add new refrence to this object.
-	int AddRef()
-	{
-		m_nRefCount++;
-		return m_nRefCount;
-	};
+    //! Add new refrence to this object.
+    int AddRef() {
+        m_nRefCount++;
+        return m_nRefCount;
+    };
 
-	//! Release refrence to this object.
-	//! when reference count reaches zero, object is deleted.
-	int Release()
-	{
-		int refs = --m_nRefCount;
-		if (m_nRefCount <= 0)
-			delete this;
-		return refs;
-	}
+    //! Release refrence to this object.
+    //! when reference count reaches zero, object is deleted.
+    int Release() {
+        int refs = --m_nRefCount;
+        if (m_nRefCount <= 0)
+            delete this;
+        return refs;
+    }
 
 protected:
-	virtual ~CRefCountBase() {};
+    virtual ~CRefCountBase(){};
 
 private:
-	int m_nRefCount;
+    int m_nRefCount;
 };
 
 //////////////////////////////////////////////////////////////////////////
 //! Derive from this class to get reference counting for your class.
 //////////////////////////////////////////////////////////////////////////
-template <class ParentClass>
-class CRYEDIT_API TRefCountBase : public ParentClass
-{
+template <class ParentClass> class CRYEDIT_API TRefCountBase : public ParentClass {
 public:
-	TRefCountBase() { m_nRefCount = 0; };
+    TRefCountBase() {
+        m_nRefCount = 0;
+    };
 
-	//! Add new refrence to this object.
-	int AddRef()
-	{
-		m_nRefCount++;
-		return m_nRefCount;
-	};
+    //! Add new refrence to this object.
+    int AddRef() {
+        m_nRefCount++;
+        return m_nRefCount;
+    };
 
-	//! Release refrence to this object.
-	//! when reference count reaches zero, object is deleted.
-	int Release()
-	{
-		int refs = --m_nRefCount;
-		if (m_nRefCount <= 0)
-			delete this;
-		return refs;
-	}
+    //! Release refrence to this object.
+    //! when reference count reaches zero, object is deleted.
+    int Release() {
+        int refs = --m_nRefCount;
+        if (m_nRefCount <= 0)
+            delete this;
+        return refs;
+    }
 
 protected:
-	virtual ~TRefCountBase() {};
+    virtual ~TRefCountBase(){};
 
 private:
-	int m_nRefCount;
+    int m_nRefCount;
 };
-
 
 #endif // __refcountbase_h__

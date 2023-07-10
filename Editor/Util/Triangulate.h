@@ -13,7 +13,6 @@
 /************ HEADER FILE FOR TRIANGULATE.H ***************************/
 /**********************************************************************/
 
-
 #ifndef TRIANGULATE_H
 
 #define TRIANGULATE_H
@@ -33,39 +32,27 @@
 /** whatever your own Vector implementation might be.           **/
 /*****************************************************************/
 
-
-#include <vector>  // Include STL vector class.
+#include <vector> // Include STL vector class.
 
 // Typedef an STL vector of vertices which are used to represent
 // a polygon/contour and a series of triangles.
-typedef std::vector< Vec3 > Vector2dVector;
+typedef std::vector<Vec3> Vector2dVector;
 
-
-class CTriangulate
-{
+class CTriangulate {
 public:
+    // triangulate a contour/polygon, places results in STL vector
+    // as series of triangles.
+    static bool Process(const Vector2dVector& contour, Vector2dVector& result);
 
-  // triangulate a contour/polygon, places results in STL vector
-  // as series of triangles.
-  static bool Process(const Vector2dVector &contour,
-                      Vector2dVector &result);
+    // compute area of a contour/polygon
+    static float Area(const Vector2dVector& contour);
 
-  // compute area of a contour/polygon
-  static float Area(const Vector2dVector &contour);
-
-  // decide if point Px/Py is inside triangle defined by
-  // (Ax,Ay) (Bx,By) (Cx,Cy)
-  static bool InsideTriangle(float Ax, float Ay,
-                      float Bx, float By,
-                      float Cx, float Cy,
-                      float Px, float Py);
-
+    // decide if point Px/Py is inside triangle defined by
+    // (Ax,Ay) (Bx,By) (Cx,Cy)
+    static bool InsideTriangle(float Ax, float Ay, float Bx, float By, float Cx, float Cy, float Px, float Py);
 
 private:
-  static bool Snip(const Vector2dVector &contour,int u,int v,int w,int n,int *V);
-
+    static bool Snip(const Vector2dVector& contour, int u, int v, int w, int n, int* V);
 };
 
-
 #endif
-

@@ -58,13 +58,13 @@ static void setnameval (lua_State *L, const l_char *name, int val) {
 
 
 /* ensures maximum alignment for HEADER */
-#define HEADER	(sizeof(union L_Umaxalign))
+#define HEADER  (sizeof(union L_Umaxalign))
 
-#define MARKSIZE	32
-#define MARK		0x55  /* 01010101 (a nice pattern) */
+#define MARKSIZE  32
+#define MARK    0x55  /* 01010101 (a nice pattern) */
 
 
-#define blocksize(b)	((size_t *)((l_char *)(b) - HEADER))
+#define blocksize(b)  ((size_t *)((l_char *)(b) - HEADER))
 
 unsigned long memdebug_numblocks = 0;
 unsigned long memdebug_total = 0;
@@ -144,7 +144,7 @@ static l_char *buildop (Proto *p, int pc, l_char *buff) {
   OpCode o = GET_OPCODE(i);
   const l_char *name = luaP_opnames[o];
   sprintf(buff, l_s("%4d - "), pc);
-  switch (getOpMode(o)) {  
+  switch (getOpMode(o)) {
     case iABC:
       sprintf(buff+strlen(buff), l_s("%-12s%4d %4d %4d"), name,
               GETARG_A(i), GETARG_B(i), GETARG_C(i));
@@ -457,7 +457,7 @@ static int equal (lua_State *L) {
   return pushbool(L, lua_equal(L, 1, 2));
 }
 
-  
+
 
 /*
 ** {======================================================
@@ -489,7 +489,7 @@ static int getnum (lua_State *L, const l_char **pc) {
   while (isdigit(**pc)) res = res*10 + (*(*pc)++) - l_c('0');
   return sig*res;
 }
-  
+
 static const l_char *getname (l_char *buff, const l_char **pc) {
   int i = 0;
   skip(pc);
@@ -500,10 +500,10 @@ static const l_char *getname (l_char *buff, const l_char **pc) {
 }
 
 
-#define EQ(s1)	(strcmp(s1, inst) == 0)
+#define EQ(s1)  (strcmp(s1, inst) == 0)
 
-#define getnum	((getnum)(L, &pc))
-#define getname	((getname)(buff, &pc))
+#define getnum  ((getnum)(L, &pc))
+#define getname  ((getname)(buff, &pc))
 
 
 static int testC (lua_State *L) {

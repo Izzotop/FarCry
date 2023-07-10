@@ -108,7 +108,7 @@ void luaV_Lclosure (lua_State *L, Proto *l, int nelems) {
 
 
 /* maximum stack used by a call to a tag method (func + args) */
-#define MAXSTACK_TM	4
+#define MAXSTACK_TM  4
 
 static StkId callTM (lua_State *L, Closure *f, const l_char *fmt, ...) {
   va_list argp;
@@ -134,7 +134,7 @@ static StkId callTM (lua_State *L, Closure *f, const l_char *fmt, ...) {
 }
 
 
-#define setTM(L, base)	(L->top = (base))
+#define setTM(L, base)  (L->top = (base))
 
 static void setTMresult (lua_State *L, TObject *result, StkId base) {
   if (L->top == base) {  /* are there valid results? */
@@ -282,9 +282,9 @@ int luaV_lessthan (lua_State *L, const TObject *l, const TObject *r) {
 
 
 void luaV_strconc (lua_State *L, int total, StkId top) {
-	#ifdef IMPLICIT_GC
-		luaV_checkGC(L, top);
-	#endif
+  #ifdef IMPLICIT_GC
+    luaV_checkGC(L, top);
+  #endif
   do {
     int n = 2;  /* number of elements handled in this pass (at least 2) */
     if (tostring(L, top-2) || tostring(L, top-1)) {
@@ -347,28 +347,28 @@ static void adjust_varargs (lua_State *L, StkId base, int nfixargs) {
 ** some macros for common tasks in `luaV_execute'
 */
 
-#define runtime_check(L, c)	{ if (!(c)) return L->top; }
+#define runtime_check(L, c)  { if (!(c)) return L->top; }
 
-#define RA(i)	(base+GETARG_A(i))
-#define RB(i)	(base+GETARG_B(i))
-#define RC(i)	(base+GETARG_C(i))
-#define RKC(i)	((GETARG_C(i) < MAXSTACK) ? \
-			base+GETARG_C(i) : \
-			tf->k+GETARG_C(i)-MAXSTACK)
-#define KBc(i)	(tf->k+GETARG_Bc(i))
+#define RA(i)  (base+GETARG_A(i))
+#define RB(i)  (base+GETARG_B(i))
+#define RC(i)  (base+GETARG_C(i))
+#define RKC(i)  ((GETARG_C(i) < MAXSTACK) ? \
+      base+GETARG_C(i) : \
+      tf->k+GETARG_C(i)-MAXSTACK)
+#define KBc(i)  (tf->k+GETARG_Bc(i))
 
-#define Arith(op, optm)	{ \
-  const TObject *b = RB(i); const TObject *c = RKC(i);		\
+#define Arith(op, optm)  { \
+  const TObject *b = RB(i); const TObject *c = RKC(i);    \
   TObject tempb, tempc; \
   if ((ttype(b) == LUA_TNUMBER || (b = luaV_tonumber(b, &tempb)) != NULL) && \
       (ttype(c) == LUA_TNUMBER || (c = luaV_tonumber(c, &tempc)) != NULL)) { \
-    setnvalue(ra, nvalue(b) op nvalue(c));		\
-  } else		\
+    setnvalue(ra, nvalue(b) op nvalue(c));    \
+  } else    \
     call_arith(L, RB(i), RKC(i), ra, optm); \
 }
 
 
-#define dojump(pc, i)	((pc) += GETARG_sBc(i))
+#define dojump(pc, i)  ((pc) += GETARG_sBc(i))
 
 /*
 ** Executes the given Lua function. Parameters are between [base,top).
@@ -436,9 +436,9 @@ StkId luaV_execute (lua_State *L, const Closure *cl, StkId base) {
       }
       case OP_NEWTABLE: {
         sethvalue(ra, luaH_new(L, GETARG_Bc(i)));
-				#ifdef IMPLICIT_GC
-					luaV_checkGC(L, ra+1);
-				#endif
+        #ifdef IMPLICIT_GC
+          luaV_checkGC(L, ra+1);
+        #endif
         break;
       }
       case OP_SELF: {
@@ -650,9 +650,9 @@ StkId luaV_execute (lua_State *L, const Closure *cl, StkId base) {
       case OP_CLOSURE: {
         Proto *p = tf->p[GETARG_Bc(i)];
         int nup = p->nupvalues;
-				#ifdef IMPLICIT_GC
-					luaV_checkGC(L, ra+nup);
-				#endif
+        #ifdef IMPLICIT_GC
+          luaV_checkGC(L, ra+nup);
+        #endif
         L->top = ra+nup;
         luaV_Lclosure(L, p, nup);
         L->top = base + tf->maxstacksize;

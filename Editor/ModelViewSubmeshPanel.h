@@ -12,75 +12,74 @@
 /////////////////////////////////////////////////////////////////////////////
 // ModelViewSubmeshPanel dialog
 
-class ModelViewSubmeshPanel : public CXTResizeDialog
-{
-// Construction
+class ModelViewSubmeshPanel : public CXTResizeDialog {
+    // Construction
 public:
-	ModelViewSubmeshPanel( class CModelViewport *vp,CWnd* pParent = NULL);   // standard constructor
+    ModelViewSubmeshPanel(class CModelViewport* vp, CWnd* pParent = nullptr); // standard constructor
 
-	// Adds an animation with the given name and duration (in seconds)
-	// to the animation list box/view.
-	void ReinitSubmeshes();
-	CString GetCurrAnimName();
-	bool GetAnimLightState();
+    // Adds an animation with the given name and duration (in seconds)
+    // to the animation list box/view.
+    void ReinitSubmeshes();
+    CString GetCurrAnimName();
+    bool GetAnimLightState();
 
-	void ClearBones();
-	void AddBone( const CString &bone );
-	void SelectBone( const CString &bone );
+    void ClearBones();
+    void AddBone(const CString& bone);
+    void SelectBone(const CString& bone);
 
-	bool GetLooped();
-	bool GetSynchronizePhase();
+    bool GetLooped();
+    bool GetSynchronizePhase();
 
-	int GetLayer() const;
-	float GetBlendInTime();
-	float GetBlendOutTime();
+    int GetLayer() const;
+    float GetBlendInTime();
+    float GetBlendOutTime();
 
-	bool IsBlendTimeLock();
+    bool IsBlendTimeLock();
 
-	void SetFileName( const CString &filename );
+    void SetFileName(const CString& filename);
 
-// Dialog Data
-	//{{AFX_DATA(ModelViewPanel)
-	enum { IDD = IDD_MODELVIEW_MULTIPART };
-	CXTCheckListBox	m_submeshes;
-	//}}AFX_DATA
+    // Dialog Data
+    //{{AFX_DATA(ModelViewPanel)
+    enum { IDD = IDD_MODELVIEW_MULTIPART };
+    CXTCheckListBox m_submeshes;
+    //}}AFX_DATA
 
+    // Overrides
+    // ClassWizard generated virtual function overrides
+    //{{AFX_VIRTUAL(ModelViewPanel)
+public:
+    virtual BOOL OnCmdMsg(UINT nID, int nCode, void* pExtra, AFX_CMDHANDLERINFO* pHandlerInfo);
 
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(ModelViewPanel)
-	public:
-	virtual BOOL OnCmdMsg(UINT nID, int nCode, void* pExtra, AFX_CMDHANDLERINFO* pHandlerInfo);
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	//}}AFX_VIRTUAL
-
-// Implementation
 protected:
-	virtual void OnOK() {};
-	virtual void OnCancel() {};
+    virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
+    //}}AFX_VIRTUAL
 
-	int GetCurSubmesh();
-	bool IsChecked(int nSubmesh);
-	int GetItemBySubmesh(int nSubmesh);
-	// Generated message map functions
-	//{{AFX_MSG(ModelViewPanel)
-	virtual BOOL OnInitDialog();
-	afx_msg void OnSelchangeSubmeshes();
-	afx_msg void OnBnClickedAddSubmesh();
-	afx_msg void OnBnClickedReloadSubmesh();
-	afx_msg void OnBnClickedChangeSubmesh();
-	afx_msg void OnBnClickedRemoveSubmesh();
-	afx_msg void OnBnClickedSubmeshVisible();
-	afx_msg void OnCmdCheckChange();
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
+    // Implementation
+protected:
+    virtual void OnOK(){};
+    virtual void OnCancel(){};
 
-	CModelViewport *m_modelView;
-	CCustomButton m_addSubmeshBtn;
-	CCustomButton m_removeSubmeshBtn;
-	CCustomButton m_reloadSubmeshBtn;
-	//CButton	m_submeshVisible;
+    int GetCurSubmesh();
+    bool IsChecked(int nSubmesh);
+    int GetItemBySubmesh(int nSubmesh);
+    // Generated message map functions
+    //{{AFX_MSG(ModelViewPanel)
+    virtual BOOL OnInitDialog();
+    afx_msg void OnSelchangeSubmeshes();
+    afx_msg void OnBnClickedAddSubmesh();
+    afx_msg void OnBnClickedReloadSubmesh();
+    afx_msg void OnBnClickedChangeSubmesh();
+    afx_msg void OnBnClickedRemoveSubmesh();
+    afx_msg void OnBnClickedSubmeshVisible();
+    afx_msg void OnCmdCheckChange();
+    //}}AFX_MSG
+    DECLARE_MESSAGE_MAP()
+
+    CModelViewport* m_modelView;
+    CCustomButton m_addSubmeshBtn;
+    CCustomButton m_removeSubmeshBtn;
+    CCustomButton m_reloadSubmeshBtn;
+    // CButton    m_submeshVisible;
 };
 
 //{{AFX_INSERT_LOCATION}}

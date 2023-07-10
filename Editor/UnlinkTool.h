@@ -24,31 +24,41 @@
 #include "Objects\ObjectManager.h"
 
 //////////////////////////////////////////////////////////////////////////
-class CUnlinkTool : public CEditTool,public IObjectSelectCallback
-{
+class CUnlinkTool : public CEditTool, public IObjectSelectCallback {
 public:
-	DECLARE_DYNAMIC(CUnlinkTool)
+    DECLARE_DYNAMIC(CUnlinkTool)
 
-	CUnlinkTool(); // IPickObjectCallback *callback,CRuntimeClass *targetClass=NULL );
-	~CUnlinkTool();
+    CUnlinkTool(); // IPickObjectCallback *callback,CRuntimeClass *targetClass=nullptr );
+    ~CUnlinkTool();
 
-	// Ovverides from CEditTool
-	bool MouseCallback( CViewport *view,EMouseEvent event,CPoint &point,int flags ) {return false;}
-	// Delete itself.
-	void Release() { delete this; };
+    // Ovverides from CEditTool
+    bool MouseCallback(CViewport* view, EMouseEvent event, CPoint& point, int flags) {
+        return false;
+    }
+    // Delete itself.
+    void Release() {
+        delete this;
+    };
 
-	virtual void BeginEditParams( IEditor *ie,int flags ) {};
-	virtual void EndEditParams() {};
+    virtual void BeginEditParams(IEditor* ie, int flags){};
+    virtual void EndEditParams(){};
 
-	virtual void Display( DisplayContext &dc ) {};
-	virtual bool OnKeyDown( CViewport *view,uint nChar,uint nRepCnt,uint nFlags ) {return false;}
-	virtual bool OnKeyUp( CViewport *view,uint nChar,uint nRepCnt,uint nFlags ) { return false; };
+    virtual void Display(DisplayContext& dc){};
+    virtual bool OnKeyDown(CViewport* view, uint nChar, uint nRepCnt, uint nFlags) {
+        return false;
+    }
+    virtual bool OnKeyUp(CViewport* view, uint nChar, uint nRepCnt, uint nFlags) {
+        return false;
+    };
 
-	virtual bool OnSelectObject( CBaseObject *obj ) {return false;}
+    virtual bool OnSelectObject(CBaseObject* obj) {
+        return false;
+    }
 
 private:
-	bool IsRelevant( CBaseObject *obj ) {return true;}
+    bool IsRelevant(CBaseObject* obj) {
+        return true;
+    }
 };
-
 
 #endif // __UnlinkTool_h__

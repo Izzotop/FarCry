@@ -13,48 +13,49 @@
 /////////////////////////////////////////////////////////////////////////////
 // CShadersDialog dialog
 
-class CShadersDialog : public CXTResizeDialog
-{
-// Construction
+class CShadersDialog : public CXTResizeDialog {
+    // Construction
 public:
-	CShadersDialog(const CString &selection,CWnd* pParent = NULL);   // standard constructor
+    CShadersDialog(const CString& selection, CWnd* pParent = nullptr); // standard constructor
 
-// Dialog Data
-	//{{AFX_DATA(CShadersDialog)
-	enum { IDD = IDD_SHADERS };
-	CListBox	m_shaders;
-	CTextEditorCtrl	m_shaderText;
-	CButton m_saveButton;
-	CString	m_selection;
-	//}}AFX_DATA
+    // Dialog Data
+    //{{AFX_DATA(CShadersDialog)
+    enum { IDD = IDD_SHADERS };
+    CListBox m_shaders;
+    CTextEditorCtrl m_shaderText;
+    CButton m_saveButton;
+    CString m_selection;
+    //}}AFX_DATA
 
-	CString GetSelection() { return m_selection; };
+    CString GetSelection() {
+        return m_selection;
+    };
 
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CShadersDialog)
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	//}}AFX_VIRTUAL
-
-// Implementation
+    // Overrides
+    // ClassWizard generated virtual function overrides
+    //{{AFX_VIRTUAL(CShadersDialog)
 protected:
+    virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
+    //}}AFX_VIRTUAL
 
-	// Generated message map functions
-	//{{AFX_MSG(CShadersDialog)
-	afx_msg void OnSelchangeShaders();
-	virtual BOOL OnInitDialog();
-	afx_msg void OnDblclkShaders();
-	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
+    // Implementation
+protected:
+    // Generated message map functions
+    //{{AFX_MSG(CShadersDialog)
+    afx_msg void OnSelchangeShaders();
+    virtual BOOL OnInitDialog();
+    afx_msg void OnDblclkShaders();
+    afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
+    //}}AFX_MSG
+    DECLARE_MESSAGE_MAP()
 
-	CString m_sel;
-	CBrush m_brush;
+    CString m_sel;
+    CBrush m_brush;
+
 public:
-	afx_msg void OnBnClickedEdit();
-	afx_msg void OnBnClickedSave();
-	afx_msg void OnEnChangeText();
+    afx_msg void OnBnClickedEdit();
+    afx_msg void OnBnClickedSave();
+    afx_msg void OnEnChangeText();
 };
 
 //{{AFX_INSERT_LOCATION}}

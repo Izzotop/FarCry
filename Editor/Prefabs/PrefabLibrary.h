@@ -7,7 +7,7 @@
 //  Version:     v1.00
 //  Created:     10/11/2003 by Timur.
 //  Compilers:   Visual Studio.NET 2003
-//  Description: 
+//  Description:
 // -------------------------------------------------------------------------
 //  History:
 //
@@ -20,14 +20,14 @@
 #include "BaseLibrary.h"
 
 /** Library of prototypes.
-*/
-class CRYEDIT_API CPrefabLibrary : public CBaseLibrary
-{
+ */
+class CRYEDIT_API CPrefabLibrary : public CBaseLibrary {
 public:
-	CPrefabLibrary( CBaseLibraryManager *pManager ) : CBaseLibrary(pManager) {};
-	virtual bool Save();
-	virtual bool Load( const CString &filename );
-	virtual void Serialize( XmlNodeRef &node,bool bLoading );
+    CPrefabLibrary(CBaseLibraryManager* pManager) : CBaseLibrary(pManager){};
+    virtual bool Save();
+    virtual bool Load(const CString& filename);
+    virtual void Serialize(XmlNodeRef& node, bool bLoading);
+
 private:
 };
 

@@ -7,7 +7,7 @@
 //  Version:     v1.00
 //  Created:     13/8/2002 by Timur.
 //  Compilers:   Visual Studio.NET
-//  Description: 
+//  Description:
 // -------------------------------------------------------------------------
 //  History:
 //
@@ -24,21 +24,24 @@
 #include "Objects\ObjectManager.h"
 
 //////////////////////////////////////////////////////////////////////////
-class CAlignPickCallback : public IPickObjectCallback
-{
+class CAlignPickCallback : public IPickObjectCallback {
 public:
-	CAlignPickCallback() { m_bActive = true; };
-	//! Called when object picked.
-	virtual void OnPick( CBaseObject *picked );
-	//! Called when pick mode cancelled.
-	virtual void OnCancelPick();
-	//! Return true if specified object is pickable.
-	virtual bool OnPickFilter( CBaseObject *filterObject );
+    CAlignPickCallback() {
+        m_bActive = true;
+    };
+    //! Called when object picked.
+    virtual void OnPick(CBaseObject* picked);
+    //! Called when pick mode cancelled.
+    virtual void OnCancelPick();
+    //! Return true if specified object is pickable.
+    virtual bool OnPickFilter(CBaseObject* filterObject);
 
-	static bool IsActive() { return m_bActive; }
+    static bool IsActive() {
+        return m_bActive;
+    }
+
 private:
-	static bool m_bActive;
+    static bool m_bActive;
 };
-
 
 #endif // __aligntool_h__

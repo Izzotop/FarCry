@@ -13,49 +13,46 @@
 #include "Controls\FileTree.h"
 #include "Controls\PreviewModelCtrl.h"
 
-class CSelectFileDlg : public CDialog
-{
-// Construction
+class CSelectFileDlg : public CDialog {
+    // Construction
 public:
-	bool SelectFileName(CString *pFileNameOut, CString *pRelativeFileNameOut, 
-		CString strFileSpec, CString strSearchFolder);
-	CSelectFileDlg(CWnd* pParent = NULL);   // standard constructor
-	
-// Dialog Data
-	//{{AFX_DATA(CSelectFileDlg)
-	enum { IDD = IDD_SELECT_FILE };
-	//}}AFX_DATA
+    bool SelectFileName(CString* pFileNameOut, CString* pRelativeFileNameOut, CString strFileSpec, CString strSearchFolder);
+    CSelectFileDlg(CWnd* pParent = nullptr); // standard constructor
 
+    // Dialog Data
+    //{{AFX_DATA(CSelectFileDlg)
+    enum { IDD = IDD_SELECT_FILE };
+    //}}AFX_DATA
 
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CSelectFileDlg)
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	virtual BOOL OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult);
-	//}}AFX_VIRTUAL
-
-// Implementation
+    // Overrides
+    // ClassWizard generated virtual function overrides
+    //{{AFX_VIRTUAL(CSelectFileDlg)
 protected:
-	void UpdatePreview(CString strFileToPreview);
+    virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
+    virtual BOOL OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult);
+    //}}AFX_VIRTUAL
 
-	CFileTree m_cFileTree;
+    // Implementation
+protected:
+    void UpdatePreview(CString strFileToPreview);
 
-	bool m_previewModelEnabled;
-	CPreviewModelCtrl m_previewModel;
+    CFileTree m_cFileTree;
 
-	// Generated message map functions
-	//{{AFX_MSG(CSelectFileDlg)
-	virtual BOOL OnInitDialog();
-	virtual void OnOK();
-	afx_msg void OnDestroy();
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
+    bool m_previewModelEnabled;
+    CPreviewModelCtrl m_previewModel;
+
+    // Generated message map functions
+    //{{AFX_MSG(CSelectFileDlg)
+    virtual BOOL OnInitDialog();
+    virtual void OnOK();
+    afx_msg void OnDestroy();
+    //}}AFX_MSG
+    DECLARE_MESSAGE_MAP()
 
 private:
-	CString m_strSelectedFile;
-	static CString m_strLastPath;
-	static CString m_strLastSearchFolder;
+    CString m_strSelectedFile;
+    static CString m_strLastPath;
+    static CString m_strLastSearchFolder;
 };
 
 //{{AFX_INSERT_LOCATION}}

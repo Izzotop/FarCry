@@ -32,215 +32,218 @@
 class CMission;
 class CLayoutWnd;
 
-class CMainFrame : public CXTFrameWnd
-{
-	
+class CMainFrame : public CXTFrameWnd {
+
 public: // create from serialization only
-	CMainFrame();
-	DECLARE_DYNCREATE(CMainFrame)
+    CMainFrame();
+    DECLARE_DYNCREATE(CMainFrame)
 
-// Attributes
+    // Attributes
 public:
+    //! Show window and restore saved state.
+    void ShowWindowEx(int nCmdShow);
 
-	//! Show window and restore saved state.
-	void ShowWindowEx(int nCmdShow);
-
-// Operations
+    // Operations
 public:
-
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CMainFrame)
-	public:
-	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
-	virtual BOOL PreTranslateMessage(MSG* pMsg);
-	virtual BOOL DestroyWindow();
-	virtual void ActivateFrame(int nCmdShow);
-	virtual BOOL LoadFrame(UINT nIDResource, DWORD dwDefaultStyle, CWnd* pParentWnd, CCreateContext* pContext);
-
-	protected:
-	virtual BOOL OnCreateClient(LPCREATESTRUCT lpcs, CCreateContext* pContext);
-	//}}AFX_VIRTUAL
-
-// Implementation
+    // Overrides
+    // ClassWizard generated virtual function overrides
+    //{{AFX_VIRTUAL(CMainFrame)
 public:
-	virtual ~CMainFrame();
+    virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
+    virtual BOOL PreTranslateMessage(MSG* pMsg);
+    virtual BOOL DestroyWindow();
+    virtual void ActivateFrame(int nCmdShow);
+    virtual BOOL LoadFrame(UINT nIDResource, DWORD dwDefaultStyle, CWnd* pParentWnd, CCreateContext* pContext);
+
+protected:
+    virtual BOOL OnCreateClient(LPCREATESTRUCT lpcs, CCreateContext* pContext);
+    //}}AFX_VIRTUAL
+
+    // Implementation
+public:
+    virtual ~CMainFrame();
 #ifdef _DEBUG
-	virtual void AssertValid() const;
-	virtual void Dump(CDumpContext& dc) const;
+    virtual void AssertValid() const;
+    virtual void Dump(CDumpContext& dc) const;
 #endif
 
-	// Access the status bar to display toolbar tooltips and status messages
-	void SetStatusText( LPCTSTR pszText );
-	void SetStatusText(CString strText) { SetStatusText(strText); };
+    // Access the status bar to display toolbar tooltips and status messages
+    void SetStatusText(LPCTSTR pszText);
+    void SetStatusText(CString strText) {
+        SetStatusText(strText);
+    };
 
-	int SelectRollUpBar( int rollupBarId );
-	CRollupCtrl* GetRollUpControl( int rollupBarId=ROLLUP_OBJECTS );
+    int SelectRollUpBar(int rollupBarId);
+    CRollupCtrl* GetRollUpControl(int rollupBarId = ROLLUP_OBJECTS);
 
-	//! Access to track view dialog.
-	CTrackViewDialog* GetTrackView();
+    //! Access to track view dialog.
+    CTrackViewDialog* GetTrackView();
 
-	void EnableProgressBar( bool bEnable );
-	CInfoProgressBar* GetProgressBar();
+    void EnableProgressBar(bool bEnable);
+    CInfoProgressBar* GetProgressBar();
 
-	CLayoutWnd*	GetLayout() { return m_layoutWnd; };
-	CString GetSelectionName();
-	void SetSelectionName( const CString &name );
-	void AddSelectionName( const CString &name );
-	void RemoveSelectionName( const CString &name );
+    CLayoutWnd* GetLayout() {
+        return m_layoutWnd;
+    };
+    CString GetSelectionName();
+    void SetSelectionName(const CString& name);
+    void AddSelectionName(const CString& name);
+    void RemoveSelectionName(const CString& name);
 
-	void UncheckMainTools();
+    void UncheckMainTools();
 
-	bool ShowConsole( bool enable );
-//	void EnableAccelerator( bool bEnable );
+    bool ShowConsole(bool enable);
+    //    void EnableAccelerator( bool bEnable );
 
-	void IdleUpdate();
+    void IdleUpdate();
 
-	void OnMissionUpdate();
+    void OnMissionUpdate();
 
-	//! Enable/Disable keyboard accelerator.
-	void EnableAccelerator( bool bEnable );
-	//! Edit keyboard shortcuts.
-	void EditAccelerator();
+    //! Enable/Disable keyboard accelerator.
+    void EnableAccelerator(bool bEnable);
+    //! Edit keyboard shortcuts.
+    void EditAccelerator();
 
-	// Check if dock state is valid with this window.
-	BOOL VerifyBarState( CDockState &state );
+    // Check if dock state is valid with this window.
+    BOOL VerifyBarState(CDockState& state);
 
-	//! Save current window configuration.
-	void SaveConfig();
+    //! Save current window configuration.
+    void SaveConfig();
 
-	//! Put external tools to menu.
-	void UpdateTools();
+    //! Put external tools to menu.
+    void UpdateTools();
 
-	//! Returnns pointer to data base dialog.
-	CDataBaseDialog* GetDataBaseDialog() { return &m_wndDataBase; };
-	void ShowDataBaseDialog( bool bShow );
+    //! Returnns pointer to data base dialog.
+    CDataBaseDialog* GetDataBaseDialog() {
+        return &m_wndDataBase;
+    };
+    void ShowDataBaseDialog(bool bShow);
 
-	// Check if some window is child of ouw docking windows.
-	bool IsDockedWindowChild( CWnd *pWnd );
+    // Check if some window is child of ouw docking windows.
+    bool IsDockedWindowChild(CWnd* pWnd);
 
 protected:
-	void CreateMissionsBar();
-	void CreateRollupBar();
-	void DockControlBarLeftOf(CControlBar *Bar, CControlBar *LeftOf);
-	void DockControlBarNextTo(CControlBar* pBar,CControlBar* pTargetBar);
-	bool IsPreview() const;
+    void CreateMissionsBar();
+    void CreateRollupBar();
+    void DockControlBarLeftOf(CControlBar* Bar, CControlBar* LeftOf);
+    void DockControlBarNextTo(CControlBar* pBar, CControlBar* pTargetBar);
+    bool IsPreview() const;
 
-	bool FindMenuPos(CMenu *pBaseMenu, UINT myID, CMenu * & pMenu, int & mpos);
-	void DeleteToolsFromMenu( CMenu *menu );
+    bool FindMenuPos(CMenu* pBaseMenu, UINT myID, CMenu*& pMenu, int& mpos);
+    void DeleteToolsFromMenu(CMenu* menu);
 
-	void AddToolbarToAccel( const CString &name,CXTToolBar *toolbar );
+    void AddToolbarToAccel(const CString& name, CXTToolBar* toolbar);
 
-	void LoadTrueColorToolbar( CXTToolBar &bar,UINT nImageResource );
+    void LoadTrueColorToolbar(CXTToolBar& bar, UINT nImageResource);
 
-	//////////////////////////////////////////////////////////////////////////
-	// ControlBars
-	//////////////////////////////////////////////////////////////////////////
-	/*
-	CExtMenuControlBar m_wndMenuBar;
-	CExtStatusControlBar m_wndStatusBar;
-	CExtToolControlBar	m_wndToolBar;
-	CEditModeToolBar m_editModeBar;
-	CExtToolControlBar m_objectModifyBar;
-	CExtToolControlBar m_missionToolBar;
-	CExtToolControlBar m_wndTerrainToolBar;
-	CExtControlBar m_wndRollUpBar;
-	CExtControlBar m_wndConsoleBar;
-	CExtControlBar m_wndTrackViewBar;
-	*/
+    //////////////////////////////////////////////////////////////////////////
+    // ControlBars
+    //////////////////////////////////////////////////////////////////////////
+    /*
+    CExtMenuControlBar m_wndMenuBar;
+    CExtStatusControlBar m_wndStatusBar;
+    CExtToolControlBar    m_wndToolBar;
+    CEditModeToolBar m_editModeBar;
+    CExtToolControlBar m_objectModifyBar;
+    CExtToolControlBar m_missionToolBar;
+    CExtToolControlBar m_wndTerrainToolBar;
+    CExtControlBar m_wndRollUpBar;
+    CExtControlBar m_wndConsoleBar;
+    CExtControlBar m_wndTrackViewBar;
+    */
 
-	CXTStatusBar	m_wndStatusBar;
-	CXTReBar			m_wndReBar;
-	CEditModeToolBar m_editModeBar;
-	CXTToolBar m_wndToolBar;
-	CXTToolBar m_objectModifyBar;
-	CXTToolBar m_missionToolBar;
-	CXTToolBar m_wndTerrainToolBar;
-	CXTToolBar m_wndAvoToolBar;
-	
-	CXTDockWindow m_wndRollUpBar;
-	CXTDockWindow m_wndConsoleBar;
-	CXTDockWindow m_wndTrackViewBar;
-	CXTDockWindow m_wndDataBaseBar;
+    CXTStatusBar m_wndStatusBar;
+    CXTReBar m_wndReBar;
+    CEditModeToolBar m_editModeBar;
+    CXTToolBar m_wndToolBar;
+    CXTToolBar m_objectModifyBar;
+    CXTToolBar m_missionToolBar;
+    CXTToolBar m_wndTerrainToolBar;
+    CXTToolBar m_wndAvoToolBar;
 
-	//////////////////////////////////////////////////////////////////////////
+    CXTDockWindow m_wndRollUpBar;
+    CXTDockWindow m_wndConsoleBar;
+    CXTDockWindow m_wndTrackViewBar;
+    CXTDockWindow m_wndDataBaseBar;
 
-	CLayoutWnd *m_layoutWnd;
-		
-	//! Console dialog
-	CConsoleSCB m_cConsole;
+    //////////////////////////////////////////////////////////////////////////
 
-	//! Track view dialog.
-	CTrackViewDialog m_wndTrackView;
-	CDataBaseDialog m_wndDataBase;
+    CLayoutWnd* m_layoutWnd;
 
-	// Rollup sizing bar
-	CRollupBar m_wndRollUp;
-	CRollupCtrl m_objectRollupCtrl; // Rollup itself
-	CRollupCtrl m_terrainRollupCtrl; // Rollup itself
-	CRollupCtrl m_displayRollupCtrl; // Rollup itself
-	CRollupCtrl m_layersRollupCtrl; // Rollup itself
+    //! Console dialog
+    CConsoleSCB m_cConsole;
 
-	CSoundPresetsDlg m_wndSoundPresets;
-	CEAXPresetsDlg m_wndEAXPresets;
-	CMusicInfoDlg m_wndMusicInfo;
+    //! Track view dialog.
+    CTrackViewDialog m_wndTrackView;
+    CDataBaseDialog m_wndDataBase;
 
-	//CToolBar m_terrain;
-	// Info dialog.
-	CInfoBarHolder m_infoBarHolder;
-	CXTFlatComboBox m_missions;
-	//CComboBox m_missions;
+    // Rollup sizing bar
+    CRollupBar m_wndRollUp;
+    CRollupCtrl m_objectRollupCtrl;  // Rollup itself
+    CRollupCtrl m_terrainRollupCtrl; // Rollup itself
+    CRollupCtrl m_displayRollupCtrl; // Rollup itself
+    CRollupCtrl m_layersRollupCtrl;  // Rollup itself
 
-	class CTerrainPanel* m_terrainPanel;
-	class CMainTools* m_mainTools;
+    CSoundPresetsDlg m_wndSoundPresets;
+    CEAXPresetsDlg m_wndEAXPresets;
+    CMusicInfoDlg m_wndMusicInfo;
 
-	CString		m_selectionName;
-	//CDateTimeCtrl m_missionTime;
-	CMission*	m_currentMission;
-	class CObjectLayer *m_currentLayer;
+    // CToolBar m_terrain;
+    //  Info dialog.
+    CInfoBarHolder m_infoBarHolder;
+    CXTFlatComboBox m_missions;
+    // CComboBox m_missions;
 
-	bool m_consoleVisible;
-	float m_gridSize;
+    class CTerrainPanel* m_terrainPanel;
+    class CMainTools* m_mainTools;
 
-	bool m_bXPLook;
+    CString m_selectionName;
+    // CDateTimeCtrl m_missionTime;
+    CMission* m_currentMission;
+    class CObjectLayer* m_currentLayer;
 
-	//! Saves mainframe position.
-	CXTWindowPos m_wndPosition;
+    bool m_consoleVisible;
+    float m_gridSize;
 
-	int m_autoSaveTimer;
-	int m_autoRemindTimer;
+    bool m_bXPLook;
 
-// Generated message map functions
+    //! Saves mainframe position.
+    CXTWindowPos m_wndPosition;
+
+    int m_autoSaveTimer;
+    int m_autoRemindTimer;
+
+    // Generated message map functions
 protected:
-	//{{AFX_MSG(CMainFrame)
-	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
-	afx_msg void OnUpdateToolbar(CCmdUI* pCmdUI);
-	afx_msg void OnUpdateStatusBar(CCmdUI* pCmdUI);
-	afx_msg void OnUpdateConsole(CCmdUI* pCmdUI);
-	afx_msg void OnUpdateRollUpBar(CCmdUI* pCmdUI);
-	afx_msg void OnUpdateTrackView(CCmdUI* pCmdUI);
-	afx_msg void OnToolbar();
-	afx_msg void OnStatusBar();
-	afx_msg void OnRollUpBar();
-	afx_msg void OnConsoleWindow();
-	afx_msg void OnTrackView();
-	afx_msg void OnSize(UINT nType, int cx, int cy);
-	afx_msg BOOL OnCopyData(CWnd* pWnd, COPYDATASTRUCT* pCopyDataStruct);
-	afx_msg void OnClose();
-	afx_msg void OnMissionChanged();
-	afx_msg void OnMissionCancelChanged();
-	afx_msg void OnMissionDropDown();
-	afx_msg void OnXPLook();
-	afx_msg void OnUpdateXPLook(CCmdUI* pCmdUI);
-	afx_msg void OnSoundPresets();
-	afx_msg void OnEAXPresets();
-	afx_msg void OnMusicInfo();
-	afx_msg void OnProgressBarCancel();
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
+    //{{AFX_MSG(CMainFrame)
+    afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
+    afx_msg void OnUpdateToolbar(CCmdUI* pCmdUI);
+    afx_msg void OnUpdateStatusBar(CCmdUI* pCmdUI);
+    afx_msg void OnUpdateConsole(CCmdUI* pCmdUI);
+    afx_msg void OnUpdateRollUpBar(CCmdUI* pCmdUI);
+    afx_msg void OnUpdateTrackView(CCmdUI* pCmdUI);
+    afx_msg void OnToolbar();
+    afx_msg void OnStatusBar();
+    afx_msg void OnRollUpBar();
+    afx_msg void OnConsoleWindow();
+    afx_msg void OnTrackView();
+    afx_msg void OnSize(UINT nType, int cx, int cy);
+    afx_msg BOOL OnCopyData(CWnd* pWnd, COPYDATASTRUCT* pCopyDataStruct);
+    afx_msg void OnClose();
+    afx_msg void OnMissionChanged();
+    afx_msg void OnMissionCancelChanged();
+    afx_msg void OnMissionDropDown();
+    afx_msg void OnXPLook();
+    afx_msg void OnUpdateXPLook(CCmdUI* pCmdUI);
+    afx_msg void OnSoundPresets();
+    afx_msg void OnEAXPresets();
+    afx_msg void OnMusicInfo();
+    afx_msg void OnProgressBarCancel();
+    //}}AFX_MSG
+    DECLARE_MESSAGE_MAP()
 public:
-	afx_msg void OnTimer(UINT_PTR nIDEvent);
-	afx_msg void OnEditNextSelectionMask();
+    afx_msg void OnTimer(UINT_PTR nIDEvent);
+    afx_msg void OnEditNextSelectionMask();
 };
 
 /////////////////////////////////////////////////////////////////////////////

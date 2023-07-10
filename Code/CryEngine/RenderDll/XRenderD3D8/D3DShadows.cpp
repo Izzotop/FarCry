@@ -12,23 +12,18 @@
 #include "../Common/Shadow_Renderer.h"
 
 // draw grid and project depth map on it
-/*void CD3D8Renderer::DrawShadowGrid(const Vec3d & pos, const Vec3d & Scale, ShadowMapFrustum*lf, bool translate_projection, float alpha, IndexedVertexBuffer* pVertexBuffer, float anim_angle)
+/*void CD3D8Renderer::DrawShadowGrid(const Vec3d & pos, const Vec3d & Scale, ShadowMapFrustum*lf, bool translate_projection, float alpha, IndexedVertexBuffer* pVertexBuffer, float
+anim_angle)
 {
-}	*/
+}    */
 
-void CD3D8Renderer::SetupShadowOnlyPass(int Num, ShadowMapFrustum * pFrustum, Vec3d * vShadowTrans, const float fShadowScale, Vec3d vObjTrans, float fObjScale, const Vec3d vObjAngles, Matrix44 * pObjMat)
-{  
-}
+void CD3D8Renderer::SetupShadowOnlyPass(int Num, ShadowMapFrustum* pFrustum, Vec3d* vShadowTrans, const float fShadowScale, Vec3d vObjTrans, float fObjScale,
+                                        const Vec3d vObjAngles, Matrix44* pObjMat) {}
 
 // Make 8-bit identity texture that maps (s)=(z) to [0,255]/255.
-int CD3D8Renderer::MakeShadowIdentityTexture()
-{ 
-  return 0;
+int CD3D8Renderer::MakeShadowIdentityTexture() {
+    return 0;
 }
 
 // setup projection texgen
-void CD3D8Renderer::ConfigShadowTexgen(int Num, int rangeMap, ShadowMapFrustum * pFrustum, float * pLightFrustumMatrix, float * pLightViewMatrix)
-{
-}
-
-
+void CD3D8Renderer::ConfigShadowTexgen(int Num, int rangeMap, ShadowMapFrustum* pFrustum, float* pLightFrustumMatrix, float* pLightViewMatrix) {}

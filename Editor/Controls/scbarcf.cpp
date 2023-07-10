@@ -1,7 +1,7 @@
 /////////////////////////////////////////////////////////////////////////
 //
 // CSizingControlBarCF          Version 2.44
-// 
+//
 // Created: Dec 21, 1998        Last Modified: March 31, 2002
 //
 // See the official site at www.datamekanix.com for documentation and
@@ -10,7 +10,7 @@
 /////////////////////////////////////////////////////////////////////////
 // Copyright (C) 1998-2002 by Cristi Posea. All rights reserved.
 //
-// This code is free for personal and commercial use, providing this 
+// This code is free for personal and commercial use, providing this
 // notice remains intact in the source files and all eventual changes are
 // clearly marked with comments.
 //
@@ -34,11 +34,7 @@
 
 IMPLEMENT_DYNAMIC(CSizingControlBarCF, baseCSizingControlBarCF);
 
-int CALLBACK EnumFontFamProc(ENUMLOGFONT FAR *lpelf,
-                             NEWTEXTMETRIC FAR *lpntm,
-                             int FontType,
-                             LPARAM lParam)
-{
+int CALLBACK EnumFontFamProc(ENUMLOGFONT FAR* lpelf, NEWTEXTMETRIC FAR* lpntm, int FontType, LPARAM lParam) {
     UNUSED_ALWAYS(lpelf);
     UNUSED_ALWAYS(lpntm);
     UNUSED_ALWAYS(FontType);
@@ -46,30 +42,25 @@ int CALLBACK EnumFontFamProc(ENUMLOGFONT FAR *lpelf,
 
     return 0;
 }
- 
-CSizingControlBarCF::CSizingControlBarCF()
-{
+
+CSizingControlBarCF::CSizingControlBarCF() {
     m_bActive = FALSE;
 
     CDC dc;
-    dc.CreateCompatibleDC(NULL);
+    dc.CreateCompatibleDC(nullptr);
 
-    m_sFontFace = (::EnumFontFamilies(dc.m_hDC,
-        _T("Tahoma"), (FONTENUMPROC) EnumFontFamProc, 0) == 0) ?
-        _T("Tahoma") : _T("Arial");
+    m_sFontFace = (::EnumFontFamilies(dc.m_hDC, _T("Tahoma"), (FONTENUMPROC)EnumFontFamProc, 0) == 0) ? _T("Tahoma") : _T("Arial");
 
     dc.DeleteDC();
-    
 }
 
 BEGIN_MESSAGE_MAP(CSizingControlBarCF, baseCSizingControlBarCF)
-    //{{AFX_MSG_MAP(CSizingControlBarCF)
-    //}}AFX_MSG_MAP
-    ON_MESSAGE(WM_SETTEXT, OnSetText)
+//{{AFX_MSG_MAP(CSizingControlBarCF)
+//}}AFX_MSG_MAP
+ON_MESSAGE(WM_SETTEXT, OnSetText)
 END_MESSAGE_MAP()
 
-void CSizingControlBarCF::OnUpdateCmdUI(CFrameWnd* pTarget, BOOL bDisableIfNoHndler)
-{
+void CSizingControlBarCF::OnUpdateCmdUI(CFrameWnd* pTarget, BOOL bDisableIfNoHndler) {
     baseCSizingControlBarCF::OnUpdateCmdUI(pTarget, bDisableIfNoHndler);
 
     if (!HasGripper())
@@ -91,13 +82,12 @@ void CSizingControlBarCF::OnUpdateCmdUI(CFrameWnd* pTarget, BOOL bDisableIfNoHnd
 
 // gradient defines (if not already defined)
 #ifndef COLOR_GRADIENTACTIVECAPTION
-#define COLOR_GRADIENTACTIVECAPTION     27
-#define COLOR_GRADIENTINACTIVECAPTION   28
-#define SPI_GETGRADIENTCAPTIONS         0x1008
+#define COLOR_GRADIENTACTIVECAPTION 27
+#define COLOR_GRADIENTINACTIVECAPTION 28
+#define SPI_GETGRADIENTCAPTIONS 0x1008
 #endif
 
-void CSizingControlBarCF::NcPaintGripper(CDC* pDC, CRect rcClient)
-{
+void CSizingControlBarCF::NcPaintGripper(CDC* pDC, CRect rcClient) {
     if (!HasGripper())
         return;
 
@@ -105,14 +95,11 @@ void CSizingControlBarCF::NcPaintGripper(CDC* pDC, CRect rcClient)
     BOOL bHorz = IsHorzDocked();
     CRect rcGrip = rcClient;
     CRect rcBtn = m_biHide.GetRect();
-    if (bHorz)
-    {   // right side gripper
+    if (bHorz) { // right side gripper
         rcGrip.left -= m_cyGripper + 1;
         rcGrip.right = rcGrip.left + 11;
         rcGrip.top = rcBtn.bottom + 3;
-    }
-    else
-    {   // gripper at top
+    } else { // gripper at top
         rcGrip.top -= m_cyGripper + 1;
         rcGrip.bottom = rcGrip.top + 11;
         rcGrip.right = rcBtn.left - 3;
@@ -120,58 +107,42 @@ void CSizingControlBarCF::NcPaintGripper(CDC* pDC, CRect rcClient)
     rcGrip.InflateRect(bHorz ? 1 : 0, bHorz ? 0 : 1);
 
     // draw the caption background
-    //CBrush br;
-    COLORREF clrCptn = m_bActive ?
-        ::GetSysColor(COLOR_ACTIVECAPTION) :
-        ::GetSysColor(COLOR_INACTIVECAPTION);
+    // CBrush br;
+    COLORREF clrCptn = m_bActive ? ::GetSysColor(COLOR_ACTIVECAPTION) : ::GetSysColor(COLOR_INACTIVECAPTION);
 
     // query gradient info (usually TRUE for Win98/Win2k)
     BOOL bGradient = FALSE;
     ::SystemParametersInfo(SPI_GETGRADIENTCAPTIONS, 0, &bGradient, 0);
-    
+
     if (!bGradient)
         pDC->FillSolidRect(&rcGrip, clrCptn); // solid color
-    else
-    {
+    else {
         // gradient from left to right or from bottom to top
         // get second gradient color (the right end)
-        COLORREF clrCptnRight = m_bActive ?
-            ::GetSysColor(COLOR_GRADIENTACTIVECAPTION) :
-            ::GetSysColor(COLOR_GRADIENTINACTIVECAPTION);
+        COLORREF clrCptnRight = m_bActive ? ::GetSysColor(COLOR_GRADIENTACTIVECAPTION) : ::GetSysColor(COLOR_GRADIENTINACTIVECAPTION);
 
         // this will make 2^6 = 64 fountain steps
         int nShift = 6;
         int nSteps = 1 << nShift;
 
-        for (int i = 0; i < nSteps; i++)
-        {
+        for (int i = 0; i < nSteps; i++) {
             // do a little alpha blending
-            int nR = (GetRValue(clrCptn) * (nSteps - i) +
-                      GetRValue(clrCptnRight) * i) >> nShift;
-            int nG = (GetGValue(clrCptn) * (nSteps - i) +
-                      GetGValue(clrCptnRight) * i) >> nShift;
-            int nB = (GetBValue(clrCptn) * (nSteps - i) +
-                      GetBValue(clrCptnRight) * i) >> nShift;
+            int nR = (GetRValue(clrCptn) * (nSteps - i) + GetRValue(clrCptnRight) * i) >> nShift;
+            int nG = (GetGValue(clrCptn) * (nSteps - i) + GetGValue(clrCptnRight) * i) >> nShift;
+            int nB = (GetBValue(clrCptn) * (nSteps - i) + GetBValue(clrCptnRight) * i) >> nShift;
 
             COLORREF cr = RGB(nR, nG, nB);
 
             // then paint with the resulting color
             CRect r2 = rcGrip;
-            if (bHorz)
-            {
-                r2.bottom = rcGrip.bottom - 
-                    ((i * rcGrip.Height()) >> nShift);
-                r2.top = rcGrip.bottom - 
-                    (((i + 1) * rcGrip.Height()) >> nShift);
+            if (bHorz) {
+                r2.bottom = rcGrip.bottom - ((i * rcGrip.Height()) >> nShift);
+                r2.top = rcGrip.bottom - (((i + 1) * rcGrip.Height()) >> nShift);
                 if (r2.Height() > 0)
                     pDC->FillSolidRect(r2, cr);
-            }
-            else
-            {
-                r2.left = rcGrip.left + 
-                    ((i * rcGrip.Width()) >> nShift);
-                r2.right = rcGrip.left + 
-                    (((i + 1) * rcGrip.Width()) >> nShift);
+            } else {
+                r2.left = rcGrip.left + ((i * rcGrip.Width()) >> nShift);
+                r2.right = rcGrip.left + (((i + 1) * rcGrip.Width()) >> nShift);
                 if (r2.Width() > 0)
                     pDC->FillSolidRect(r2, cr);
             }
@@ -185,35 +156,28 @@ void CSizingControlBarCF::NcPaintGripper(CDC* pDC, CRect rcClient)
 
     LOGFONT lf;
     BOOL bFont = font.CreatePointFont(pointsize, m_sFontFace);
-    if (bFont)
-    {
+    if (bFont) {
         // get the text color
-        COLORREF clrCptnText = m_bActive ?
-            ::GetSysColor(COLOR_CAPTIONTEXT) :
-            ::GetSysColor(COLOR_INACTIVECAPTIONTEXT);
+        COLORREF clrCptnText = m_bActive ? ::GetSysColor(COLOR_CAPTIONTEXT) : ::GetSysColor(COLOR_INACTIVECAPTIONTEXT);
 
         int nOldBkMode = pDC->SetBkMode(TRANSPARENT);
         COLORREF clrOldText = pDC->SetTextColor(clrCptnText);
 
-        if (bHorz)
-        {
+        if (bHorz) {
             // rotate text 90 degrees CCW if horizontally docked
             font.GetLogFont(&lf);
             font.DeleteObject();
             lf.lfEscapement = 900;
             font.CreateFontIndirect(&lf);
         }
-        
+
         CFont* pOldFont = pDC->SelectObject(&font);
         CString sTitle;
         GetWindowText(sTitle);
 
-        CPoint ptOrg = bHorz ?
-            CPoint(rcGrip.left - 1, rcGrip.bottom - 3) :
-            CPoint(rcGrip.left + 3, rcGrip.top - 1);
+        CPoint ptOrg = bHorz ? CPoint(rcGrip.left - 1, rcGrip.bottom - 3) : CPoint(rcGrip.left + 3, rcGrip.top - 1);
 
-        pDC->ExtTextOut(ptOrg.x, ptOrg.y,
-            ETO_CLIPPED, rcGrip, sTitle, NULL);
+        pDC->ExtTextOut(ptOrg.x, ptOrg.y, ETO_CLIPPED, rcGrip, sTitle, nullptr);
 
         pDC->SelectObject(pOldFont);
         pDC->SetBkMode(nOldBkMode);
@@ -224,8 +188,7 @@ void CSizingControlBarCF::NcPaintGripper(CDC* pDC, CRect rcClient)
     m_biHide.Paint(pDC);
 }
 
-LRESULT CSizingControlBarCF::OnSetText(WPARAM wParam, LPARAM lParam)
-{
+LRESULT CSizingControlBarCF::OnSetText(WPARAM wParam, LPARAM lParam) {
     LRESULT lResult = baseCSizingControlBarCF::OnSetText(wParam, lParam);
 
     SendMessage(WM_NCPAINT);

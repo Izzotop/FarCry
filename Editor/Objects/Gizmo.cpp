@@ -7,7 +7,7 @@
 //  Version:     v1.00
 //  Created:     2/7/2002 by Timur.
 //  Compilers:   Visual Studio.NET
-//  Description: 
+//  Description:
 // -------------------------------------------------------------------------
 //  History:
 //
@@ -23,32 +23,26 @@
 //////////////////////////////////////////////////////////////////////////
 
 //////////////////////////////////////////////////////////////////////////
-CGizmo::CGizmo()
-{
-	m_bDelete = false;
-	m_matrix.SetIdentity();
-	m_flags = 0;
+CGizmo::CGizmo() {
+    m_bDelete = false;
+    m_matrix.SetIdentity();
+    m_flags = 0;
 }
 
 //////////////////////////////////////////////////////////////////////////
-CGizmo::~CGizmo()
-{
+CGizmo::~CGizmo() {}
+
+//////////////////////////////////////////////////////////////////////////
+void CGizmo::SetMatrix(const Matrix44& tm) {
+    m_matrix = tm;
 }
 
 //////////////////////////////////////////////////////////////////////////
-void CGizmo::SetMatrix( const Matrix44 &tm )
-{
-	m_matrix = tm;
+IGizmoManager* CGizmo::GetGizmoManager() const {
+    return GetIEditor()->GetObjectManager()->GetGizmoManager();
 }
 
 //////////////////////////////////////////////////////////////////////////
-IGizmoManager* CGizmo::GetGizmoManager() const
-{
-	return GetIEditor()->GetObjectManager()->GetGizmoManager();
-}
-
-//////////////////////////////////////////////////////////////////////////
-void CGizmo::DeleteThis()
-{
-	m_bDelete = true;
+void CGizmo::DeleteThis() {
+    m_bDelete = true;
 };

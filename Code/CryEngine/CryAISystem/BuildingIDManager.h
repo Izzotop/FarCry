@@ -3,15 +3,14 @@
 
 typedef std::vector<bool> VectorBools;
 
-class CBuildingIDManager
-{
+class CBuildingIDManager {
 
-	VectorBools	m_vAvailable;
+    VectorBools m_vAvailable;
 
 public:
-	CBuildingIDManager(void);
-	~CBuildingIDManager(void);
-	int GetId(void);
-	void FreeId(int nID);
-	void FreeAll(void);
+    CBuildingIDManager();
+    ~CBuildingIDManager();
+    int GetId();
+    void FreeId(int nID);
+    void FreeAll();
 };

@@ -7,7 +7,7 @@
 //  Version:     v1.00
 //  Created:     27/11/2002 by Timur.
 //  Compilers:   Visual Studio.NET
-//  Description: 
+//  Description:
 // -------------------------------------------------------------------------
 //  History:
 //
@@ -20,51 +20,46 @@
 #include <XTToolkit.h>
 
 /** Tools configuration property page.
-*/
-class CToolsConfigPage : public CXTResizePropertyPage
-{
-	DECLARE_DYNAMIC(CToolsConfigPage)
+ */
+class CToolsConfigPage : public CXTResizePropertyPage {
+    DECLARE_DYNAMIC(CToolsConfigPage)
 
 public:
-	CToolsConfigPage();
-	virtual ~CToolsConfigPage();
+    CToolsConfigPage();
+    virtual ~CToolsConfigPage();
 
-// Dialog Data
-	enum { IDD = IDD_TOOLSCONFIG };
+    // Dialog Data
+    enum { IDD = IDD_TOOLSCONFIG };
 
 protected:
-	enum Ctrls {
-		CTRL_COMMAND,
-		CTRL_TOGGLE
-	};
-	void ReadFromControls( int ctrl );
+    enum Ctrls { CTRL_COMMAND, CTRL_TOGGLE };
+    void ReadFromControls(int ctrl);
 
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	virtual BOOL OnInitDialog();
-	virtual void OnOK();
-	
-	afx_msg void OnSelchangeEditList();
-	afx_msg void OnChangeEdit1();
-	afx_msg void OnToggleVar();
-	afx_msg void OnNewItem();
+    virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
+    virtual BOOL OnInitDialog();
+    virtual void OnOK();
 
-	DECLARE_MESSAGE_MAP()
+    afx_msg void OnSelchangeEditList();
+    afx_msg void OnChangeEdit1();
+    afx_msg void OnToggleVar();
+    afx_msg void OnNewItem();
 
-	struct Tool
-	{
-		CString command;
-		bool bToggle;
-	};
+    DECLARE_MESSAGE_MAP()
 
-	//////////////////////////////////////////////////////////////////////////
-	// Vars.
-	//////////////////////////////////////////////////////////////////////////
-	CStatic	m_txtEdit1;
-	CEdit	m_edit1;
-	CButton m_toggleVar;
-	CXTEditListBox	m_editList;
+    struct Tool {
+        CString command;
+        bool bToggle;
+    };
 
-	std::vector<Tool*> m_tools;
+    //////////////////////////////////////////////////////////////////////////
+    // Vars.
+    //////////////////////////////////////////////////////////////////////////
+    CStatic m_txtEdit1;
+    CEdit m_edit1;
+    CButton m_toggleVar;
+    CXTEditListBox m_editList;
+
+    std::vector<Tool*> m_tools;
 };
 
 #endif // __toolsconfigpage_h__

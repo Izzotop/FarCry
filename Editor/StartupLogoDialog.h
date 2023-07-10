@@ -10,37 +10,34 @@
 /////////////////////////////////////////////////////////////////////////////
 // CStartupLogoDialog dialog
 
-class CStartupLogoDialog : public CDialog
-{
-// Construction
+class CStartupLogoDialog : public CDialog {
+    // Construction
 public:
-	CStartupLogoDialog(CWnd* pParent = NULL);   // standard constructor
+    CStartupLogoDialog(CWnd* pParent = nullptr); // standard constructor
 
-	void SetVersion( const Version &v );
-	void SetInfo( const CString &text );
+    void SetVersion(const Version& v);
+    void SetInfo(const CString& text);
 
-// Dialog Data
-	//{{AFX_DATA(CStartupLogoDialog)
-	enum { IDD = IDD_STARTUP_LOGO };
-		// NOTE: the ClassWizard will add data members here
-	//}}AFX_DATA
+    // Dialog Data
+    //{{AFX_DATA(CStartupLogoDialog)
+    enum { IDD = IDD_STARTUP_LOGO };
+    // NOTE: the ClassWizard will add data members here
+    //}}AFX_DATA
 
-
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CStartupLogoDialog)
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	//}}AFX_VIRTUAL
-
-// Implementation
+    // Overrides
+    // ClassWizard generated virtual function overrides
+    //{{AFX_VIRTUAL(CStartupLogoDialog)
 protected:
+    virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
+    //}}AFX_VIRTUAL
 
-	// Generated message map functions
-	//{{AFX_MSG(CStartupLogoDialog)
-	virtual BOOL OnInitDialog();
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
+    // Implementation
+protected:
+    // Generated message map functions
+    //{{AFX_MSG(CStartupLogoDialog)
+    virtual BOOL OnInitDialog();
+    //}}AFX_MSG
+    DECLARE_MESSAGE_MAP()
 };
 
 //{{AFX_INSERT_LOCATION}}

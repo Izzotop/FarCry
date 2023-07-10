@@ -32,55 +32,54 @@ associated to the serverslot.
 Every time a snapshot has to be sent this class sort all NetEntityInfo
 by priority and sends all those that fit into a snapshot to the remote client.
 */
-class CXSnapshot
-{
+class CXSnapshot {
 public:
-	//! constructor
-	CXSnapshot();
-	//! destructor
-	~CXSnapshot();
+    CXSnapshot();
+    ~CXSnapshot();
 
-	void Init(CXServer *pServer,CXServerSlot *pServerSlot);
-	
-	void SetSendPerSecond(int nSendPerSecond); // 0 mean 25 per second
-	int GetSendPerSecond();
+    void Init(CXServer* pServer, CXServerSlot* pServerSlot);
 
-	inline CStream& GetReliableStream() { return m_stmReliable; }
-	inline CStream& GetUnreliableStream() { return m_stmUnreliable; }
+    void SetSendPerSecond(int nSendPerSecond); // 0 mean 25 per second
+    int GetSendPerSecond();
 
-	void AddEntity(IEntity *pEntity);
-	bool RemoveEntity(IEntity *pEntity);
+    inline CStream& GetReliableStream() {
+        return m_stmReliable;
+    }
+    inline CStream& GetUnreliableStream() {
+        return m_stmUnreliable;
+    }
 
-	void SetClientBitsPerSecond(unsigned int rate);
+    void AddEntity(IEntity* pEntity);
+    bool RemoveEntity(IEntity* pEntity);
 
-	void BuildAndSendSnapshot();
-	void Cleanup()
-	{
-		m_lstNetEntities.clear();
-	}
+    void SetClientBitsPerSecond(unsigned int rate);
 
-	//! \return absolute time when BuildAndSendSnapshot was called
-	float GetLastUpdate() const;
+    void BuildAndSendSnapshot();
+    void Cleanup() {
+        m_lstNetEntities.clear();
+    }
 
-	unsigned int			m_nMaxSnapshotBitSize;		//!< in bits, used for statistics only
-	unsigned int			m_nLastSnapshotBitSize;		//!< in bits, used for statistics only
-	NetEntityList			m_lstNetEntities;					//!<
+    //! \return absolute time when BuildAndSendSnapshot was called
+    float GetLastUpdate() const;
+
+    unsigned int m_nMaxSnapshotBitSize;  //!< in bits, used for statistics only
+    unsigned int m_nLastSnapshotBitSize; //!< in bits, used for statistics only
+    NetEntityList m_lstNetEntities;      //!<
 
 private: // -------------------------------------------------------------------
+    void Reset();
 
-	void Reset();
-
-	CXServer *				m_pServer;								//!<
-	CXServerSlot *		m_pServerSlot;						//!<
-	IXSystem *				m_pISystem;								//!<
-	ITimer *					m_pTimer;									//!<
-	IPhysicalWorld *	m_pPhysicalWorld;					//!<
-	int								m_nSendPerSecond;					//!<
-	float							m_fLastUpdate;						//!< absolute timer
-	CStream						m_stmReliable;						//!<
-	CStream						m_stmUnreliable;					//!<
-	unsigned int			m_clientMaxBitsPerSecond;	//!<
-	int								m_iCarryOverBps;					//!< in bits per second (negative or prositive)
+    CXServer* m_pServer;                   //!<
+    CXServerSlot* m_pServerSlot;           //!<
+    IXSystem* m_pISystem;                  //!<
+    ITimer* m_pTimer;                      //!<
+    IPhysicalWorld* m_pPhysicalWorld;      //!<
+    int m_nSendPerSecond;                  //!<
+    float m_fLastUpdate;                   //!< absolute timer
+    CStream m_stmReliable;                 //!<
+    CStream m_stmUnreliable;               //!<
+    unsigned int m_clientMaxBitsPerSecond; //!<
+    int m_iCarryOverBps;                   //!< in bits per second (negative or prositive)
 };
 
 #endif // GAME_XSNAPSHOT_H

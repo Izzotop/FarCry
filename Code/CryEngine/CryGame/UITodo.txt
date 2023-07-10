@@ -5,7 +5,6 @@
 [x] clip cryfont
 [x] remove all scissor rect stuff
 [x] test the scissor rect thingie
-//-------------------------------------------------------------------------------------------------
 [x] fix reload bug
 [x] Bink video and audio decoder integration
 [x] create a lua OnSwitch callback
@@ -23,4 +22,3 @@
 [ ] add non-smooth scrolling, scrolling to fixed values
 [x] fix the hud bug!
 [x] change console to use the same repeat scheme as UISystem
-//-------------------------------------------------------------------------------------------------

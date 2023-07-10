@@ -14,48 +14,45 @@
 #include "ConsoleDialog.h"
 
 /** Edit box used for input in Console.
-*/
-class CConsoleEdit : public CEdit
-{
+ */
+class CConsoleEdit : public CEdit {
 public:
-	DECLARE_MESSAGE_MAP()
-	virtual BOOL PreTranslateMessage(MSG* pMsg);
-	afx_msg UINT OnGetDlgCode();
+    DECLARE_MESSAGE_MAP()
+    virtual BOOL PreTranslateMessage(MSG* pMsg);
+    afx_msg UINT OnGetDlgCode();
 
 private:
-	std::vector<CString> m_history;
+    std::vector<CString> m_history;
 };
 
 /** Console class.
-*/
-class CConsoleSCB : public CWnd
-{
+ */
+class CConsoleSCB : public CWnd {
 public:
-	CConsoleSCB();
-	virtual ~CConsoleSCB();
+    CConsoleSCB();
+    virtual ~CConsoleSCB();
 
-	void SetInputFocus();
+    void SetInputFocus();
 
-	// Overrides
+    // Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CMyBar)
     //}}AFX_VIRTUAL
 
 protected:
-	
-	CListBox m_cListBox;
-	CEdit m_edit;
-	CConsoleEdit m_input;
-	CConsoleDialog m_dialog;
+    CListBox m_cListBox;
+    CEdit m_edit;
+    CConsoleEdit m_input;
+    CConsoleDialog m_dialog;
 
-	//{{AFX_MSG(CMyBar)
+    //{{AFX_MSG(CMyBar)
     afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
     afx_msg void OnSize(UINT nType, int cx, int cy);
-		afx_msg void CConsoleSCB::OnDestroy();
-		afx_msg void OnSetFocus( CWnd* pOldWnd );
-		afx_msg void OnEditSetFocus();
-		afx_msg void OnEditKillFocus();
-		virtual BOOL OnCmdMsg(UINT nID, int nCode, void* pExtra, AFX_CMDHANDLERINFO* pHandlerInfo);
+    afx_msg void CConsoleSCB::OnDestroy();
+    afx_msg void OnSetFocus(CWnd* pOldWnd);
+    afx_msg void OnEditSetFocus();
+    afx_msg void OnEditKillFocus();
+    virtual BOOL OnCmdMsg(UINT nID, int nCode, void* pExtra, AFX_CMDHANDLERINFO* pHandlerInfo);
     //}}AFX_MSG
     DECLARE_MESSAGE_MAP()
 };

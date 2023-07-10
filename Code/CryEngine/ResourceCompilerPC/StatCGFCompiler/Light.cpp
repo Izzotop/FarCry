@@ -17,33 +17,26 @@
 #include "Light.h"
 #include "file.h"
 
-//////////////////////////////////////////////////////////////////////
-// Construction/Destruction
-//////////////////////////////////////////////////////////////////////
-
-CLight::CLight()
-{
-	memset(&m_Chunk,0,sizeof(m_Chunk));
+CLight::CLight() {
+    memset(&m_Chunk, 0, sizeof(m_Chunk));
 }
 
-CLight::~CLight()
-{
-}
+CLight::~CLight() {}
 
-bool CLight::Load(CXFile *f, int pos)
-{
-	if(f->FSeek(pos,SEEK_SET)) return true;
+bool CLight::Load(CXFile* f, int pos) {
+    if (f->FSeek(pos, SEEK_SET))
+        return true;
 
-	int res=f->FRead(&m_Chunk,sizeof(m_Chunk),1);
-	if(res!=1) return true;
-	
-	if(m_Chunk.chdr.ChunkType != ChunkType_Light || m_Chunk.chdr.ChunkVersion != LIGHT_CHUNK_DESC_VERSION)
-	{
-		memset(&m_Chunk,0,sizeof(m_Chunk));
-		return true;
-	}
+    int res = f->FRead(&m_Chunk, sizeof(m_Chunk), 1);
+    if (res != 1)
+        return true;
 
-	m_ChunkHeader=m_Chunk.chdr;
-	
-	return false;
+    if (m_Chunk.chdr.ChunkType != ChunkType_Light || m_Chunk.chdr.ChunkVersion != LIGHT_CHUNK_DESC_VERSION) {
+        memset(&m_Chunk, 0, sizeof(m_Chunk));
+        return true;
+    }
+
+    m_ChunkHeader = m_Chunk.chdr;
+
+    return false;
 }

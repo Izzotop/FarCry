@@ -7,7 +7,7 @@
 //  Version:     v1.00
 //  Created:     20/8/2002 by Lennert.
 //  Compilers:   Visual Studio.NET
-//  Description: 
+//  Description:
 // -------------------------------------------------------------------------
 //  History:
 //
@@ -26,15 +26,18 @@
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
 /** Boolean track, every key on this track negates boolean value.
-*/
-class CSelectTrack : public TAnimTrack<ISelectKey>
-{
+ */
+class CSelectTrack : public TAnimTrack<ISelectKey> {
 public:
-	EAnimTrackType GetType() { return ATRACK_SELECT; };
-	EAnimValue GetValueType() { return AVALUE_SELECT; };
+    EAnimTrackType GetType() {
+        return ATRACK_SELECT;
+    };
+    EAnimValue GetValueType() {
+        return AVALUE_SELECT;
+    };
 
-	void GetKeyInfo( int key,const char* &description,float &duration );
-	void SerializeKey( ISelectKey &key,XmlNodeRef &keyNode,bool bLoading );
+    void GetKeyInfo(int key, const char*& description, float& duration);
+    void SerializeKey(ISelectKey& key, XmlNodeRef& keyNode, bool bLoading);
 };
 
 #endif // __selecttrack_h__

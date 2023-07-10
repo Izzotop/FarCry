@@ -8,32 +8,20 @@
 =============================================================================*/
 
 #include "RenderPCH.h"
-#include "NULL_Renderer.h"
+#include "nullptr_Renderer.h"
 
 //===============================================================================
 
-void STexPic::BuildMips()
-{
+void STexPic::BuildMips() {}
+
+bool STexPic::UploadMips(int nStartMip, int nEndMip) {
+    return true;
 }
 
-bool STexPic::UploadMips(int nStartMip, int nEndMip)
-{
-  return true;
-}
+void STexPic::RemoveFromPool() {}
 
-void STexPic::RemoveFromPool()
-{
-}
+void CTexMan::UnloadOldTextures(STexPic* pExclude) {}
 
-void CTexMan::UnloadOldTextures(STexPic *pExclude)
-{
-}
+void CTexMan::CheckTexLimits(STexPic* pExclude) {}
 
-void CTexMan::CheckTexLimits(STexPic *pExclude)
-{
-}
-
-void STexPic::PrecacheAsynchronously(float fDist, int Flags)
-{
-}
-
+void STexPic::PrecacheAsynchronously(float fDist, int Flags) {}

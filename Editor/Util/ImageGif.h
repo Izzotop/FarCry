@@ -7,7 +7,7 @@
 //  Version:     v1.00
 //  Created:     15/3/2002 by Timur.
 //  Compilers:   Visual C++ 7.0
-//  Description: 
+//  Description:
 // -------------------------------------------------------------------------
 //  History:
 //
@@ -20,11 +20,9 @@
 #pragma once
 #endif
 
-class CImageGif 
-{
+class CImageGif {
 public:
-	bool Load( const CString &fileName,CImage &outImage );
+    bool Load(const CString& fileName, CImage& outImage);
 };
-
 
 #endif // __imagegif_h__

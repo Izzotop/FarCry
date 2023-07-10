@@ -14,7 +14,7 @@
 #endif //_DEBUG
 
 //! Include standart headers.
-#include <assert.h>
+#include <cassert>
 
 // #define PS2
 // #define OPENGL
@@ -115,7 +115,7 @@ typedef string String;
 #include <Cry_Math.h>
 #include "Cry_Camera.h"
 // #include "_Malloc.h"
-#include "math.h"
+#include <cmath>
 
 #include <VertexFormats.h>
 #include <CREPolyMesh.h>

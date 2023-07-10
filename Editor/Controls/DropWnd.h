@@ -1,6 +1,6 @@
 /////////////////////////////////////////////////////////////////////////////
 // DropWnd.h : header file
-// 
+//
 // CAdvComboBox Control
 // Version: 2.1
 // Date: September 2002
@@ -8,9 +8,9 @@
 // Email: Mathias@inorbit.com
 // Copyright (c) 2002. All Rights Reserved.
 //
-// This code, in compiled form or as source code, may be redistributed 
-// unmodified PROVIDING it is not sold for profit without the authors 
-// written consent, and providing that this notice and the authors name 
+// This code, in compiled form or as source code, may be redistributed
+// unmodified PROVIDING it is not sold for profit without the authors
+// written consent, and providing that this notice and the authors name
 // and all copyright notices remains intact.
 //
 // This file is provided "as is" with no expressed or implied warranty.
@@ -34,66 +34,74 @@
 /////////////////////////////////////////////////////////////////////////////
 // CDropWnd window
 
-class CDropWnd : public CWnd
-{
-// Construction
+class CDropWnd : public CWnd {
+    // Construction
 public:
-	CDropWnd();
+    CDropWnd();
 
-// Attributes
+    // Attributes
 public:
-	const CDropListBox&	GetListBox() const { return m_listbox; }
-	CDropListBox&	GetListBox() { return m_listbox; }
-	const CDropScrollBar& GetScrollBar() const { return m_scrollbar; }
-	CDropScrollBar& GetScrollBar() { return m_scrollbar; }
+    const CDropListBox& GetListBox() const {
+        return m_listbox;
+    }
+    CDropListBox& GetListBox() {
+        return m_listbox;
+    }
+    const CDropScrollBar& GetScrollBar() const {
+        return m_scrollbar;
+    }
+    CDropScrollBar& GetScrollBar() {
+        return m_scrollbar;
+    }
 
-// Operations
+    // Operations
 public:
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CDropWnd)
-	public:
-	virtual BOOL DestroyWindow();
-	protected:
-	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
-	//}}AFX_VIRTUAL
-
-// Implementation
+    // Overrides
+    // ClassWizard generated virtual function overrides
+    //{{AFX_VIRTUAL(CDropWnd)
 public:
-	virtual ~CDropWnd();
+    virtual BOOL DestroyWindow();
 
-	// Generated message map functions
 protected:
-	//{{AFX_MSG(CDropWnd)
-	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
-	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
-	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
-	afx_msg void OnSize(UINT nType, int cx, int cy);
-	afx_msg void OnPaint();
-	afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
-	afx_msg void OnShowWindow(BOOL bShow, UINT nStatus);
-#if _MFC_VER >= 0x0700 //MFC 7.0
-	afx_msg void OnActivateApp(BOOL bActive, DWORD dwThreadID);
+    virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
+    //}}AFX_VIRTUAL
+
+    // Implementation
+public:
+    virtual ~CDropWnd();
+
+    // Generated message map functions
+protected:
+    //{{AFX_MSG(CDropWnd)
+    afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
+    afx_msg void OnMouseMove(UINT nFlags, CPoint point);
+    afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
+    afx_msg void OnSize(UINT nType, int cx, int cy);
+    afx_msg void OnPaint();
+    afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
+    afx_msg void OnShowWindow(BOOL bShow, UINT nStatus);
+#if _MFC_VER >= 0x0700 // MFC 7.0
+    afx_msg void OnActivateApp(BOOL bActive, DWORD dwThreadID);
 #else
-	afx_msg void OnActivateApp(BOOL bActive, HTASK hTask );
+    afx_msg void OnActivateApp(BOOL bActive, HTASK hTask);
 #endif
-	//}}AFX_MSG
-	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
-	afx_msg LRESULT OnSetCapture( WPARAM wParam, LPARAM lParam );
-	afx_msg LRESULT OnReleaseCapture( WPARAM wParam, LPARAM lParam );
-	DECLARE_MESSAGE_MAP()
+    //}}AFX_MSG
+    afx_msg BOOL OnEraseBkgnd(CDC* pDC);
+    afx_msg LRESULT OnSetCapture(WPARAM wParam, LPARAM lParam);
+    afx_msg LRESULT OnReleaseCapture(WPARAM wParam, LPARAM lParam);
+    DECLARE_MESSAGE_MAP()
 
 private:
-	CDropListBox m_listbox;
-	CDropScrollBar m_scrollbar;
-	CRect m_rcList;
-	CRect m_rcScroll;
-	CRect m_rcSizeHandle;
+    CDropListBox m_listbox;
+    CDropScrollBar m_scrollbar;
+    CRect m_rcList;
+    CRect m_rcScroll;
+    CRect m_rcSizeHandle;
 
-	bool m_bResizing;
-	CPoint m_ptLastResize;
-	int m_nMouseDiffX;
-	int m_nMouseDiffY;
+    bool m_bResizing;
+    CPoint m_ptLastResize;
+    int m_nMouseDiffX;
+    int m_nMouseDiffY;
 };
 
 /////////////////////////////////////////////////////////////////////////////

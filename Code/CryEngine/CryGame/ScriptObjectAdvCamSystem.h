@@ -1,8 +1,7 @@
-
 //////////////////////////////////////////////////////////////////////
 //
-//	Crytek Source code 
-//	Copyright (c) Crytek 2001-2004
+//  Crytek Source code
+//  Copyright (c) Crytek 2001-2004
 //
 //////////////////////////////////////////////////////////////////////
 
@@ -15,42 +14,38 @@ class CAdvCamSystem;
 
 /*! In this class are all AdvCamSystem-related script-functions implemented.
 
-	IMPLEMENTATIONS NOTES:
-	These function will never be called from C-Code. They're script-exclusive.
+        IMPLEMENTATIONS NOTES:
+        These function will never be called from C-Code. They're script-exclusive.
 */
-class CScriptObjectAdvCamSystem : public _ScriptableEx<CScriptObjectAdvCamSystem>, public IScriptObjectSink
-{
+class CScriptObjectAdvCamSystem : public _ScriptableEx<CScriptObjectAdvCamSystem>, public IScriptObjectSink {
 public:
-	//! constructor
-	CScriptObjectAdvCamSystem( void ) {}
-	//! destructor
-	virtual ~CScriptObjectAdvCamSystem( void ) {}
+    CScriptObjectAdvCamSystem() {}
+    virtual ~CScriptObjectAdvCamSystem() {}
 
-	//!
-	bool Create(IScriptSystem *pScriptSystem, CAdvCamSystem *pAdvCamSystem);
+    //!
+    bool Create(IScriptSystem* pScriptSystem, CAdvCamSystem* pAdvCamSystem);
 
-	//!
-	void OnRelease()
-	{
-		m_pScriptThis=NULL;
-		delete this;
-	}
+    //!
+    void OnRelease() {
+        m_pScriptThis = nullptr;
+        delete this;
+    }
 
-	// is called from CXGame::Reset() to add the scripting 
-	static void InitializeTemplate(IScriptSystem *pSS);
+    // is called from CXGame::Reset() to add the scripting
+    static void InitializeTemplate(IScriptSystem* pSS);
 
-	// script functions -----------------------------------------------
+    // script functions -----------------------------------------------
 
-	int SetPlayerA( IFunctionHandler *pH );
-	int GetPlayerA( IFunctionHandler *pH );
-	int SetPlayerB( IFunctionHandler *pH );
-	int GetPlayerB( IFunctionHandler *pH );
+    int SetPlayerA(IFunctionHandler* pH);
+    int GetPlayerA(IFunctionHandler* pH);
+    int SetPlayerB(IFunctionHandler* pH);
+    int GetPlayerB(IFunctionHandler* pH);
 
-	int SetMaxRadius( IFunctionHandler *pH );
-	int SetMinRadius( IFunctionHandler *pH );
+    int SetMaxRadius(IFunctionHandler* pH);
+    int SetMinRadius(IFunctionHandler* pH);
 
 private:
-	CAdvCamSystem *m_pAdvCamSystem;
+    CAdvCamSystem* m_pAdvCamSystem;
 };
 
 #endif //_SCRIPTOBJECTADVCAMSYSTEM_H_

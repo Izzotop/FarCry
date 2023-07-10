@@ -7,7 +7,7 @@
 //  Version:     v1.00
 //  Created:     5/6/2002 by Timur.
 //  Compilers:   Visual Studio.NET
-//  Description: 
+//  Description:
 // -------------------------------------------------------------------------
 //  History:
 //
@@ -22,217 +22,210 @@
 
 #include "DropWnd.h"
 
-class CInPlaceCBEdit : public CEdit
-{
-	CInPlaceCBEdit(const CInPlaceCBEdit& d);
-	CInPlaceCBEdit& operator=(const CInPlaceCBEdit& d);
+class CInPlaceCBEdit : public CEdit {
+    CInPlaceCBEdit(const CInPlaceCBEdit& d);
+    CInPlaceCBEdit& operator=(const CInPlaceCBEdit& d);
 
 public:
-	CInPlaceCBEdit();
-	virtual ~CInPlaceCBEdit();
+    CInPlaceCBEdit();
+    virtual ~CInPlaceCBEdit();
 
-	// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CInPlaceCBEdit)
+    // Overrides
+    // ClassWizard generated virtual function overrides
+    //{{AFX_VIRTUAL(CInPlaceCBEdit)
 public:
-	virtual BOOL PreTranslateMessage(MSG* pMsg);
-	//}}AFX_VIRTUAL
+    virtual BOOL PreTranslateMessage(MSG* pMsg);
+    //}}AFX_VIRTUAL
 
-	// Generated message map functions
+    // Generated message map functions
 protected:
-	//{{AFX_MSG(CInPlaceCBEdit)
-	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
-	//}}AFX_MSG
+    //{{AFX_MSG(CInPlaceCBEdit)
+    afx_msg BOOL OnEraseBkgnd(CDC* pDC);
+    //}}AFX_MSG
 
-	DECLARE_MESSAGE_MAP()
+    DECLARE_MESSAGE_MAP()
 };
 
-inline CInPlaceCBEdit::CInPlaceCBEdit()
-{
-}
+inline CInPlaceCBEdit::CInPlaceCBEdit() {}
 
-inline CInPlaceCBEdit::~CInPlaceCBEdit()
-{
-}
+inline CInPlaceCBEdit::~CInPlaceCBEdit() {}
 
 /////////////////////////////////////////////////////////////////////////////
 // CInPlaceCBListBox
 
-class CInPlaceCBListBox : public CListBox
-{
-	CInPlaceCBListBox(const CInPlaceCBListBox& d);
-	CInPlaceCBListBox& operator=(const CInPlaceCBListBox& d);
+class CInPlaceCBListBox : public CListBox {
+    CInPlaceCBListBox(const CInPlaceCBListBox& d);
+    CInPlaceCBListBox& operator=(const CInPlaceCBListBox& d);
 
 public:
-	CInPlaceCBListBox();
-	virtual ~CInPlaceCBListBox();
+    CInPlaceCBListBox();
+    virtual ~CInPlaceCBListBox();
 
-	void SetScrollBar( CScrollBar *sb ) { m_pScrollBar = sb; };
+    void SetScrollBar(CScrollBar* sb) {
+        m_pScrollBar = sb;
+    };
 
-	int GetBottomIndex();
-	void SetTopIdx(int nPos, BOOL bUpdateScrollbar=FALSE );
+    int GetBottomIndex();
+    void SetTopIdx(int nPos, BOOL bUpdateScrollbar = FALSE);
 
-	// Operations
+    // Operations
 protected:
-	void ProcessSelected(bool bProcess = true);
+    void ProcessSelected(bool bProcess = true);
 
-	// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CInPlaceCBListBox)
+    // Overrides
+    // ClassWizard generated virtual function overrides
+    //{{AFX_VIRTUAL(CInPlaceCBListBox)
 public:
-	virtual BOOL PreTranslateMessage(MSG* pMsg);
-	//}}AFX_VIRTUAL
+    virtual BOOL PreTranslateMessage(MSG* pMsg);
+    //}}AFX_VIRTUAL
 
-	// Generated message map functions
+    // Generated message map functions
 protected:
-	//{{AFX_MSG(CInPlaceCBListBox)
-	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
-	afx_msg void OnRButtonDown(UINT nFlags, CPoint point);
-	afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
-	//}}AFX_MSG
+    //{{AFX_MSG(CInPlaceCBListBox)
+    afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
+    afx_msg void OnRButtonDown(UINT nFlags, CPoint point);
+    afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
+    //}}AFX_MSG
 
-	DECLARE_MESSAGE_MAP()
+    DECLARE_MESSAGE_MAP()
 
-	int m_nLastTopIdx;
-	CScrollBar* m_pScrollBar;
+    int m_nLastTopIdx;
+    CScrollBar* m_pScrollBar;
 };
 
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
-class CInPlaceCBScrollBar : public CScrollBar
-{
-	// Construction
+class CInPlaceCBScrollBar : public CScrollBar {
+    // Construction
 public:
-	CInPlaceCBScrollBar();
+    CInPlaceCBScrollBar();
 
-	// Attributes
+    // Attributes
 public:
-
-	// Operations
+    // Operations
 public:
-	void SetListBox( CInPlaceCBListBox* pListBox );
+    void SetListBox(CInPlaceCBListBox* pListBox);
 
-	// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CInPlaceCBScrollBar)
-	//}}AFX_VIRTUAL
+    // Overrides
+    // ClassWizard generated virtual function overrides
+    //{{AFX_VIRTUAL(CInPlaceCBScrollBar)
+    //}}AFX_VIRTUAL
 
-	// Implementation
+    // Implementation
 public:
-	virtual ~CInPlaceCBScrollBar();
+    virtual ~CInPlaceCBScrollBar();
 
-	// Generated message map functions
+    // Generated message map functions
 protected:
-	//{{AFX_MSG(CInPlaceCBScrollBar)
-	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
-	afx_msg void VScroll(UINT nSBCode, UINT nPos);
-	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
-	//}}AFX_MSG
+    //{{AFX_MSG(CInPlaceCBScrollBar)
+    afx_msg void OnMouseMove(UINT nFlags, CPoint point);
+    afx_msg void VScroll(UINT nSBCode, UINT nPos);
+    afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
+    //}}AFX_MSG
 
-	DECLARE_MESSAGE_MAP()
+    DECLARE_MESSAGE_MAP()
 
 private:
-	CInPlaceCBListBox* m_pListBox;
+    CInPlaceCBListBox* m_pListBox;
 };
 
 /////////////////////////////////////////////////////////////////////////////
 // CInPlaceComboBox
 
-class CInPlaceComboBox : public CWnd
-{
-	CInPlaceComboBox(const CInPlaceComboBox& d);
-	CInPlaceComboBox operator=(const CInPlaceComboBox& d);
+class CInPlaceComboBox : public CWnd {
+    CInPlaceComboBox(const CInPlaceComboBox& d);
+    CInPlaceComboBox operator=(const CInPlaceComboBox& d);
 
 protected:
-	DECLARE_DYNAMIC(CInPlaceComboBox)
+    DECLARE_DYNAMIC(CInPlaceComboBox)
 
 public:
-	typedef Functor0 UpdateCallback;
+    typedef Functor0 UpdateCallback;
 
-	CInPlaceComboBox();
-	virtual ~CInPlaceComboBox();
+    CInPlaceComboBox();
+    virtual ~CInPlaceComboBox();
 
-	void SetUpdateCallback( UpdateCallback cb ) { m_updateCallback = cb; };
-	void SetReadOnly( bool bEnable ) { m_bReadOnly = bEnable; };
+    void SetUpdateCallback(UpdateCallback cb) {
+        m_updateCallback = cb;
+    };
+    void SetReadOnly(bool bEnable) {
+        m_bReadOnly = bEnable;
+    };
 
-	// Attributes
+    // Attributes
 public:
-	int GetCurrentSelection() const;
-	CString GetTextData() const;
+    int GetCurrentSelection() const;
+    CString GetTextData() const;
 
-	// Operations
+    // Operations
 public:
-	int GetCount() const;
-	int GetCurSel() const { return GetCurrentSelection(); };
-	int SetCurSel(int nSelect, bool bSendSetData = true);
-	void SelectString( LPCTSTR pStrText );
-	CString GetSelectedString();
-	int AddString(LPCTSTR pStrText, DWORD nData = 0);
+    int GetCount() const;
+    int GetCurSel() const {
+        return GetCurrentSelection();
+    };
+    int SetCurSel(int nSelect, bool bSendSetData = true);
+    void SelectString(LPCTSTR pStrText);
+    CString GetSelectedString();
+    int AddString(LPCTSTR pStrText, DWORD nData = 0);
 
-	void ResetContent();
-	void ResetListBoxHeight();
+    void ResetContent();
+    void ResetListBoxHeight();
 
-	void MoveControl(CRect& rect);
+    void MoveControl(CRect& rect);
 
 private:
-	void SetCurSelToEdit(int nSelect);
+    void SetCurSelToEdit(int nSelect);
 
-	// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CInPlaceComboBox)
-	//}}AFX_VIRTUAL
+    // Overrides
+    // ClassWizard generated virtual function overrides
+    //{{AFX_VIRTUAL(CInPlaceComboBox)
+    //}}AFX_VIRTUAL
 
-	// Generated message map functions
+    // Generated message map functions
 protected:
-	//{{AFX_MSG(CInPlaceComboBox)
-	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
-	afx_msg void OnPaint();
-	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
-	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
-	afx_msg LRESULT OnSelectionOk(WPARAM wParam, LPARAM lParam);
-	afx_msg LRESULT OnSelectionCancel(WPARAM wParam, LPARAM lParam);
-	afx_msg LRESULT OnEditChange(WPARAM wParam, LPARAM lParam);
-	afx_msg LRESULT OnNewSelection(WPARAM wParam, LPARAM lParam);
-	afx_msg void OnSetFocus(CWnd* pOldWnd);
-	afx_msg void OnSize(UINT nType, int cx, int cy);
-	//}}AFX_MSG
+    //{{AFX_MSG(CInPlaceComboBox)
+    afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
+    afx_msg void OnPaint();
+    afx_msg BOOL OnEraseBkgnd(CDC* pDC);
+    afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
+    afx_msg LRESULT OnSelectionOk(WPARAM wParam, LPARAM lParam);
+    afx_msg LRESULT OnSelectionCancel(WPARAM wParam, LPARAM lParam);
+    afx_msg LRESULT OnEditChange(WPARAM wParam, LPARAM lParam);
+    afx_msg LRESULT OnNewSelection(WPARAM wParam, LPARAM lParam);
+    afx_msg void OnSetFocus(CWnd* pOldWnd);
+    afx_msg void OnSize(UINT nType, int cx, int cy);
+    //}}AFX_MSG
 
-	DECLARE_MESSAGE_MAP()
+    DECLARE_MESSAGE_MAP()
 
-	void HideListBox();
-	void GetDropDownRect( CRect &rect );
-	
-	// Data
+    void HideListBox();
+    void GetDropDownRect(CRect& rect);
+
+    // Data
 private:
-	static int m_nButtonDx;
+    static int m_nButtonDx;
 
-	int m_minListWidth;
-	bool m_bReadOnly;
+    int m_minListWidth;
+    bool m_bReadOnly;
 
-	int m_nCurrentSelection;
-	UpdateCallback m_updateCallback;
+    int m_nCurrentSelection;
+    UpdateCallback m_updateCallback;
 
-	CInPlaceCBEdit m_wndEdit;
-	//CInPlaceCBListBox m_wndList;
-	//CInPlaceCBScrollBar m_scrollBar;
-	//CWnd m_wndDropDown;
+    CInPlaceCBEdit m_wndEdit;
+    // CInPlaceCBListBox m_wndList;
+    // CInPlaceCBScrollBar m_scrollBar;
+    // CWnd m_wndDropDown;
 
-	CDropWnd m_wndDropDown;
+    CDropWnd m_wndDropDown;
 
 public:
-	afx_msg void OnMove(int x, int y);
+    afx_msg void OnMove(int x, int y);
 };
 
-inline CInPlaceComboBox::~CInPlaceComboBox()
-{
-}
+inline CInPlaceComboBox::~CInPlaceComboBox() {}
 
-inline int CInPlaceComboBox::GetCurrentSelection() const
-{
-	return m_nCurrentSelection;
+inline int CInPlaceComboBox::GetCurrentSelection() const {
+    return m_nCurrentSelection;
 }
-
 
 #endif // __inplacecombobox_h__#pragma once
-
-

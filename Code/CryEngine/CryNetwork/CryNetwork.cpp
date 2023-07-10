@@ -1,12 +1,12 @@
 //////////////////////////////////////////////////////////////////////
 //
-//	Crytek Network source code
-//	
-//	File: crynetwork.cpp
+//  Crytek Network source code
+//
+//  File: crynetwork.cpp
 //  Description: dll entry point
 //
-//	History:
-//	-July 25,2001:Created by Alberto Demichelis
+//  History:
+//  -July 25,2001:Created by Alberto Demichelis
 //
 //////////////////////////////////////////////////////////////////////
 
@@ -19,9 +19,8 @@
 //////////////////////////////////////////////////////////////////////////
 // Pointer to Global ISystem.
 static ISystem* gISystem = 0;
-ISystem* GetISystem()
-{
-	return gISystem;
+ISystem* GetISystem() {
+    return gISystem;
 }
 //////////////////////////////////////////////////////////////////////////
 
@@ -29,12 +28,7 @@ ISystem* GetISystem()
 _ACCESS_POOL;
 #if !defined(LINUX)
 
-BOOL APIENTRY DllMain( HANDLE hModule, 
-                       DWORD  ul_reason_for_call, 
-                       LPVOID lpReserved
-					 )
-{
-
+BOOL APIENTRY DllMain(HANDLE hModule, DWORD ul_reason_for_call, LPVOID lpReserved) {
 
     return TRUE;
 }
@@ -42,21 +36,19 @@ BOOL APIENTRY DllMain( HANDLE hModule,
 #endif
 
 #ifndef _XBOX
-CRYNETWORK_API INetwork *CreateNetwork(ISystem *pSystem)
+CRYNETWORK_API INetwork* CreateNetwork(ISystem* pSystem)
 #else
-INetwork *CreateNetwork(ISystem *pSystem)
+INetwork* CreateNetwork(ISystem* pSystem)
 #endif
 {
-	gISystem = pSystem;
-	CNetwork *pNetwork=new CNetwork;
+    gISystem = pSystem;
+    CNetwork* pNetwork = new CNetwork;
 
-	if(!pNetwork->Init(gISystem->GetIScriptSystem()))
-	{
-		delete pNetwork;
-		return NULL;
-	}
-	return pNetwork;
+    if (!pNetwork->Init(gISystem->GetIScriptSystem())) {
+        delete pNetwork;
+        return nullptr;
+    }
+    return pNetwork;
 }
 
 #include <CrtDebugStats.h>
-

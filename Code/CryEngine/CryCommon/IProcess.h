@@ -1,13 +1,13 @@
 
 //////////////////////////////////////////////////////////////////////
 //
-//	Crytek Common Source code
-//	
-//	File:IProcess.h
-//	Description: Process common interface
+//  Crytek Common Source code
 //
-//	History:
-//	-September 03,2001:Created by Marco Corbetta
+//  File:IProcess.h
+//  Description: Process common interface
+//
+//  History:
+//  -September 03,2001:Created by Marco Corbetta
 //
 //////////////////////////////////////////////////////////////////////
 
@@ -15,19 +15,18 @@
 #define IPROCESS_H
 
 #if _MSC_VER > 1000
-# pragma once
+#pragma once
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////
-struct IProcess
-{
-	virtual	bool	Init() = 0;	
-	virtual void	Update() = 0;
-	virtual void	Draw() = 0;
-	virtual	void	ShutDown(bool bEditorMode=false) = 0;		
-	virtual	void	SetFlags(int flags) = 0;
-	virtual	int		GetFlags(void) = 0;
+struct IProcess {
+    virtual bool Init() = 0;
+    virtual void Update() = 0;
+    virtual void Draw() = 0;
+    virtual void ShutDown(bool bEditorMode = false) = 0;
+    virtual void SetFlags(int flags) = 0;
+    virtual int GetFlags() = 0;
 };
 
 #endif

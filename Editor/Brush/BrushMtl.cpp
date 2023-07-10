@@ -7,7 +7,7 @@
 //  Version:     v1.00
 //  Created:     2/12/2002 by Timur.
 //  Compilers:   Visual Studio.NET
-//  Description: 
+//  Description:
 // -------------------------------------------------------------------------
 //  History:
 //
@@ -21,18 +21,16 @@
 #define DEFAULT_TEXTURE "Checker.tga"
 
 //////////////////////////////////////////////////////////////////////////
-CBrushMtl::CBrushMtl()
-{
-	m_shaderItem.m_pShader = 0;
-  m_shaderItem.m_pShaderResources = 0;
+CBrushMtl::CBrushMtl() {
+    m_shaderItem.m_pShader = 0;
+    m_shaderItem.m_pShaderResources = 0;
 
-	// Default shader.
-	m_shaderName = DEFAULT_SHADER;
-	m_sr.m_Textures[EFTT_DIFFUSE].m_Name = DEFAULT_TEXTURE;
+    // Default shader.
+    m_shaderName = DEFAULT_SHADER;
+    m_sr.m_Textures[EFTT_DIFFUSE].m_Name = DEFAULT_TEXTURE;
 }
 
 //////////////////////////////////////////////////////////////////////////
-void CBrushMtl::ReloadShader()
-{
-	m_shaderItem = GetIEditor()->GetRenderer()->EF_LoadShaderItem( BASE_SHADER_NAME,eSH_Misc,true,m_shaderName,0,&m_sr );
+void CBrushMtl::ReloadShader() {
+    m_shaderItem = GetIEditor()->GetRenderer()->EF_LoadShaderItem(BASE_SHADER_NAME, eSH_Misc, true, m_shaderName, 0, &m_sr);
 }

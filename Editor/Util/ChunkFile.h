@@ -7,7 +7,7 @@
 //  Version:     v1.00
 //  Created:     15/12/2002 by Timur.
 //  Compilers:   Visual Studio.NET
-//  Description: 
+//  Description:
 // -------------------------------------------------------------------------
 //  History:
 //
@@ -21,44 +21,42 @@
 #include "MemoryBlock.h"
 
 /** Chunk files used to save .cgf models.
-*/
-class CChunkFile
-{
+ */
+class CChunkFile {
 public:
-	struct ChunkDesc
-	{
-		CHUNK_HEADER hdr;
-		TSmartPtr<CMemoryBlock> data;
+    struct ChunkDesc {
+        CHUNK_HEADER hdr;
+        TSmartPtr<CMemoryBlock> data;
 
-		ChunkDesc() {}
-		ChunkDesc( const ChunkDesc& d ) { *this = d; }
-		ChunkDesc& operator=( const ChunkDesc &d )
-		{
-			hdr = d.hdr;
-			data = d.data;
-			return *this;
-		}
-	};
+        ChunkDesc() {}
+        ChunkDesc(const ChunkDesc& d) {
+            *this = d;
+        }
+        ChunkDesc& operator=(const ChunkDesc& d) {
+            hdr = d.hdr;
+            data = d.data;
+            return *this;
+        }
+    };
 
-	CChunkFile();
-	~CChunkFile();
+    CChunkFile();
+    ~CChunkFile();
 
-	bool Write( const char *filename );
+    bool Write(const char* filename);
 
-	//! Add chunk to file.
-	//! @retun ChunkID of added chunk.
-	int AddChunk( const CHUNK_HEADER &hdr,void *chunkData,int chunkSize );
+    //! Add chunk to file.
+    //! @retun ChunkID of added chunk.
+    int AddChunk(const CHUNK_HEADER& hdr, void* chunkData, int chunkSize);
 
 private:
-	ChunkDesc* FindChunkByType( int type );
-	ChunkDesc* FindChunkById( int id );
+    ChunkDesc* FindChunkByType(int type);
+    ChunkDesc* FindChunkById(int id);
 
-
-	//////////////////////////////////////////////////////////////////////////
-	// variables.
-	//////////////////////////////////////////////////////////////////////////
-	FILE_HEADER m_fileHeader;
-	std::vector<ChunkDesc> m_chunks;
+    //////////////////////////////////////////////////////////////////////////
+    // variables.
+    //////////////////////////////////////////////////////////////////////////
+    FILE_HEADER m_fileHeader;
+    std::vector<ChunkDesc> m_chunks;
 };
 
 #endif // __chunkfile_h__

@@ -19,4 +19,3 @@
 #include "objman.h"
 #include "terrain_sector.h"
 #include "3dengine.h"
-

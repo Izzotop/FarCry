@@ -7,7 +7,7 @@
 //  Version:     v1.00
 //  Created:     25/4/2003 by Timur.
 //  Compilers:   Visual Studio.NET
-//  Description: 
+//  Description:
 // -------------------------------------------------------------------------
 //  History:
 //
@@ -17,4 +17,4 @@
 #include "GuidUtil.h"
 
 //////////////////////////////////////////////////////////////////////////
-const GUID GuidUtil::NullGuid = { 0, 0, 0, { 0,0,0,0,0,0,0,0 } };
+const GUID GuidUtil::nullptrGuid = {0, 0, 0, {0, 0, 0, 0, 0, 0, 0, 0}};

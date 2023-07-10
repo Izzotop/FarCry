@@ -18,25 +18,25 @@
 
 typedef std::map<string, IFFont*> FontMap;
 typedef FontMap::iterator FontMapItor;
-//////////////////////////////////////////////////////////////////////////////////////////////
-class CCryFont : public ICryFont
-{
+
+class CCryFont : public ICryFont {
 public:
-	CCryFont(ISystem *pSystem);
-	virtual ~CCryFont();
+    CCryFont(ISystem* pSystem);
+    virtual ~CCryFont();
 
-	void Release();
-	
-	// create a font
-	struct IFFont *NewFont(const char *pszName);
-	struct IFFont *GetFont(const char *pszName);
+    void Release();
 
-	//! Puts the objects used in this module into the sizer interface
-	void GetMemoryUsage (class ICrySizer* pSizer);
+    // create a font
+    struct IFFont* NewFont(const char* pszName);
+    struct IFFont* GetFont(const char* pszName);
+
+    //! Puts the objects used in this module into the sizer interface
+    void GetMemoryUsage(class ICrySizer* pSizer);
+
 private:
-	friend class CFFont;
-	FontMap m_mapFonts;
-  ISystem*	m_pISystem;		        // system interface
+    friend class CFFont;
+    FontMap m_mapFonts;
+    ISystem* m_pISystem; // system interface
 
 private:
 };

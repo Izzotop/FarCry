@@ -7,7 +7,7 @@
 //  Version:     v1.00
 //  Created:     17/6/2003 by Timur.
 //  Compilers:   Visual Studio.NET
-//  Description: 
+//  Description:
 // -------------------------------------------------------------------------
 //  History:
 //
@@ -27,125 +27,122 @@ class CParticleItem;
 class CParticleManager;
 
 /** Dialog which hosts entity prototype library.
-*/
-class CParticleDialog : public CBaseLibraryDialog
-{
-	DECLARE_DYNAMIC(CParticleDialog)
+ */
+class CParticleDialog : public CBaseLibraryDialog {
+    DECLARE_DYNAMIC(CParticleDialog)
 public:
-	CParticleDialog( CWnd *pParent );
-	~CParticleDialog();
+    CParticleDialog(CWnd* pParent);
+    ~CParticleDialog();
 
-	// Called every frame.
-	void Update();
+    // Called every frame.
+    void Update();
 
-	virtual UINT GetDialogMenuID();
+    virtual UINT GetDialogMenuID();
 
 public:
-	afx_msg void OnAssignParticleToSelection();
-	afx_msg void OnResetParticleOnSelection();
-	afx_msg void OnGetParticleFromSelection();
+    afx_msg void OnAssignParticleToSelection();
+    afx_msg void OnResetParticleOnSelection();
+    afx_msg void OnGetParticleFromSelection();
 
 protected:
-	IStatObj* GetGeometryFromObject( CBaseObject *pObject );
-	ICryCharInstance* GetCharacterFromObject( CBaseObject *pObject );
-	void DoDataExchange(CDataExchange* pDX);
-	BOOL OnInitDialog();
-	
-	afx_msg void OnDestroy();
-	afx_msg void OnSize(UINT nType, int cx, int cy);
-	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
-	afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
-	
-	afx_msg void OnAddItem();
-	afx_msg void OnPlay();
-	afx_msg void OnUpdatePlay( CCmdUI* pCmdUI );
-	afx_msg void OnDrawSelection();
-	afx_msg void OnDrawBox();
-	afx_msg void OnDrawSphere();
-	afx_msg void OnDrawTeapot();
-	afx_msg void OnAddSubItem();
-	afx_msg void OnDelSubItem();
-	afx_msg void OnUpdateItemSelected( CCmdUI* pCmdUI );
-	afx_msg void OnUpdateObjectSelected( CCmdUI* pCmdUI );
-	afx_msg void OnUpdateAssignMtlToSelection( CCmdUI *pCmdUI );
-	afx_msg void OnBeginDrag(NMHDR* pNMHDR, LRESULT* pResult);
-	afx_msg void OnNotifyMtlTreeRClick(NMHDR* pNMHDR, LRESULT* pResult);
-	afx_msg void OnPickMtl();
-	afx_msg void OnUpdatePickMtl( CCmdUI* pCmdUI );
-	afx_msg void OnCopy();
-	afx_msg void OnPaste();
-	afx_msg void OnSelectAssignedObjects();
+    IStatObj* GetGeometryFromObject(CBaseObject* pObject);
+    ICryCharInstance* GetCharacterFromObject(CBaseObject* pObject);
+    void DoDataExchange(CDataExchange* pDX);
+    BOOL OnInitDialog();
 
-	//////////////////////////////////////////////////////////////////////////
-	// Some functions can be overriden to modify standart functionality.
-	//////////////////////////////////////////////////////////////////////////
-	virtual void InitToolbar();
-	virtual HTREEITEM InsertItemToTree( CBaseLibraryItem *pItem,HTREEITEM hParent );
-	virtual void SelectItem( CBaseLibraryItem *item,bool bForceReload=false );
+    afx_msg void OnDestroy();
+    afx_msg void OnSize(UINT nType, int cx, int cy);
+    afx_msg void OnMouseMove(UINT nFlags, CPoint point);
+    afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
 
-	//////////////////////////////////////////////////////////////////////////
-	CParticleItem* GetSelectedParticle();
-	void OnUpdateProperties( IVariable *var );
+    afx_msg void OnAddItem();
+    afx_msg void OnPlay();
+    afx_msg void OnUpdatePlay(CCmdUI* pCmdUI);
+    afx_msg void OnDrawSelection();
+    afx_msg void OnDrawBox();
+    afx_msg void OnDrawSphere();
+    afx_msg void OnDrawTeapot();
+    afx_msg void OnAddSubItem();
+    afx_msg void OnDelSubItem();
+    afx_msg void OnUpdateItemSelected(CCmdUI* pCmdUI);
+    afx_msg void OnUpdateObjectSelected(CCmdUI* pCmdUI);
+    afx_msg void OnUpdateAssignMtlToSelection(CCmdUI* pCmdUI);
+    afx_msg void OnBeginDrag(NMHDR* pNMHDR, LRESULT* pResult);
+    afx_msg void OnNotifyMtlTreeRClick(NMHDR* pNMHDR, LRESULT* pResult);
+    afx_msg void OnPickMtl();
+    afx_msg void OnUpdatePickMtl(CCmdUI* pCmdUI);
+    afx_msg void OnCopy();
+    afx_msg void OnPaste();
+    afx_msg void OnSelectAssignedObjects();
 
-	void AssignParticleToEntity( CParticleItem *pItem,CBaseObject *pObject );
-	
-	//void LoadGeometry( const CString &filename );
-	//void ReleaseGeometry();
-	//void AssignMtlToGeometry();
+    //////////////////////////////////////////////////////////////////////////
+    // Some functions can be overriden to modify standart functionality.
+    //////////////////////////////////////////////////////////////////////////
+    virtual void InitToolbar();
+    virtual HTREEITEM InsertItemToTree(CBaseLibraryItem* pItem, HTREEITEM hParent);
+    virtual void SelectItem(CBaseLibraryItem* item, bool bForceReload = false);
 
-	//void SetTextureVars( CVariableArray *texVar,CParticleItem *mtl,int id,const CString &name );
-	void SetParticleVars( CParticleItem *mtl );
+    //////////////////////////////////////////////////////////////////////////
+    CParticleItem* GetSelectedParticle();
+    void OnUpdateProperties(IVariable* var);
 
-	void DropToItem( HTREEITEM hItem,HTREEITEM hSrcItem,CParticleItem *pMtl );
+    void AssignParticleToEntity(CParticleItem* pItem, CBaseObject* pObject);
 
-	//////////////////////////////////////////////////////////////////////////
-	// IDocListener listener implementation
-	//////////////////////////////////////////////////////////////////////////
-	virtual	void OnNewDocument();
-	virtual	void OnLoadDocument();
-	virtual void OnCloseDocument();
-	//////////////////////////////////////////////////////////////////////////
+    // void LoadGeometry( const CString &filename );
+    // void ReleaseGeometry();
+    // void AssignMtlToGeometry();
 
-	enum EDrawType
-	{
-		DRAW_BOX,
-		DRAW_SPHERE,
-		DRAW_TEAPOT,
-		DRAW_SELECTION,
-	};
-	
+    // void SetTextureVars( CVariableArray *texVar,CParticleItem *mtl,int id,const CString &name );
+    void SetParticleVars(CParticleItem* mtl);
 
-	DECLARE_MESSAGE_MAP()
+    void DropToItem(HTREEITEM hItem, HTREEITEM hSrcItem, CParticleItem* pMtl);
 
-	CSplitterWndEx m_wndHSplitter;
-	CSplitterWndEx m_wndVSplitter;
-	
-	CPreviewModelCtrl m_previewCtrl;
-	CPropertyCtrl m_propsCtrl;
-	CImageList m_imageList;
+    //////////////////////////////////////////////////////////////////////////
+    // IDocListener listener implementation
+    //////////////////////////////////////////////////////////////////////////
+    virtual void OnNewDocument();
+    virtual void OnLoadDocument();
+    virtual void OnCloseDocument();
+    //////////////////////////////////////////////////////////////////////////
 
-	CImageList *m_dragImage;
+    enum EDrawType {
+        DRAW_BOX,
+        DRAW_SPHERE,
+        DRAW_TEAPOT,
+        DRAW_SELECTION,
+    };
 
-	// Object to render.
-	CString m_visualObject;
-	IStatObj *m_pGeometry;
-	IEntityRender *m_pEntityRender;
+    DECLARE_MESSAGE_MAP()
 
-	bool m_bRealtimePreviewUpdate;
-	bool m_bOwnGeometry;
+    CSplitterWndEx m_wndHSplitter;
+    CSplitterWndEx m_wndVSplitter;
 
-	// Particle manager.
-	CParticleManager *m_pPartManager;
+    CPreviewModelCtrl m_previewCtrl;
+    CPropertyCtrl m_propsCtrl;
+    CImageList m_imageList;
 
-	CVarBlockPtr m_vars;
+    CImageList* m_dragImage;
 
-	EDrawType m_drawType;
-	CString m_geometryFile;
+    // Object to render.
+    CString m_visualObject;
+    IStatObj* m_pGeometry;
+    IEntityRender* m_pEntityRender;
 
-	HTREEITEM m_hDropItem;
-	HTREEITEM m_hDraggedItem;
+    bool m_bRealtimePreviewUpdate;
+    bool m_bOwnGeometry;
 
-	TSmartPtr<CParticleItem> m_pDraggedMtl;
+    // Particle manager.
+    CParticleManager* m_pPartManager;
+
+    CVarBlockPtr m_vars;
+
+    EDrawType m_drawType;
+    CString m_geometryFile;
+
+    HTREEITEM m_hDropItem;
+    HTREEITEM m_hDraggedItem;
+
+    TSmartPtr<CParticleItem> m_pDraggedMtl;
 };
 
 #endif // __particledialog_h__

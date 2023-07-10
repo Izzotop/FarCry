@@ -7,7 +7,7 @@
 //  Version:     v1.00
 //  Created:     31/7/2002 by Timur.
 //  Compilers:   Visual Studio.NET
-//  Description: 
+//  Description:
 // -------------------------------------------------------------------------
 //  History:
 //
@@ -32,97 +32,98 @@ class CVegetationObject;
 class CVegetationMap;
 class CPanelPreview;
 
-class CVegetationPanel : public CXTCBarDialog
-{
-// Construction
+class CVegetationPanel : public CXTCBarDialog {
+    // Construction
 public:
-	CVegetationPanel(class CVegetationTool *tool,CWnd* pParent = NULL);   // standard constructor
+    CVegetationPanel(class CVegetationTool* tool, CWnd* pParent = nullptr); // standard constructor
 
-	void SetPreviewPanel( CPanelPreview *panel ) { m_previewPanel = panel; }
-	void SetObjectPanel( class CVegetationObjectPanel *panel );
-	void SelectObject( CVegetationObject *object );
-	void UpdateObjectInTree( CVegetationObject *object,bool bUpdateInfo=true );
-	void UpdateAllObjectsInTree();
-	void UpdateInfo();
+    void SetPreviewPanel(CPanelPreview* panel) {
+        m_previewPanel = panel;
+    }
+    void SetObjectPanel(class CVegetationObjectPanel* panel);
+    void SelectObject(CVegetationObject* object);
+    void UpdateObjectInTree(CVegetationObject* object, bool bUpdateInfo = true);
+    void UpdateAllObjectsInTree();
+    void UpdateInfo();
 
-// Dialog Data
-	//{{AFX_DATA(CVegetationPanel)
-	enum { IDD = IDD_PANEL_VEGETATION };
-	CSliderCtrl	m_radius;
-	CColorCheckBox	m_paintButton;
-	//}}AFX_DATA
+    // Dialog Data
+    //{{AFX_DATA(CVegetationPanel)
+    enum { IDD = IDD_PANEL_VEGETATION };
+    CSliderCtrl m_radius;
+    CColorCheckBox m_paintButton;
+    //}}AFX_DATA
 
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CVegetationPanel)
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	//}}AFX_VIRTUAL
-
-// Implementation
+    // Overrides
+    // ClassWizard generated virtual function overrides
+    //{{AFX_VIRTUAL(CVegetationPanel)
 protected:
-	virtual void OnOK() {};
-	virtual void OnCancel() {};
+    virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
+    //}}AFX_VIRTUAL
 
-	void ReloadObjects();
-	void AddObjectToTree( CVegetationObject *object,bool bExpandCategory=true );
-	void RemoveObjectFromTree( CVegetationObject *object );
+    // Implementation
+protected:
+    virtual void OnOK(){};
+    virtual void OnCancel(){};
 
-	void GetObjectsInCategory( const CString &category,std::vector<CVegetationObject*> &objects );
-	void SendToControls();
+    void ReloadObjects();
+    void AddObjectToTree(CVegetationObject* object, bool bExpandCategory = true);
+    void RemoveObjectFromTree(CVegetationObject* object);
 
-	void GetSelectedObjects( std::vector<CVegetationObject*> &objects );
+    void GetObjectsInCategory(const CString& category, std::vector<CVegetationObject*>& objects);
+    void SendToControls();
 
-	// Generated message map functions
-	//{{AFX_MSG(CVegetationPanel)
-	afx_msg void OnReleasedcaptureRadius(NMHDR* pNMHDR, LRESULT* pResult);
-	afx_msg void OnPaint();
-	virtual BOOL OnInitDialog();
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
+    void GetSelectedObjects(std::vector<CVegetationObject*>& objects);
 
-	afx_msg void OnAdd();
-	afx_msg void OnClone();
-	afx_msg void OnReplace();
-	afx_msg void OnRemove();
+    // Generated message map functions
+    //{{AFX_MSG(CVegetationPanel)
+    afx_msg void OnReleasedcaptureRadius(NMHDR* pNMHDR, LRESULT* pResult);
+    afx_msg void OnPaint();
+    virtual BOOL OnInitDialog();
+    //}}AFX_MSG
+    DECLARE_MESSAGE_MAP()
 
-	afx_msg void OnNewCategory();
-	afx_msg void OnDistribute();
-	afx_msg void OnDistributeMask();
-	afx_msg void OnClear();
-	afx_msg void OnClearMask();
-	afx_msg void OnBnClickedImport();
-	afx_msg void OnBnClickedExport();
-	afx_msg void OnObjectSelectionChanged(NMHDR *pNMHDR, LRESULT *pResult);
-	afx_msg void OnTvnKeydownObjects(NMHDR *pNMHDR, LRESULT *pResult);
-	afx_msg void OnTvnBeginlabeleditObjects(NMHDR *pNMHDR, LRESULT *pResult);
-	afx_msg void OnTvnEndlabeleditObjects(NMHDR *pNMHDR, LRESULT *pResult);
-	afx_msg void OnTvnHideObjects(NMHDR *pNMHDR, LRESULT *pResult);
-	afx_msg void OnBnClickedScale();
+    afx_msg void OnAdd();
+    afx_msg void OnClone();
+    afx_msg void OnReplace();
+    afx_msg void OnRemove();
 
-	//////////////////////////////////////////////////////////////////////////
-	// Controls.
-	CString m_category;
+    afx_msg void OnNewCategory();
+    afx_msg void OnDistribute();
+    afx_msg void OnDistributeMask();
+    afx_msg void OnClear();
+    afx_msg void OnClearMask();
+    afx_msg void OnBnClickedImport();
+    afx_msg void OnBnClickedExport();
+    afx_msg void OnObjectSelectionChanged(NMHDR* pNMHDR, LRESULT* pResult);
+    afx_msg void OnTvnKeydownObjects(NMHDR* pNMHDR, LRESULT* pResult);
+    afx_msg void OnTvnBeginlabeleditObjects(NMHDR* pNMHDR, LRESULT* pResult);
+    afx_msg void OnTvnEndlabeleditObjects(NMHDR* pNMHDR, LRESULT* pResult);
+    afx_msg void OnTvnHideObjects(NMHDR* pNMHDR, LRESULT* pResult);
+    afx_msg void OnBnClickedScale();
 
-	CVegetationTool *m_tool;
+    //////////////////////////////////////////////////////////////////////////
+    // Controls.
+    CString m_category;
 
-	CXTToolBar m_toolbar;
+    CVegetationTool* m_tool;
 
-	//CMultiTree m_objectsTree;
-	CMultiTree m_objectsTree;
-	CImageList m_treeImageList;
-	CImageList m_treeStateImageList;
+    CXTToolBar m_toolbar;
 
-	CPropertyCtrl m_propertyCtrl;
-	CPanelPreview *m_previewPanel;
+    // CMultiTree m_objectsTree;
+    CMultiTree m_objectsTree;
+    CImageList m_treeImageList;
+    CImageList m_treeStateImageList;
 
-	CStatic m_info;
+    CPropertyCtrl m_propertyCtrl;
+    CPanelPreview* m_previewPanel;
 
-	typedef std::vector<CVegetationObject*> Selection;
-	std::map<CString,HTREEITEM> m_categoryMap;
-	CVegetationMap* m_vegetationMap;
+    CStatic m_info;
 
-	TSmartPtr<CVarBlock> m_varBlock;
+    typedef std::vector<CVegetationObject*> Selection;
+    std::map<CString, HTREEITEM> m_categoryMap;
+    CVegetationMap* m_vegetationMap;
+
+    TSmartPtr<CVarBlock> m_varBlock;
 };
 
 #endif // __vegetationpanel_h__

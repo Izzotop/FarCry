@@ -10,35 +10,33 @@
 /////////////////////////////////////////////////////////////////////////////
 // CConsoleDialog dialog
 
-class CConsoleDialog : public CDialog
-{
-// Construction
+class CConsoleDialog : public CDialog {
+    // Construction
 public:
-	CConsoleDialog(CWnd* pParent = NULL);   // standard constructor
+    CConsoleDialog(CWnd* pParent = nullptr); // standard constructor
 
-// Dialog Data
-	//{{AFX_DATA(CConsoleDialog)
-	enum { IDD = IDD_CONSOLE };
-		// NOTE: the ClassWizard will add data members here
-	//}}AFX_DATA
+    // Dialog Data
+    //{{AFX_DATA(CConsoleDialog)
+    enum { IDD = IDD_CONSOLE };
+    // NOTE: the ClassWizard will add data members here
+    //}}AFX_DATA
 
-
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CConsoleDialog)
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	//}}AFX_VIRTUAL
-
-// Implementation
+    // Overrides
+    // ClassWizard generated virtual function overrides
+    //{{AFX_VIRTUAL(CConsoleDialog)
 protected:
-	virtual void OnCancel() {};
+    virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
+    //}}AFX_VIRTUAL
 
-	// Generated message map functions
-	//{{AFX_MSG(CConsoleDialog)
-	virtual void OnOK();
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
+    // Implementation
+protected:
+    virtual void OnCancel(){};
+
+    // Generated message map functions
+    //{{AFX_MSG(CConsoleDialog)
+    virtual void OnOK();
+    //}}AFX_MSG
+    DECLARE_MESSAGE_MAP()
 };
 
 //{{AFX_INSERT_LOCATION}}

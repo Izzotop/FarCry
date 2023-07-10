@@ -82,7 +82,7 @@ static int getinfo (lua_State *L) {
   }
   return 1;  /* return table */
 }
-    
+
 
 static int getlocal (lua_State *L) {
   lua_Debug ar;
@@ -113,8 +113,8 @@ static int setlocal (lua_State *L) {
 
 
 
-#define KEY_CALLHOOK	l_s("luadblibCallhook")
-#define KEY_LINEHOOK	l_s("luadblibLinehook")
+#define KEY_CALLHOOK  l_s("luadblibCallhook")
+#define KEY_LINEHOOK  l_s("luadblibLinehook")
 
 
 static void hookf (lua_State *L, const l_char *key) {

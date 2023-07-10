@@ -7,51 +7,51 @@
 // ColorCheckBox.h : header file
 //
 
-#define STD_PUSHED_COLOR	(RGB(255,255,0))
+#define STD_PUSHED_COLOR (RGB(255, 255, 0))
 
-typedef CColorCtrl<CColorPushButton<CButton> > CColoredPushButton;
-typedef CColorCtrl<CColorPushButton<CButton> > CCustomButton;
+typedef CColorCtrl<CColorPushButton<CButton>> CColoredPushButton;
+typedef CColorCtrl<CColorPushButton<CButton>> CCustomButton;
 
 /////////////////////////////////////////////////////////////////////////////
 // CColorCheckBox window
-class CColorCheckBox : public CColoredPushButton
-{
-	DECLARE_DYNCREATE( CColorCheckBox )
-// Construction
+class CColorCheckBox : public CColoredPushButton {
+    DECLARE_DYNCREATE(CColorCheckBox)
+    // Construction
 public:
-	CColorCheckBox();
+    CColorCheckBox();
 
-	int	GetCheck() const { return m_nChecked; };
-	void SetCheck(int nCheck);
+    int GetCheck() const {
+        return m_nChecked;
+    };
+    void SetCheck(int nCheck);
 
-// Attributes
+    // Attributes
 public:
-
-// Operations
+    // Operations
 public:
-
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CColorCheckBox)
-	public:
-	virtual void DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct);
-	protected:
-	virtual void PreSubclassWindow();
-	//}}AFX_VIRTUAL
-
-// Implementation
+    // Overrides
+    // ClassWizard generated virtual function overrides
+    //{{AFX_VIRTUAL(CColorCheckBox)
 public:
-	virtual ~CColorCheckBox();
+    virtual void DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct);
 
-	// Generated message map functions
 protected:
-	//{{AFX_MSG(CColorCheckBox)
-		// NOTE - the ClassWizard will add and remove member functions here.
-	//}}AFX_MSG
+    virtual void PreSubclassWindow();
+    //}}AFX_VIRTUAL
 
-//	DECLARE_MESSAGE_MAP()
+    // Implementation
+public:
+    virtual ~CColorCheckBox();
 
-	int m_nChecked;
+    // Generated message map functions
+protected:
+    //{{AFX_MSG(CColorCheckBox)
+    // NOTE - the ClassWizard will add and remove member functions here.
+    //}}AFX_MSG
+
+    //  DECLARE_MESSAGE_MAP()
+
+    int m_nChecked;
 };
 
 /////////////////////////////////////////////////////////////////////////////

@@ -7,7 +7,7 @@
 //  Version:     v1.00
 //  Created:     18/3/2002 by Timur.
 //  Compilers:   Visual C++ 7.0
-//  Description: 
+//  Description:
 // -------------------------------------------------------------------------
 //  History:
 //
@@ -20,15 +20,13 @@
 #pragma once
 #endif
 
-
-class CThumbnailGenerator
-{
+class CThumbnailGenerator {
 public:
-	CThumbnailGenerator(void);
-	~CThumbnailGenerator(void);
+    CThumbnailGenerator();
+    ~CThumbnailGenerator();
 
-	void GenerateForDirectory( const CString &path );
-	void GenerateForFile( const CString &fileName );
+    void GenerateForDirectory(const CString& path);
+    void GenerateForFile(const CString& fileName);
 };
 
 #endif // __thumbnailgenerator_h__

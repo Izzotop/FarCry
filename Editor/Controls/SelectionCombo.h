@@ -12,38 +12,35 @@
 /////////////////////////////////////////////////////////////////////////////
 // CSelectionCombo window
 
-class CSelectionCombo : public CXTFlatComboBox
-{
-// Construction
+class CSelectionCombo : public CXTFlatComboBox {
+    // Construction
 public:
-	CSelectionCombo();
+    CSelectionCombo();
 
-	BOOL Create( DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID );
+    BOOL Create(DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID);
 
-// Attributes
+    // Attributes
 public:
-
-// Operations
+    // Operations
 public:
-
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CSelectionCombo)
-	public:
-	virtual BOOL PreTranslateMessage(MSG* pMsg);
-	//}}AFX_VIRTUAL
-
-// Implementation
+    // Overrides
+    // ClassWizard generated virtual function overrides
+    //{{AFX_VIRTUAL(CSelectionCombo)
 public:
-	virtual ~CSelectionCombo();
+    virtual BOOL PreTranslateMessage(MSG* pMsg);
+    //}}AFX_VIRTUAL
 
-	// Generated message map functions
+    // Implementation
+public:
+    virtual ~CSelectionCombo();
+
+    // Generated message map functions
 protected:
-	//{{AFX_MSG(CSelectionCombo)
-	afx_msg UINT OnGetDlgCode();
-	//}}AFX_MSG
+    //{{AFX_MSG(CSelectionCombo)
+    afx_msg UINT OnGetDlgCode();
+    //}}AFX_MSG
 
-	DECLARE_MESSAGE_MAP()
+    DECLARE_MESSAGE_MAP()
 };
 
 /////////////////////////////////////////////////////////////////////////////

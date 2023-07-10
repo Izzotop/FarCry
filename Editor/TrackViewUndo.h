@@ -7,7 +7,7 @@
 //  Version:     v1.00
 //  Created:     30/8/2002 by Timur.
 //  Compilers:   Visual Studio.NET
-//  Description: 
+//  Description:
 // -------------------------------------------------------------------------
 //  History:
 //
@@ -24,43 +24,49 @@ struct IAnimTrack;
 struct IAnimNode;
 
 /** Undo object stored when track is modified.
-*/
-class CUndoTrackObject : public IUndoObject
-{
+ */
+class CUndoTrackObject : public IUndoObject {
 public:
-	CUndoTrackObject( IAnimTrack *track );
-protected:
-	virtual int GetSize() { return sizeof(*this); }
-	virtual const char* GetDescription() { return "Track Modify"; };
+    CUndoTrackObject(IAnimTrack* track);
 
-	virtual void Undo( bool bUndo );
-	virtual void Redo();
+protected:
+    virtual int GetSize() {
+        return sizeof(*this);
+    }
+    virtual const char* GetDescription() {
+        return "Track Modify";
+    };
+
+    virtual void Undo(bool bUndo);
+    virtual void Redo();
 
 private:
-	TSmartPtr<IAnimTrack> m_pTrack;
-	XmlNodeRef m_undo;
-	XmlNodeRef m_redo;
+    TSmartPtr<IAnimTrack> m_pTrack;
+    XmlNodeRef m_undo;
+    XmlNodeRef m_redo;
 };
-
 
 /** Undo object stored when sequence is modified.
-*/
-class CUndoAnimSequenceObject : public IUndoObject
-{
+ */
+class CUndoAnimSequenceObject : public IUndoObject {
 public:
-	CUndoAnimSequenceObject( IAnimSequence *seq );
-protected:
-	virtual int GetSize() { return sizeof(*this); }
-	virtual const char* GetDescription() { return "Sequence Modify"; };
+    CUndoAnimSequenceObject(IAnimSequence* seq);
 
-	virtual void Undo( bool bUndo );
-	virtual void Redo();
+protected:
+    virtual int GetSize() {
+        return sizeof(*this);
+    }
+    virtual const char* GetDescription() {
+        return "Sequence Modify";
+    };
+
+    virtual void Undo(bool bUndo);
+    virtual void Redo();
 
 private:
-	TSmartPtr<IAnimSequence> m_pSequence;
-	XmlNodeRef m_undo;
-	XmlNodeRef m_redo;
+    TSmartPtr<IAnimSequence> m_pSequence;
+    XmlNodeRef m_undo;
+    XmlNodeRef m_redo;
 };
-
 
 #endif // __trackviewundo_h__

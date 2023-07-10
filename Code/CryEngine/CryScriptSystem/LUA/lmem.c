@@ -23,14 +23,14 @@ int gLuaAllocatedMemory = 0;
 
 #ifndef _DEBUG
 
-	#define l_realloc(b,os,s)	CryModuleReallocSize(b,os,s)
-	#define l_free(b,s)				CryModuleFreeSize(b,s)
+  #define l_realloc(b,os,s)  CryModuleReallocSize(b,os,s)
+  #define l_free(b,s)        CryModuleFreeSize(b,s)
 
 #else
 
-	#include "..\RecycleAllocator.h"
-	#define l_realloc(b,os,s)	recycle_realloc(b,os,s)
-	#define l_free(b,s)			recycle_free(b,s)
+  #include "../RecycleAllocator.h"
+  #define l_realloc(b,os,s)  recycle_realloc(b,os,s)
+  #define l_free(b,s)      recycle_free(b,s)
 
 #endif
 
@@ -62,21 +62,21 @@ extern void DumpCallStack( lua_State *L );
 ** generic allocation routine.
 */
 void *luaM_realloc (lua_State *L, void *block, lu_mem oldsize, lu_mem size) {
-	//	char sTemp[100];
+  //  char sTemp[100];
   if (size == 0) {
-		gLuaAllocatedMemory -= oldsize;
+    gLuaAllocatedMemory -= oldsize;
     l_free(block, oldsize);  /* block may be NULL; that is OK for free */
     block = NULL;
   }
   else if (size >= MAX_SIZET)
     luaD_error(L, l_s("memory allocation error: block too big"));
   else {
-		if (g_dumpStackOnAlloc && oldsize == 0)
-		{
-			// Only consider first allocation (malloc)
-			DumpCallStack( L );
-		}
-		gLuaAllocatedMemory += size - oldsize;
+    if (g_dumpStackOnAlloc && oldsize == 0)
+    {
+      // Only consider first allocation (malloc)
+      DumpCallStack( L );
+    }
+    gLuaAllocatedMemory += size - oldsize;
     block = l_realloc(block, oldsize, size);
     if (block == NULL) {
       if (L)

@@ -21,48 +21,46 @@
 #include "XTToolkit.h"
 #include "Include\IPreferencesPage.h"
 
-class CPreferencesDialog : public CXTResizeDialog
-{
-	DECLARE_DYNAMIC(CPreferencesDialog)
+class CPreferencesDialog : public CXTResizeDialog {
+    DECLARE_DYNAMIC(CPreferencesDialog)
 
 public:
-	CPreferencesDialog(CWnd* pParent = NULL);   // standard constructor
-	virtual ~CPreferencesDialog();
+    CPreferencesDialog(CWnd* pParent = nullptr); // standard constructor
+    virtual ~CPreferencesDialog();
 
-// Dialog Data
-	enum { IDD = IDD_PREFERENCES };
-
-protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	virtual BOOL OnInitDialog();
-	afx_msg void OnGetdispinfoListOptions(NMHDR* pNMHDR, LRESULT* pResult);
-	afx_msg void OnSelchangedListOptions(NMHDR* pNMHDR, LRESULT* pResult);
-	afx_msg void OnSize( UINT nType,int cx,int cy );
-	virtual void OnOK();
-	virtual void OnCancel();
-
-	DECLARE_MESSAGE_MAP()
-
-	//////////////////////////////////////////////////////////////////////////
-	void CreatePages( const CRect &rc );
-	void FillTree();
+    // Dialog Data
+    enum { IDD = IDD_PREFERENCES };
 
 protected:
-	CTreeCtrl m_wndTree;
-	CImageList m_imgList;
+    virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
+    virtual BOOL OnInitDialog();
+    afx_msg void OnGetdispinfoListOptions(NMHDR* pNMHDR, LRESULT* pResult);
+    afx_msg void OnSelchangedListOptions(NMHDR* pNMHDR, LRESULT* pResult);
+    afx_msg void OnSize(UINT nType, int cx, int cy);
+    virtual void OnOK();
+    virtual void OnCancel();
 
-	//////////////////////////////////////////////////////////////////////////
-	struct PageInfo : public CRefCountBase
-	{
-		CWnd *pWnd;
-		IPreferencesPage *pPage;
-		CString title;
-		CString category;
+    DECLARE_MESSAGE_MAP()
 
-		PageInfo() : pPage(0),pWnd(0) {};
-	};
-	std::vector<_smart_ptr<PageInfo> > m_pagesInfo;
-	PageInfo* m_pSelected;
+    //////////////////////////////////////////////////////////////////////////
+    void CreatePages(const CRect& rc);
+    void FillTree();
+
+protected:
+    CTreeCtrl m_wndTree;
+    CImageList m_imgList;
+
+    //////////////////////////////////////////////////////////////////////////
+    struct PageInfo : public CRefCountBase {
+        CWnd* pWnd;
+        IPreferencesPage* pPage;
+        CString title;
+        CString category;
+
+        PageInfo() : pPage(0), pWnd(0){};
+    };
+    std::vector<_smart_ptr<PageInfo>> m_pagesInfo;
+    PageInfo* m_pSelected;
 };
 
 #endif // __preferences_dialog_h__

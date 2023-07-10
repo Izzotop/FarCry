@@ -1,7 +1,7 @@
 // ---------------------------------------------------------------------------------------------
-//	Crytek CryENGINE source code
-//	History:
-//	- Created by Michael Glueck
+//  Crytek CryENGINE source code
+//  History:
+//  - Created by Michael Glueck
 // ---------------------------------------------------------------------------------------------
 
 #include "stdafx.h"
