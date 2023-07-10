@@ -1,0 +1,55 @@
+add_library(lua41
+    lib/lauxlib.c
+    lib/lbaselib.c
+    lib/lbitlib.c
+    lib/ldblib.c
+    lib/liolib.c
+    lib/lmathlib.c
+    lib/lstrlib.c
+
+    lapi.c
+    lapi.h
+    lauxlib.h
+    lcode.c
+    lcode.h
+    ldebug.c
+    ldebug.h
+    ldo.c
+    ldo.h
+    lfunc.c
+    lfunc.h
+    lgc.c
+    lgc.h
+    llex.c
+    llex.h
+    llimits.h
+    lmem.c
+    lmem.h
+    lobject.c
+    lobject.h
+    lopcodes.c
+    lopcodes.h
+    lparser.c
+    lparser.h
+    lstate.c
+    lstate.h
+    lstring.c
+    lstring.h
+    ltable.c
+    ltable.h
+    ltests.c
+    ltm.c
+    ltm.h
+    lua.h
+    luadebug.h
+    lualib.h
+    lundump.c
+    lundump.h
+    lvm.c
+    lvm.h
+    lzio.c
+    lzio.h
+)
+target_link_libraries(lua41 PRIVATE CryCommon)
+target_include_directories(lua41 PUBLIC .)
+set_target_properties(lua41 PROPERTIES LINKER_LANGUAGE CXX)

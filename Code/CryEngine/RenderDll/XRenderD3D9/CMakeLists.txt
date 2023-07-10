@@ -1,0 +1,34 @@
+add_library(XRenderD3D9 SHARED
+    D3D_OutSpace.cpp
+    D3DCGPShader.cpp
+    D3DCGPShader.h
+    D3DCGVProgram.cpp
+    D3DCGVProgram.h
+    D3DCubeMaps.h
+    D3DEnumeration.cpp
+    D3DEnumeration.h
+    D3DFont.cpp
+    D3DHDRRender.cpp
+    D3DLog.cpp
+    D3DRenderRE.cpp
+    D3DRendPipeline.cpp
+    D3DREOcean.cpp
+    D3DScreenRender.cpp
+    D3DSettings.h
+    D3DShaders.cpp
+    D3DShadows.cpp
+    D3DSprites.cpp
+    D3DSystem.cpp
+    D3DTexture.h
+    D3DTextures.cpp
+    D3DTexturesStreaming.cpp
+    D3DVertBuffer.cpp
+    DriverD3D9.cpp
+    DriverD3D9.h
+    DynamicIB.h
+    DynamicVB.h
+    getdxver.cpp
+    StaticIB.h
+    StaticVB.h
+)
+target_link_libraries(XRenderD3D9 PRIVATE CryCommon RenderCommon d3d9)

@@ -1,0 +1,28 @@
+add_library(RenderCommon
+    3DUtils.cpp
+    3DUtils.h
+    CommonRender.h
+    CRT.cpp
+    Defs.h
+    EvalFuncs.h
+    EvalFuncs_C.cpp
+    EvalFuncs_RE.cpp
+    LeafBufferCreate.cpp
+    LeafBufferRender.cpp
+    LeafBufferSerialize.cpp
+    LightMaterial.cpp
+    LZSS.H
+    Names.cpp
+    Names.int
+    pip_addons.cpp
+    Renderer.cpp
+    Renderer.h
+    RenderPipeline.h
+    ResFile.cpp
+    ResFile.h
+    Shadow_Renderer.h
+    SimpleFrameProfiler.cpp
+    SimpleFrameProfiler.h
+    TangentSpaceCalculation.h
+)
+target_link_libraries(RenderCommon PUBLIC RenderCommonStd NvTriStrip)
